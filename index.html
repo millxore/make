@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>NovaTrade — Automated Crypto Trading Bot</title>
+<meta name="description" content="AI-powered crypto trading bot with 24/7 automated execution, advanced risk management, and proven strategies." />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        background: 'var(--background)',
+        foreground: 'var(--foreground)',
+        surface: 'var(--surface)',
+        'surface-elevated': 'var(--surface-elevated)',
+        card: 'var(--card)',
+        border: 'var(--border)',
+        primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)' },
+        muted: { DEFAULT: 'var(--muted)', foreground: 'var(--muted-foreground)' },
+      },
+      animation: {
+        'fade-in': 'fade-in 0.6s ease-out forwards',
+        marquee: 'marquee 30s linear infinite',
+      },
+      keyframes: {
+        'fade-in': { from: { opacity: 0 }, to: { opacity: 1 } },
+        marquee: { from: { transform: 'translateX(0)' }, to: { transform: 'translateX(-50%)' } },
+      },
+    },
+  },
+};
+</script>
+<style>
+:root {
+  --background: oklch(0.16 0.015 200);
+  --foreground: oklch(0.96 0.005 180);
+  --surface: oklch(0.20 0.018 200);
+  --surface-elevated: oklch(0.24 0.02 200);
+  --card: oklch(0.20 0.018 200);
+  --primary: oklch(0.85 0.22 145);
+  --primary-foreground: oklch(0.16 0.015 200);
+  --primary-glow: oklch(0.92 0.20 145);
+  --muted: oklch(0.24 0.018 200);
+  --muted-foreground: oklch(0.70 0.02 200);
+  --border: oklch(0.30 0.02 200 / 50%);
+  --gradient-hero: radial-gradient(ellipse at top, oklch(0.30 0.15 145 / 0.25), transparent 60%);
+  --gradient-primary: linear-gradient(135deg, var(--primary), var(--primary-glow));
+  --shadow-glow: 0 0 40px -10px var(--primary);
+}
+html { scroll-behavior: smooth; }
+body {
+  background: var(--background); color: var(--foreground);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.text-gradient {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.glow-border { box-shadow: var(--shadow-glow); }
+.section-padding { padding-block: 5rem; }
+.bg-gradient-hero { background: var(--gradient-hero); }
+.tilt { transform-style: preserve-3d; will-change: transform; transition: box-shadow .4s ease; }
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease-out, transform .7s ease-out; }
+.reveal.shown { opacity: 1; transform: translateY(0); }
+.faq-body { max-height: 0; overflow: hidden; transition: max-height .3s ease; }
+.faq-body.open { max-height: 240px; }
+.icon { width: 1em; height: 1em; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+</style>
+</head>
+<body class="min-h-screen overflow-x-hidden">
+
+<!-- Icons (lucide subset, defined once) -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="i-activity" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+    <symbol id="i-bot" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M12 8V4"/><circle cx="12" cy="3" r="1"/><line x1="8" y1="14" x2="8" y2="14"/><line x1="16" y1="14" x2="16" y2="14"/></symbol>
+    <symbol id="i-zap" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+    <symbol id="i-line-chart" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></symbol>
+    <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></symbol>
+    <symbol id="i-trending-up" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M20 12V8H6a2 2 0 0 1 0-4h12v4"/><path d="M4 6v14a2 2 0 0 0 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></symbol>
+  </defs>
+</svg>
+
+<!-- NAV -->
+<header id="nav" class="fixed top-0 inset-x-0 z-50 transition-all duration-300">
+  <nav class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+    <a href="#" class="flex items-center gap-2 font-bold text-lg">
+      <span class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center"><svg class="icon text-primary-foreground" style="font-size:20px"><use href="#i-activity"/></svg></span>
+      NovaTrade
+    </a>
+    <ul class="hidden md:flex items-center gap-8 text-sm text-muted-foreground">
+      <li><a href="#features" class="hover:text-foreground transition">Features</a></li>
+      <li><a href="#how-it-works" class="hover:text-foreground transition">How it works</a></li>
+      <li><a href="#pricing" class="hover:text-foreground transition">Pricing</a></li>
+      <li><a href="#faq" class="hover:text-foreground transition">FAQ</a></li>
+    </ul>
+    <div class="hidden md:flex items-center gap-3">
+      <a href="#pricing" class="text-sm text-muted-foreground hover:text-foreground transition">Sign in</a>
+      <a href="#pricing" class="text-sm font-medium bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:opacity-90 transition">Get Started</a>
+    </div>
+    <button id="navToggle" class="md:hidden text-foreground" aria-label="Menu"><svg class="icon" style="font-size:24px"><use href="#i-menu"/></svg></button>
+  </nav>
+  <div id="mobileMenu" class="hidden md:hidden bg-background border-t border-border px-6 py-4 space-y-3">
+    <a href="#features" class="block text-muted-foreground hover:text-foreground">Features</a>
+    <a href="#how-it-works" class="block text-muted-foreground hover:text-foreground">How it works</a>
+    <a href="#pricing" class="block text-muted-foreground hover:text-foreground">Pricing</a>
+    <a href="#faq" class="block text-muted-foreground hover:text-foreground">FAQ</a>
+    <a href="#pricing" class="block text-center bg-primary text-primary-foreground px-4 py-2 rounded-lg font-medium">Get Started</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="relative pt-32 pb-20 px-6 bg-gradient-hero">
+  <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+    <div class="reveal">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border bg-surface text-xs text-muted-foreground mb-6">
+        <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+        Live · 12,847 trades executed today
+      </div>
+      <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.05] mb-6">
+        Trade smarter with <span class="text-gradient">automated AI</span>
+      </h1>
+      <p class="text-lg text-muted-foreground mb-8 max-w-xl">
+        NovaTrade runs proven, backtested strategies on your exchange account 24/7. No emotions. No missed opportunities. Just disciplined execution.
+      </p>
+      <div class="flex flex-wrap gap-4">
+        <a href="#pricing" class="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition glow-border">
+          Start Trading <svg class="icon" style="font-size:16px"><use href="#i-arrow-right"/></svg>
+        </a>
+        <a href="#how-it-works" class="inline-flex items-center gap-2 border border-border bg-surface px-6 py-3 rounded-lg font-semibold hover:bg-surface-elevated transition">How it works</a>
+      </div>
+      <div class="flex flex-wrap items-center gap-6 mt-10 text-sm text-muted-foreground">
+        <div class="flex items-center gap-2"><svg class="icon text-primary" style="font-size:16px"><use href="#i-check"/></svg> Non-custodial</div>
+        <div class="flex items-center gap-2"><svg class="icon text-primary" style="font-size:16px"><use href="#i-check"/></svg> 7-day free trial</div>
+        <div class="flex items-center gap-2"><svg class="icon text-primary" style="font-size:16px"><use href="#i-check"/></svg> Cancel anytime</div>
+      </div>
+    </div>
+    <div class="reveal" style="transition-delay:.2s">
+      <div class="relative">
+        <div class="absolute -inset-4 bg-primary/20 blur-3xl rounded-full"></div>
+        <div class="relative rounded-2xl border border-border shadow-2xl aspect-[3/2] bg-gradient-to-br from-surface-elevated to-surface p-6 overflow-hidden">
+          <div class="flex items-center justify-between text-xs text-muted-foreground mb-4">
+            <span>BTC/USDT · 1H</span><span class="text-primary">+4.21%</span>
+          </div>
+          <svg viewBox="0 0 400 200" class="w-full h-[80%]" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="g" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="oklch(0.85 0.22 145)" stop-opacity=".4"/>
+                <stop offset="100%" stop-color="oklch(0.85 0.22 145)" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <path d="M0,150 L40,140 L80,145 L120,120 L160,130 L200,90 L240,100 L280,70 L320,80 L360,40 L400,55 L400,200 L0,200 Z" fill="url(#g)"/>
+            <path d="M0,150 L40,140 L80,145 L120,120 L160,130 L200,90 L240,100 L280,70 L320,80 L360,40 L400,55" stroke="oklch(0.85 0.22 145)" stroke-width="2" fill="none"/>
+          </svg>
+        </div>
+        <div class="absolute -bottom-6 -left-6 bg-surface-elevated border border-border rounded-xl p-4 shadow-xl hidden md:block">
+          <div class="text-xs text-muted-foreground">Today's P&amp;L</div>
+          <div class="text-2xl font-bold text-primary">+$2,847.32</div>
+          <div class="text-xs text-primary flex items-center gap-1"><svg class="icon" style="font-size:12px"><use href="#i-trending-up"/></svg>+4.21%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXCHANGES MARQUEE -->
+<section class="py-12 border-y border-border bg-surface/50">
+  <p class="text-center text-xs uppercase tracking-widest text-muted-foreground mb-6">Trusted across major exchanges</p>
+  <div class="overflow-hidden">
+    <div id="marquee" class="flex gap-16 animate-marquee w-max"></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="section-padding px-6">
+  <div class="max-w-7xl mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-8" id="stats">
+    <div class="reveal text-center"><div class="text-4xl md:text-5xl font-bold text-gradient"><span class="counter" data-to="48000" data-suffix="+">0</span></div><div class="text-sm text-muted-foreground mt-2">Active traders</div></div>
+    <div class="reveal text-center"><div class="text-4xl md:text-5xl font-bold text-gradient"><span class="counter" data-to="2.4" data-prefix="$" data-suffix="B+" data-decimals="1">0</span></div><div class="text-sm text-muted-foreground mt-2">Volume traded</div></div>
+    <div class="reveal text-center"><div class="text-4xl md:text-5xl font-bold text-gradient"><span class="counter" data-to="99.98" data-suffix="%" data-decimals="2">0</span></div><div class="text-sm text-muted-foreground mt-2">Uptime</div></div>
+    <div class="reveal text-center"><div class="text-4xl md:text-5xl font-bold text-gradient"><span class="counter" data-to="24" data-suffix="/7">0</span></div><div class="text-sm text-muted-foreground mt-2">Market coverage</div></div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" class="section-padding px-6 bg-surface/30">
+  <div class="max-w-7xl mx-auto">
+    <div class="reveal text-center max-w-2xl mx-auto mb-16">
+      <div class="text-sm text-primary font-medium mb-3">Features</div>
+      <h2 class="text-4xl md:text-5xl font-bold mb-4">Everything you need to trade automatically</h2>
+      <p class="text-muted-foreground">Battle-tested infrastructure built for serious traders.</p>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="featuresGrid"></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works" class="section-padding px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="reveal text-center max-w-2xl mx-auto mb-16">
+      <div class="text-sm text-primary font-medium mb-3">How it works</div>
+      <h2 class="text-4xl md:text-5xl font-bold mb-4">Live in three steps</h2>
+      <p class="text-muted-foreground">From signup to first trade in under 10 minutes.</p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6" id="stepsGrid"></div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section-padding px-6 bg-surface/30">
+  <div class="max-w-7xl mx-auto">
+    <h2 class="reveal text-4xl md:text-5xl font-bold text-center mb-16">Loved by traders worldwide</h2>
+    <div class="grid md:grid-cols-3 gap-6" id="testimonialsGrid"></div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="section-padding px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="reveal text-center max-w-2xl mx-auto mb-12">
+      <div class="text-sm text-primary font-medium mb-3">Pricing</div>
+      <h2 class="text-4xl md:text-5xl font-bold mb-4">Simple, transparent plans</h2>
+      <p class="text-muted-foreground mb-8">Start free for 7 days. No card required.</p>
+      <div class="inline-flex items-center gap-2 p-1 rounded-full border border-border bg-surface">
+        <button id="billMonthly" class="px-4 py-2 rounded-full text-sm transition text-muted-foreground">Monthly</button>
+        <button id="billYearly" class="px-4 py-2 rounded-full text-sm transition bg-primary text-primary-foreground">Yearly <span class="text-xs opacity-80">−17%</span></button>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6" id="pricingGrid"></div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="section-padding px-6 bg-surface/30">
+  <div class="max-w-3xl mx-auto">
+    <h2 class="reveal text-4xl md:text-5xl font-bold text-center mb-16">Frequently asked questions</h2>
+    <div class="space-y-3" id="faqList"></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section-padding px-6">
+  <div class="max-w-5xl mx-auto text-center p-12 md:p-16 rounded-3xl border border-border relative overflow-hidden bg-gradient-hero">
+    <div class="reveal">
+      <svg class="icon text-primary mx-auto mb-6" style="font-size:48px"><use href="#i-wallet"/></svg>
+      <h2 class="text-4xl md:text-5xl font-bold mb-4">Ready to put your trading on autopilot?</h2>
+      <p class="text-muted-foreground mb-8 max-w-xl mx-auto">Join 48,000+ traders running NovaTrade. Set up in minutes. Cancel anytime.</p>
+      <a href="#pricing" class="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-lg font-semibold hover:opacity-90 transition glow-border">
+        Start your free trial <svg class="icon" style="font-size:16px"><use href="#i-arrow-right"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="border-t border-border px-6 py-12">
+  <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-8 text-sm">
+    <div>
+      <div class="flex items-center gap-2 font-bold text-lg mb-3">
+        <span class="w-7 h-7 rounded-lg bg-primary flex items-center justify-center"><svg class="icon text-primary-foreground" style="font-size:16px"><use href="#i-activity"/></svg></span>
+        NovaTrade
+      </div>
+      <p class="text-muted-foreground">Automated AI trading for the modern crypto investor.</p>
+    </div>
+    <div><div class="font-semibold mb-3">Product</div><ul class="space-y-2 text-muted-foreground"><li><a href="#" class="hover:text-foreground">Features</a></li><li><a href="#" class="hover:text-foreground">Pricing</a></li><li><a href="#" class="hover:text-foreground">Exchanges</a></li><li><a href="#" class="hover:text-foreground">Changelog</a></li></ul></div>
+    <div><div class="font-semibold mb-3">Company</div><ul class="space-y-2 text-muted-foreground"><li><a href="#" class="hover:text-foreground">About</a></li><li><a href="#" class="hover:text-foreground">Blog</a></li><li><a href="#" class="hover:text-foreground">Careers</a></li><li><a href="#" class="hover:text-foreground">Contact</a></li></ul></div>
+    <div><div class="font-semibold mb-3">Legal</div><ul class="space-y-2 text-muted-foreground"><li><a href="#" class="hover:text-foreground">Terms</a></li><li><a href="#" class="hover:text-foreground">Privacy</a></li><li><a href="#" class="hover:text-foreground">Risk Disclosure</a></li><li><a href="#" class="hover:text-foreground">Security</a></li></ul></div>
+  </div>
+  <div class="max-w-7xl mx-auto mt-10 pt-6 border-t border-border flex flex-col md:flex-row items-center justify-between text-xs text-muted-foreground gap-4">
+    <p>© 2026 NovaTrade. Trading involves risk. Past performance is not indicative of future results.</p>
+    <p>Made for traders worldwide</p>
+  </div>
+</footer>
+
+<script>
+// ---- Data ----
+const exchanges = ["Binance","Bybit","OKX","Kraken","Coinbase","KuCoin","Bitget","MEXC"];
+const features = [
+  { icon: 'i-bot', title: 'AI-Driven Strategies', desc: 'Neural models analyze market microstructure across hundreds of pairs in real time.' },
+  { icon: 'i-zap', title: 'Sub-Second Execution', desc: 'Co-located infrastructure executes orders in milliseconds across major exchanges.' },
+  { icon: 'i-shield', title: 'Risk Management', desc: 'Built-in stop-loss, position sizing, and drawdown controls keep capital protected.' },
+  { icon: 'i-line-chart', title: 'Backtested Edge', desc: 'Every strategy is validated on 5+ years of historical data before going live.' },
+  { icon: 'i-cpu', title: 'Multi-Exchange', desc: 'Connect Binance, Bybit, OKX, Kraken, and more with a single dashboard.' },
+  { icon: 'i-globe', title: '24/7 Operation', desc: 'Markets never sleep. Neither does NovaTrade. Trades while you live your life.' },
+];
+const steps = [
+  { n: '01', title: 'Connect Exchange', desc: 'Link your exchange account via secure read/trade API keys. Funds stay with you.' },
+  { n: '02', title: 'Pick a Strategy', desc: 'Choose from grid, DCA, momentum, or arbitrage strategies tuned for your risk profile.' },
+  { n: '03', title: 'Activate & Monitor', desc: 'Start the bot. Track performance, PnL, and trades from a live dashboard.' },
+];
+const testimonials = [
+  { name: 'Marcus T.', role: 'Day Trader', quote: 'Cut my screen time by 80%. The bot handles entries better than I did manually.' },
+  { name: 'Priya R.', role: 'Long-term Investor', quote: 'Set up the DCA strategy in 10 minutes. Quietly building my position every week.' },
+  { name: 'Jonas K.', role: 'Quant Hobbyist', quote: 'The backtesting suite alone is worth it. I\u2019ve shipped three custom strategies.' },
+];
+const plans = [
+  { name: 'Starter', monthly: 29, yearly: 290, features: ['1 exchange','2 active strategies','Basic indicators','Email support'] },
+  { name: 'Pro', monthly: 79, yearly: 790, features: ['5 exchanges','Unlimited strategies','Advanced indicators','Priority support','Backtesting suite'], popular: true },
+  { name: 'Elite', monthly: 199, yearly: 1990, features: ['All exchanges','Custom strategies','API access','Dedicated manager','White-glove setup'] },
+];
+const faqs = [
+  { q: 'Is my money safe?', a: 'Yes. NovaTrade never holds your funds. We connect to your exchange via API keys with trade permissions only — no withdrawal access.' },
+  { q: 'Do I need trading experience?', a: 'No. Our pre-built strategies are designed for beginners. Advanced users can customize every parameter.' },
+  { q: 'What returns can I expect?', a: 'Returns vary with market conditions and strategy. Historical backtests are available, but past performance doesn\u2019t guarantee future results.' },
+  { q: 'Which exchanges are supported?', a: 'Binance, Bybit, OKX, Kraken, Coinbase, KuCoin, Bitget, and more. New integrations are added monthly.' },
+  { q: 'Can I cancel anytime?', a: 'Yes. Cancel from your dashboard at any time. No long-term contracts, no hidden fees.' },
+];
+
+// ---- Render ----
+const icon = (id, size=24, cls='') => `<svg class="icon ${cls}" style="font-size:${size}px"><use href="#${id}"/></svg>`;
+
+document.getElementById('marquee').innerHTML = [...exchanges,...exchanges]
+  .map(x => `<span class="text-2xl font-bold text-muted-foreground/60 whitespace-nowrap">${x}</span>`).join('');
+
+document.getElementById('featuresGrid').innerHTML = features.map(f => `
+  <div class="reveal tilt h-full">
+    <div class="group p-6 rounded-2xl border border-border bg-card hover:border-primary/50 transition h-full">
+      <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition">
+        ${icon(f.icon, 24, 'text-primary')}
+      </div>
+      <h3 class="font-semibold text-lg mb-2">${f.title}</h3>
+      <p class="text-sm text-muted-foreground">${f.desc}</p>
+    </div>
+  </div>`).join('');
+
+document.getElementById('stepsGrid').innerHTML = steps.map(s => `
+  <div class="reveal tilt h-full">
+    <div class="relative p-8 rounded-2xl border border-border bg-card hover:border-primary/50 transition h-full">
+      <div class="text-5xl font-bold text-primary/30 mb-4">${s.n}</div>
+      <h3 class="text-xl font-semibold mb-2">${s.title}</h3>
+      <p class="text-muted-foreground text-sm">${s.desc}</p>
+    </div>
+  </div>`).join('');
+
+document.getElementById('testimonialsGrid').innerHTML = testimonials.map(t => `
+  <div class="reveal tilt h-full">
+    <div class="p-6 rounded-2xl border border-border bg-card hover:border-primary/50 transition h-full">
+      <p class="text-foreground mb-6">"${t.quote}"</p>
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary">${t.name[0]}</div>
+        <div><div class="font-medium text-sm">${t.name}</div><div class="text-xs text-muted-foreground">${t.role}</div></div>
+      </div>
+    </div>
+  </div>`).join('');
+
+let yearly = true;
+function renderPricing() {
+  document.getElementById('pricingGrid').innerHTML = plans.map(p => {
+    const price = yearly ? Math.round(p.yearly/12) : p.monthly;
+    return `
+    <div class="reveal shown tilt h-full">
+      <div class="relative p-8 rounded-2xl border h-full transition-colors duration-300 hover:border-primary ${p.popular ? 'border-primary bg-card glow-border' : 'border-border bg-card'}">
+        ${p.popular ? '<div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-semibold px-3 py-1 rounded-full">Most Popular</div>' : ''}
+        <h3 class="text-xl font-semibold mb-2">${p.name}</h3>
+        <div class="mb-6">
+          <span class="text-5xl font-bold">$${price}</span>
+          <span class="text-muted-foreground">/mo</span>
+          ${yearly ? `<div class="text-xs text-muted-foreground mt-1">Billed $${p.yearly}/year</div>` : ''}
+        </div>
+        <ul class="space-y-3 mb-8">
+          ${p.features.map(f => `<li class="flex items-start gap-2 text-sm">${icon('i-check',16,'text-primary mt-0.5 flex-shrink-0')}<span>${f}</span></li>`).join('')}
+        </ul>
+        <a href="#" class="block text-center px-4 py-3 rounded-lg font-semibold transition ${p.popular ? 'bg-primary text-primary-foreground hover:opacity-90' : 'border border-border bg-surface hover:bg-surface-elevated'}">Start free trial</a>
+      </div>
+    </div>`;
+  }).join('');
+  bindTilts();
+}
+renderPricing();
+
+document.getElementById('billMonthly').addEventListener('click', e => {
+  yearly = false;
+  e.target.classList.add('bg-primary','text-primary-foreground');
+  e.target.classList.remove('text-muted-foreground');
+  const y = document.getElementById('billYearly');
+  y.classList.remove('bg-primary','text-primary-foreground');
+  y.classList.add('text-muted-foreground');
+  renderPricing();
+});
+document.getElementById('billYearly').addEventListener('click', e => {
+  yearly = true;
+  e.target.classList.add('bg-primary','text-primary-foreground');
+  e.target.classList.remove('text-muted-foreground');
+  const m = document.getElementById('billMonthly');
+  m.classList.remove('bg-primary','text-primary-foreground');
+  m.classList.add('text-muted-foreground');
+  renderPricing();
+});
+
+let openFaq = 0;
+function renderFaq() {
+  document.getElementById('faqList').innerHTML = faqs.map((f, i) => `
+    <div class="reveal shown border border-border rounded-xl bg-card overflow-hidden">
+      <button data-faq="${i}" class="w-full flex items-center justify-between p-5 text-left hover:bg-surface-elevated transition">
+        <span class="font-medium">${f.q}</span>
+        ${icon('i-chevron-down',20,`text-muted-foreground transition-transform ${openFaq===i?'rotate-180':''}`)}
+      </button>
+      <div class="faq-body ${openFaq===i?'open':''}"><p class="px-5 pb-5 text-muted-foreground text-sm">${f.a}</p></div>
+    </div>`).join('');
+  document.querySelectorAll('[data-faq]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const i = +btn.dataset.faq;
+      openFaq = openFaq === i ? -1 : i;
+      renderFaq();
+    });
+  });
+}
+renderFaq();
+
+// ---- Nav ----
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 20) nav.classList.add('bg-background/80','backdrop-blur-lg','border-b','border-border');
+  else nav.classList.remove('bg-background/80','backdrop-blur-lg','border-b','border-border');
+});
+document.getElementById('navToggle').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.toggle('hidden');
+});
+
+// ---- Reveal on scroll ----
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('shown'); io.unobserve(e.target); } });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// ---- Counters ----
+const cio = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target;
+    cio.unobserve(el);
+    const to = parseFloat(el.dataset.to);
+    const decimals = parseInt(el.dataset.decimals || '0');
+    const prefix = el.dataset.prefix || '';
+    const suffix = el.dataset.suffix || '';
+    const start = performance.now(), duration = 1800;
+    const tick = t => {
+      const p = Math.min((t-start)/duration, 1);
+      const eased = 1 - Math.pow(1-p, 3);
+      el.textContent = prefix + (to*eased).toFixed(decimals) + suffix;
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.counter').forEach(el => cio.observe(el));
+
+// ---- Tilt ----
+function bindTilts() {
+  document.querySelectorAll('.tilt').forEach(el => {
+    if (el.dataset.tilt) return;
+    el.dataset.tilt = '1';
+    let raf = null, cur = {rx:0,ry:0,tz:0}, tgt = {rx:0,ry:0,tz:0};
+    const animate = () => {
+      cur.rx += (tgt.rx-cur.rx)*0.08;
+      cur.ry += (tgt.ry-cur.ry)*0.08;
+      cur.tz += (tgt.tz-cur.tz)*0.08;
+      el.style.transform = `perspective(900px) rotateX(${cur.rx}deg) rotateY(${cur.ry}deg) translateZ(${cur.tz}px)`;
+      if (Math.abs(tgt.rx-cur.rx)+Math.abs(tgt.ry-cur.ry)+Math.abs(tgt.tz-cur.tz) > 0.01) raf = requestAnimationFrame(animate);
+      else raf = null;
+    };
+    const kick = () => { if (raf === null) raf = requestAnimationFrame(animate); };
+    el.addEventListener('mousemove', e => {
+      const r = el.getBoundingClientRect();
+      const px = (e.clientX-r.left)/r.width - 0.5;
+      const py = (e.clientY-r.top)/r.height - 0.5;
+      tgt.ry = px*8; tgt.rx = -py*8; tgt.tz = 6;
+      kick();
+    });
+    el.addEventListener('mouseleave', () => { tgt = {rx:0,ry:0,tz:0}; kick(); });
+  });
+}
+bindTilts();
+</script>
+</body>
+</html>
