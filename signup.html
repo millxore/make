@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Create Account — Nexas Finance</title>
+<meta name="description" content="Create your Nexas Finance account." />
+<style>
+  :root {
+    --bg: #050608;
+    --panel: #0b0d12;
+    --border: rgba(255,255,255,0.08);
+    --text: #ffffff;
+    --muted: #8b92a3;
+    --amber: #f5a623;
+    --gradient-amber: linear-gradient(90deg, #ffb938 0%, #f5a623 50%, #ff8a00 100%);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; min-height: 100vh; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg); color: var(--text);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  .shell { display: grid; grid-template-columns: 1fr; min-height: 100vh; }
+  @media (min-width: 1024px) { .shell { grid-template-columns: 1fr 1fr; } }
+
+  /* LEFT: form */
+  .form-wrap {
+    background: #0a0b0f;
+    display: flex; align-items: center; justify-content: center;
+    padding: 4rem 2rem;
+  }
+  .card { width: 100%; max-width: 30rem; }
+
+  .stepper { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 2.5rem; }
+  .step {
+    width: 36px; height: 36px; border-radius: 9999px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.9rem;
+    background: #11141a; color: var(--muted);
+    border: 2px solid #1a1e26;
+  }
+  .step.active {
+    background: transparent; color: var(--amber);
+    border-color: var(--amber);
+    box-shadow: 0 0 0 4px rgba(245,166,35,0.1);
+  }
+  .step-line { flex: 1; max-width: 8rem; height: 2px; background: #1a1e26; }
+
+  .card h2 { font-size: 1.875rem; font-weight: 700; margin: 0 0 0.5rem; }
+  .card .sub { color: var(--muted); margin: 0 0 2rem; font-size: 0.95rem; }
+
+  form { display: flex; flex-direction: column; gap: 1.25rem; }
+  .lbl {
+    display: block; font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: #c6cad6; margin-bottom: 0.5rem;
+  }
+  .input, select.input {
+    width: 100%; height: 3rem; padding: 0 1rem;
+    border-radius: 0.625rem; border: 1px solid var(--border);
+    background: #0e1117; color: var(--text);
+    font-size: 0.95rem; outline: none;
+    font-family: inherit;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .input::placeholder { color: #4a5060; }
+  .input:focus, select.input:focus {
+    border-color: var(--amber);
+    box-shadow: 0 0 0 3px rgba(245,166,35,0.15);
+  }
+  select.input {
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'><path d='M1 1l5 5 5-5' stroke='%238b92a3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat: no-repeat; background-position: right 1rem center;
+    padding-right: 2.5rem;
+  }
+
+  .email-row { display: flex; gap: 0.5rem; }
+  .email-row .input { flex: 1; }
+  .btn-send {
+    height: 3rem; padding: 0 1.1rem;
+    border-radius: 0.625rem;
+    border: 1px solid rgba(245,166,35,0.5);
+    background: rgba(245,166,35,0.08);
+    color: var(--amber); font-weight: 600; font-size: 0.875rem;
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    white-space: nowrap;
+    transition: background .2s, border-color .2s;
+  }
+  .btn-send:hover { background: rgba(245,166,35,0.15); border-color: var(--amber); }
+
+  .phone-row { display: flex; gap: 0.5rem; }
+  .phone-row .code {
+    width: 4.5rem; text-align: center; padding: 0;
+    background: #0e1117;
+  }
+  .phone-row .number { flex: 1; }
+
+  .currency-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+  .currency {
+    height: 5rem; border-radius: 0.625rem;
+    border: 1px solid var(--border);
+    background: #0e1117; color: var(--text);
+    cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 0.35rem; font-size: 0.85rem; font-weight: 600;
+    transition: border-color .2s, background .2s;
+    font-family: inherit;
+  }
+  .currency .flag { font-size: 1.3rem; line-height: 1; }
+  .currency:hover { border-color: rgba(245,166,35,0.4); }
+  .currency.selected {
+    border-color: var(--amber);
+    background: rgba(245,166,35,0.08);
+  }
+  .currency-hint { font-size: 0.8rem; color: var(--muted); margin-top: 0.4rem; }
+
+  .submit {
+    margin-top: 0.5rem;
+    height: 3.25rem; width: 100%;
+    border: none; border-radius: 0.625rem;
+    background: var(--gradient-amber); color: #0a0a0a;
+    font-weight: 700; font-size: 1rem; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    box-shadow: 0 10px 30px -10px rgba(245,166,35,0.6);
+    transition: transform .15s, box-shadow .15s;
+  }
+  .submit:hover { transform: translateY(-1px); box-shadow: 0 14px 36px -10px rgba(245,166,35,0.75); }
+
+  .footer-line {
+    margin-top: 1.5rem; text-align: center;
+    color: var(--muted); font-size: 0.9rem;
+  }
+  .footer-line a { color: var(--amber); font-weight: 600; }
+  .footer-line a:hover { text-decoration: underline; }
+
+  /* RIGHT: hero */
+  .hero {
+    position: relative; overflow: hidden;
+    background: radial-gradient(80% 60% at 70% 50%, rgba(245,166,35,0.15), transparent 60%), #07080b;
+    display: flex; align-items: center; justify-content: center;
+    padding: 4rem 2rem;
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 28rem; text-align: center; }
+  .logo-tile {
+    width: 64px; height: 64px; margin: 0 auto 2rem;
+    border-radius: 14px; background: var(--gradient-amber);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 32px; color: #0a0a0a;
+    box-shadow: 0 10px 40px -10px rgba(245,166,35,0.6);
+  }
+  .hero h1 {
+    font-size: 3rem; line-height: 1.05;
+    font-weight: 800; letter-spacing: -0.02em;
+    margin: 0 0 1.25rem;
+  }
+  .hero h1 .amber {
+    display: block;
+    background: var(--gradient-amber);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+  }
+  .hero p { color: var(--muted); font-size: 1rem; line-height: 1.6; margin: 0 0 2.5rem; }
+
+  .features { display: flex; flex-direction: column; gap: 1rem; text-align: left; }
+  .feat {
+    display: flex; align-items: center; gap: 0.75rem;
+    color: #cfd3de; font-size: 0.95rem;
+  }
+  .feat svg { color: var(--amber); flex-shrink: 0; }
+
+  @media (max-width: 1023px) {
+    .hero { order: -1; padding: 3rem 1.5rem; }
+    .hero h1 { font-size: 2.25rem; }
+  }
+</style>
+</head>
+<body>
+  <div class="shell">
+    <!-- LEFT: form -->
+    <section class="form-wrap">
+      <div class="card">
+        <div class="stepper">
+          <div class="step active">1</div>
+          <div class="step-line"></div>
+          <div class="step">2</div>
+        </div>
+
+        <h2>Create Account</h2>
+        <p class="sub">Fill in your details to get started.</p>
+
+        <form id="registerForm" novalidate>
+          <div>
+            <label class="lbl" for="fullname">Full Name</label>
+            <input id="fullname" class="input" type="text" placeholder="John Doe" required />
+          </div>
+
+          <div>
+            <label class="lbl" for="email">Email Address</label>
+            <div class="email-row">
+              <input id="email" class="input" type="email" placeholder="you@example.com" required />
+              <button type="button" class="btn-send" id="sendCode">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="m22 2-7 20-4-9-9-4z"/></svg>
+                Send Code
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label class="lbl" for="country">Country</label>
+            <select id="country" class="input" required>
+              <option value="">Select your country</option>
+              <option value="US" data-code="+1">United States</option>
+              <option value="GB" data-code="+44">United Kingdom</option>
+              <option value="CA" data-code="+1">Canada</option>
+              <option value="AU" data-code="+61">Australia</option>
+              <option value="DE" data-code="+49">Germany</option>
+              <option value="FR" data-code="+33">France</option>
+              <option value="ES" data-code="+34">Spain</option>
+              <option value="IT" data-code="+39">Italy</option>
+              <option value="NL" data-code="+31">Netherlands</option>
+              <option value="JP" data-code="+81">Japan</option>
+              <option value="SG" data-code="+65">Singapore</option>
+              <option value="AE" data-code="+971">United Arab Emirates</option>
+              <option value="IN" data-code="+91">India</option>
+              <option value="BR" data-code="+55">Brazil</option>
+              <option value="MX" data-code="+52">Mexico</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="lbl" for="phone">Phone Number</label>
+            <div class="phone-row">
+              <input id="phoneCode" class="input code" type="text" value="+?" readonly />
+              <input id="phone" class="input number" type="tel" placeholder="Select country first" disabled />
+            </div>
+          </div>
+
+          <div>
+            <label class="lbl">Choose Currency</label>
+            <div class="currency-grid" id="currencyGrid">
+              <button type="button" class="currency selected" data-currency="USD">
+                <span class="flag">🇺🇸</span><span>$ USD</span>
+              </button>
+              <button type="button" class="currency" data-currency="GBP">
+                <span class="flag">🇬🇧</span><span>£ GBP</span>
+              </button>
+              <button type="button" class="currency" data-currency="EUR">
+                <span class="flag">🇪🇺</span><span>€ EUR</span>
+              </button>
+            </div>
+            <p class="currency-hint">All balances and amounts will be shown in this currency.</p>
+          </div>
+
+          <button type="submit" class="submit">
+            Continue
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </button>
+        </form>
+
+        <p class="footer-line">Already have an account? <a href="#">Sign In</a></p>
+      </div>
+    </section>
+
+    <!-- RIGHT: hero -->
+    <section class="hero">
+      <div class="hero-content">
+        <div class="logo-tile">N</div>
+        <h1>JOIN THE<span class="amber">ELITE</span></h1>
+        <p>Start your evaluation today and prove you have what it takes to manage institutional capital.</p>
+
+        <div class="features">
+          <div class="feat">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            Email verification for security
+          </div>
+          <div class="feat">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Phone number for 2FA protection
+          </div>
+          <div class="feat">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+            KYC verification to unlock live trading
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+<script>
+  (function () {
+    var country = document.getElementById('country');
+    var phoneCode = document.getElementById('phoneCode');
+    var phone = document.getElementById('phone');
+    country.addEventListener('change', function () {
+      var opt = country.options[country.selectedIndex];
+      var code = opt.getAttribute('data-code');
+      if (code) {
+        phoneCode.value = code;
+        phone.disabled = false;
+        phone.placeholder = 'Phone number';
+      } else {
+        phoneCode.value = '+?';
+        phone.disabled = true;
+        phone.value = '';
+        phone.placeholder = 'Select country first';
+      }
+    });
+
+    var grid = document.getElementById('currencyGrid');
+    grid.addEventListener('click', function (e) {
+      var btn = e.target.closest('.currency');
+      if (!btn) return;
+      grid.querySelectorAll('.currency').forEach(function (b) { b.classList.remove('selected'); });
+      btn.classList.add('selected');
+    });
+
+    document.getElementById('sendCode').addEventListener('click', function () {
+      var email = document.getElementById('email').value.trim();
+      if (!email) { alert('Enter your email first'); return; }
+      this.textContent = 'Code Sent';
+      this.disabled = true;
+    });
+
+    document.getElementById('registerForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+    });
+  })();
+</script>
+</body>
+</html>
