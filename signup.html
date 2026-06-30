@@ -9,11 +9,11 @@
   :root {
     --bg: #050608;
     --panel: #0b0d12;
-    --border: rgba(255,255,255,0.08);
     --text: #ffffff;
     --muted: #8b92a3;
-    --amber: #f5a623;
-    --gradient-amber: linear-gradient(90deg, #ffb938 0%, #f5a623 50%, #ff8a00 100%);
+    --amber: oklch(0.85 0.22 145);
+    --border: 0 0 40px -10px var(--amber);
+    --gradient-amber: linear-gradient(135deg, var(--amber), oklch(0.92 0.20 145));
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; min-height: 100vh; }
@@ -152,7 +152,7 @@
     border-radius: 14px; background: var(--gradient-amber);
     display: flex; align-items: center; justify-content: center;
     font-weight: 800; font-size: 32px; color: #0a0a0a;
-    box-shadow: 0 10px 40px -10px rgba(245,166,35,0.6);
+    box-shadow: 0 10px 40px -10px var(--amber)
   }
   .hero h1 {
     font-size: 3rem; line-height: 1.05;
