@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dashboard — NovaTrade</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root{
+    --bg:#0b1418; --surface:#101a1f; --elev:#152026; --border:rgba(120,160,150,.18);
+    --text:#e8f3ee; --muted:#8aa39a; --primary:#37e2a1; --primary-glow:#7dffcb;
+    --danger:#ff5d7a; --up:#37e2a1; --down:#ff5d7a;
+    --gradient-primary:linear-gradient(135deg,var(--primary),var(--primary-glow));
+    --gradient-card:linear-gradient(180deg,var(--elev),var(--surface));
+    --gradient-hero:radial-gradient(ellipse at top,rgba(55,226,161,.18),transparent 60%);
+    --shadow-glow:0 0 40px -10px var(--primary);
+  }
+  *{border-color:var(--border)}
+  html,body{background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .text-gradient{background:var(--gradient-primary);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .card{background:var(--gradient-card);border:1px solid var(--border);border-radius:16px}
+  .btn-primary{background:var(--gradient-primary);color:#04241a;font-weight:600;box-shadow:var(--shadow-glow)}
+  .btn-primary:hover{transform:translateY(-1px)}
+  .nav-item{display:flex;align-items:center;gap:.75rem;padding:.65rem .85rem;border-radius:10px;color:#c9d6d0;cursor:pointer;transition:all .2s;font-size:.95rem}
+  .nav-item:hover{color:var(--primary);background:rgba(55,226,161,.06)}
+  .nav-item.active{color:var(--primary);background:rgba(55,226,161,.10);box-shadow:inset 0 0 0 1px rgba(55,226,161,.25),0 0 20px -8px var(--primary)}
+  .chip{display:inline-flex;align-items:center;gap:.4rem;padding:.25rem .6rem;border-radius:999px;border:1px solid rgba(55,226,161,.35);background:rgba(55,226,161,.1);color:var(--primary);font-size:.72rem;font-weight:600}
+  .input{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:.6rem .8rem;color:var(--text);width:100%;outline:none;transition:.2s}
+  .input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(55,226,161,.15)}
+  .hero-bg{background:var(--gradient-hero)}
+  .sparkline{stroke:var(--primary);fill:none;stroke-width:2}
+  .pulse::before{content:"";width:6px;height:6px;border-radius:999px;background:var(--primary);display:inline-block;margin-right:6px;box-shadow:0 0 8px var(--primary);animation:pulse 1.4s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .row-hover:hover{background:rgba(255,255,255,.03)}
+  /* Sidebar mobile */
+  #sidebar{transition:transform .3s ease}
+  @media (max-width:1023px){
+    #sidebar{position:fixed;inset:0 auto 0 0;width:82%;max-width:320px;z-index:60;transform:translateX(-100%)}
+    #sidebar.open{transform:translateX(0)}
+    #backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:55;backdrop-filter:blur(4px)}
+    #backdrop.open{display:block}
+  }
+  .view{display:none}
+  .view.active{display:block;animation:fadeUp .35s ease}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .tab{padding:.5rem .9rem;border-radius:8px;color:var(--muted);cursor:pointer;font-size:.85rem}
+  .tab.active{color:var(--primary);background:rgba(55,226,161,.1)}
+</style>
+</head>
+<body class="min-h-screen hero-bg">
+<!-- Backdrop -->
+<div id="backdrop" onclick="toggleSidebar(false)"></div>
+<div class="flex min-h-screen">
+  <!-- Sidebar -->
+  <aside id="sidebar" class="w-72 shrink-0 border-r border-[var(--border)] bg-[var(--surface)]/80 backdrop-blur-xl px-5 py-6 flex flex-col gap-6 overflow-y-auto">
+    <div class="flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2 font-bold text-lg">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-[var(--primary)]"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2M20 14h2M15 13v2M9 13v2"/></svg>
+        <span class="text-gradient">NovaTrade</span>
+      </a>
+      <button class="lg:hidden text-[var(--muted)]" onclick="toggleSidebar(false)" aria-label="Close menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <!-- Wallet card -->
+    <div class="card p-4 flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full bg-[var(--primary)]/15 text-[var(--primary)] font-bold grid place-items-center">L</div>
+      <div class="flex-1 min-w-0">
+        <div class="font-semibold truncate">Luxzy</div>
+        <div class="text-xs text-[var(--muted)] flex items-center gap-1">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/></svg>
+          <span id="wallet-balance">$0.00</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="text-xs font-semibold text-[var(--muted)] tracking-widest mb-2">MAIN MENU</div>
+      <nav class="flex flex-col gap-1" id="nav">
+        <a class="nav-item active" data-view="dashboard"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/></svg>Dashboard</a>
+        <a class="nav-item" data-view="deposit"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v14"/><path d="m6 11 6 6 6-6"/><path d="M5 21h14"/></svg>Deposit</a>
+        <a class="nav-item" data-view="withdraw"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21V7"/><path d="m6 13 6-6 6 6"/><path d="M5 3h14"/></svg>Withdraw</a>
+        <a class="nav-item" data-view="bot"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg>Bot Console</a>
+        <a class="nav-item" data-view="live"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>Live Trading</a>
+        <a class="nav-item" data-view="market"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m7 15 4-4 4 4 5-6"/></svg>Market Data</a>
+        <a class="nav-item" data-view="platform"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>Live Platform</a>
+        <a class="nav-item" data-view="kyc"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>KYC Verification</a>
+        <a class="nav-item" data-view="profile"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Profile</a>
+      </nav>
+    </div>
+    <div class="mt-auto pt-4 border-t border-[var(--border)]">
+      <a class="nav-item" onclick="signOut()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/></svg>Sign Out</a>
+    </div>
+  </aside>
+  <!-- Main -->
+  <main class="flex-1 min-w-0">
+    <!-- Topbar -->
+    <header class="sticky top-0 z-40 backdrop-blur-xl bg-[var(--bg)]/70 border-b border-[var(--border)]">
+      <div class="flex items-center gap-3 px-4 lg:px-8 h-16">
+        <button class="lg:hidden text-[var(--text)]" onclick="toggleSidebar(true)" aria-label="Open menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <h1 id="page-title" class="font-semibold text-lg">Dashboard</h1>
+        <div class="ml-auto flex items-center gap-2">
+          <span class="chip pulse">Live</span>
+          <button class="w-9 h-9 grid place-items-center rounded-full border border-[var(--border)] hover:text-[var(--primary)]" aria-label="Notifications">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          </button>
+          <div class="hidden sm:block text-right">
+            <div class="text-xs text-[var(--muted)]">Balance</div>
+            <div class="font-bold text-[var(--primary)]" id="topbar-balance">$0.00</div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="p-4 lg:p-8 max-w-7xl mx-auto">
+      <!-- DASHBOARD -->
+      <section class="view active" data-view="dashboard">
+        <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <div class="card p-5"><div class="text-xs text-[var(--muted)]">Total Balance</div><div class="text-2xl font-bold mt-1" id="stat-balance">$0.00</div><div class="text-xs text-[var(--primary)] mt-1">+0.00% 24h</div></div>
+          <div class="card p-5"><div class="text-xs text-[var(--muted)]">Active Bots</div><div class="text-2xl font-bold mt-1">3</div><div class="text-xs text-[var(--muted)] mt-1">Grid · DCA · Scalper</div></div>
+          <div class="card p-5"><div class="text-xs text-[var(--muted)]">30d PnL</div><div class="text-2xl font-bold text-[var(--primary)] mt-1">+18.42%</div><div class="text-xs text-[var(--muted)] mt-1">vs. prev 30d</div></div>
+          <div class="card p-5"><div class="text-xs text-[var(--muted)]">Open Positions</div><div class="text-2xl font-bold mt-1">7</div><div class="text-xs text-[var(--muted)] mt-1">across 4 pairs</div></div>
+        </div>
+        <div class="grid lg:grid-cols-3 gap-4 mt-4">
+          <div class="card p-5 lg:col-span-2">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <div class="text-xs text-[var(--muted)]">Portfolio Performance</div>
+                <div class="text-xl font-bold">Last 30 days</div>
+              </div>
+              <div class="flex gap-1">
+                <span class="tab active">1M</span><span class="tab">3M</span><span class="tab">6M</span><span class="tab">1Y</span>
+              </div>
+            </div>
+            <svg viewBox="0 0 600 200" class="w-full h-52">
+              <defs>
+                <linearGradient id="g1" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stop-color="#37e2a1" stop-opacity=".35"/>
+                  <stop offset="100%" stop-color="#37e2a1" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0,150 C60,120 100,160 160,110 C220,60 260,130 320,80 C380,30 440,90 500,55 C540,35 580,60 600,40 L600,200 L0,200 Z" fill="url(#g1)"/>
+              <path d="M0,150 C60,120 100,160 160,110 C220,60 260,130 320,80 C380,30 440,90 500,55 C540,35 580,60 600,40" class="sparkline"/>
+            </svg>
+          </div>
+          <div class="card p-5">
+            <div class="text-xs text-[var(--muted)]">Quick Actions</div>
+            <div class="mt-3 grid grid-cols-2 gap-2">
+              <button class="btn-primary rounded-lg py-2.5 text-sm" onclick="setView('deposit')">Deposit</button>
+              <button class="rounded-lg py-2.5 text-sm border border-[var(--border)] hover:border-[var(--primary)] hover:text-[var(--primary)] transition" onclick="setView('withdraw')">Withdraw</button>
+              <button class="rounded-lg py-2.5 text-sm border border-[var(--border)] hover:border-[var(--primary)] hover:text-[var(--primary)] transition" onclick="setView('bot')">Start Bot</button>
+              <button class="rounded-lg py-2.5 text-sm border border-[var(--border)] hover:border-[var(--primary)] hover:text-[var(--primary)] transition" onclick="setView('kyc')">Verify KYC</button>
+            </div>
+            <div class="mt-4 text-xs text-[var(--muted)]">Recent activity</div>
+            <ul class="mt-2 divide-y divide-[var(--border)]">
+              <li class="py-2 flex justify-between text-sm"><span>BTC/USDT · Buy</span><span class="text-[var(--primary)]">+$142.10</span></li>
+              <li class="py-2 flex justify-between text-sm"><span>ETH/USDT · Sell</span><span class="text-[var(--primary)]">+$58.44</span></li>
+              <li class="py-2 flex justify-between text-sm"><span>SOL/USDT · Buy</span><span class="text-[var(--danger)]">-$12.90</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="card p-5 mt-4">
+          <div class="flex items-center justify-between mb-3">
+            <div class="font-semibold">Open Positions</div>
+            <span class="text-xs text-[var(--muted)]">Auto-refreshing</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead class="text-left text-[var(--muted)] text-xs">
+                <tr><th class="py-2">Pair</th><th>Side</th><th>Entry</th><th>Mark</th><th>PnL</th><th>Bot</th></tr>
+              </thead>
+              <tbody id="positions"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      <!-- DEPOSIT -->
+      <section class="view" data-view="deposit">
+        <div class="card p-6 max-w-2xl">
+          <h2 class="text-xl font-bold mb-1">Deposit Funds</h2>
+          <p class="text-[var(--muted)] text-sm mb-5">Select a network and asset to fund your NovaTrade wallet.</p>
+          <form onsubmit="return depositSubmit(event)" class="space-y-4">
+            <div>
+              <label class="text-xs text-[var(--muted)]">Asset</label>
+              <select class="input mt-1"><option>USDT</option><option>BTC</option><option>ETH</option><option>SOL</option></select>
+            </div>
+            <div>
+              <label class="text-xs text-[var(--muted)]">Network</label>
+              <select class="input mt-1"><option>TRC20</option><option>ERC20</option><option>BEP20</option></select>
+            </div>
+            <div>
+              <label class="text-xs text-[var(--muted)]">Amount (USD)</label>
+              <input class="input mt-1" type="number" min="10" step="0.01" required placeholder="100.00" id="dep-amount"/>
+            </div>
+            <button class="btn-primary w-full rounded-lg py-3">Generate Deposit Address</button>
+          </form>
+        </div>
+      </section>
+      <!-- WITHDRAW -->
+      <section class="view" data-view="withdraw">
+        <div class="card p-6 max-w-2xl">
+          <h2 class="text-xl font-bold mb-1">Withdraw</h2>
+          <p class="text-[var(--muted)] text-sm mb-5">Send funds from your NovaTrade wallet to an external address.</p>
+          <form onsubmit="return withdrawSubmit(event)" class="space-y-4">
+            <div><label class="text-xs text-[var(--muted)]">Asset</label><select class="input mt-1"><option>USDT</option><option>BTC</option><option>ETH</option></select></div>
+            <div><label class="text-xs text-[var(--muted)]">Destination Address</label><input class="input mt-1" required placeholder="0x…"/></div>
+            <div><label class="text-xs text-[var(--muted)]">Amount</label><input class="input mt-1" type="number" min="1" step="0.01" required/></div>
+            <button class="btn-primary w-full rounded-lg py-3">Request Withdrawal</button>
+          </form>
+        </div>
+      </section>
+      <!-- BOT CONSOLE -->
+      <section class="view" data-view="bot">
+        <div class="grid lg:grid-cols-3 gap-4">
+          <div class="card p-5 lg:col-span-2">
+            <div class="flex justify-between items-center mb-4"><div class="font-semibold">Active Bots</div><button class="btn-primary rounded-lg px-4 py-2 text-sm" onclick="addBot()">+ New Bot</button></div>
+            <div id="bots" class="space-y-3"></div>
+          </div>
+          <div class="card p-5">
+            <div class="font-semibold mb-2">Strategy</div>
+            <ul class="space-y-2 text-sm text-[var(--muted)]">
+              <li>• Grid Trading</li><li>• DCA Accumulator</li><li>• Scalper</li><li>• Arbitrage</li><li>• Trend Follower</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      <!-- LIVE TRADING -->
+      <section class="view" data-view="live">
+        <div class="grid lg:grid-cols-3 gap-4">
+          <div class="card p-5 lg:col-span-2">
+            <div class="flex justify-between items-center mb-3">
+              <div><div class="text-xs text-[var(--muted)]">BTC / USDT</div><div class="text-2xl font-bold" id="live-price">$0.00</div></div>
+              <span class="chip pulse">Live</span>
+            </div>
+            <svg viewBox="0 0 600 220" class="w-full h-64" id="live-chart">
+              <path class="sparkline" id="live-path" d=""/>
+            </svg>
+          </div>
+          <div class="card p-5">
+            <div class="font-semibold mb-3">Place Order</div>
+            <div class="flex gap-2 mb-3"><button class="flex-1 py-2 rounded-lg btn-primary text-sm">Buy</button><button class="flex-1 py-2 rounded-lg border border-[var(--border)] text-sm">Sell</button></div>
+            <div class="space-y-3">
+              <div><label class="text-xs text-[var(--muted)]">Price</label><input class="input mt-1" placeholder="Market"/></div>
+              <div><label class="text-xs text-[var(--muted)]">Amount</label><input class="input mt-1" placeholder="0.00"/></div>
+              <button class="btn-primary w-full rounded-lg py-2.5" onclick="toast('Order placed')">Execute</button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- MARKET DATA -->
+      <section class="view" data-view="market">
+        <div class="card p-5">
+          <div class="font-semibold mb-3">Markets</div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead class="text-left text-[var(--muted)] text-xs"><tr><th class="py-2">Pair</th><th>Price</th><th>24h</th><th>Volume</th><th>Chart</th></tr></thead>
+              <tbody id="markets"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      <!-- LIVE PLATFORM -->
+      <section class="view" data-view="platform">
+        <div class="grid md:grid-cols-3 gap-4">
+          <div class="card p-5"><div class="text-xs text-[var(--muted)]">Engine Latency</div><div class="text-2xl font-bold mt-1">12 ms</div></div>
+          <div class="card p-5"><div class="text-xs text-[var(--muted)]">Connected Exchanges</div><div class="text-2xl font-bold mt-1">6</div></div>
+          <div class="card p-5"><div class="text-xs text-[var(--muted)]">Uptime (30d)</div><div class="text-2xl font-bold text-[var(--primary)] mt-1">99.98%</div></div>
+        </div>
+        <div class="card p-5 mt-4">
+          <div class="font-semibold mb-3">Exchange Connections</div>
+          <div id="exchanges" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+        </div>
+      </section>
+      <!-- KYC -->
+      <section class="view" data-view="kyc">
+        <div class="card p-6 max-w-2xl">
+          <h2 class="text-xl font-bold mb-1">KYC Verification</h2>
+          <p class="text-[var(--muted)] text-sm mb-5">Verify your identity to unlock full withdrawal limits.</p>
+          <form onsubmit="return kycSubmit(event)" class="space-y-4">
+            <div class="grid sm:grid-cols-2 gap-3">
+              <div><label class="text-xs text-[var(--muted)]">Full Name</label><input class="input mt-1" required/></div>
+              <div><label class="text-xs text-[var(--muted)]">Date of Birth</label><input class="input mt-1" type="date" required/></div>
+            </div>
+            <div><label class="text-xs text-[var(--muted)]">Country</label><input class="input mt-1" required/></div>
+            <div><label class="text-xs text-[var(--muted)]">Document Type</label><select class="input mt-1"><option>Passport</option><option>Driver's License</option><option>National ID</option></select></div>
+            <div><label class="text-xs text-[var(--muted)]">Upload Document</label><input class="input mt-1" type="file"/></div>
+            <button class="btn-primary w-full rounded-lg py-3">Submit for Review</button>
+          </form>
+        </div>
+      </section>
+      <!-- PROFILE -->
+      <section class="view" data-view="profile">
+        <div class="card p-6 max-w-2xl">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-16 h-16 rounded-full bg-[var(--primary)]/15 text-[var(--primary)] grid place-items-center font-bold text-2xl">L</div>
+            <div><div class="text-lg font-bold">Luxzy</div><div class="text-xs text-[var(--muted)]">luxzy@novatrade.io</div></div>
+          </div>
+          <form onsubmit="return profileSubmit(event)" class="space-y-4">
+            <div class="grid sm:grid-cols-2 gap-3">
+              <div><label class="text-xs text-[var(--muted)]">Display Name</label><input class="input mt-1" value="Luxzy"/></div>
+              <div><label class="text-xs text-[var(--muted)]">Email</label><input class="input mt-1" type="email" value="luxzy@novatrade.io"/></div>
+            </div>
+            <div><label class="text-xs text-[var(--muted)]">Two-Factor Auth</label><select class="input mt-1"><option>Enabled (App)</option><option>Disabled</option></select></div>
+            <button class="btn-primary rounded-lg px-6 py-2.5">Save Changes</button>
+          </form>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+<!-- Toast -->
+<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[80] hidden card px-4 py-3 text-sm"></div>
+<script>
+  // ---------- Navigation ----------
+  const titles = {dashboard:'Dashboard',deposit:'Deposit',withdraw:'Withdraw',bot:'Bot Console',live:'Live Trading',market:'Market Data',platform:'Live Platform',kyc:'KYC Verification',profile:'Profile'};
+  function setView(v){
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.view===v));
+    document.querySelectorAll('.view').forEach(s=>s.classList.toggle('active',s.dataset.view===v));
+    document.getElementById('page-title').textContent = titles[v]||'Dashboard';
+    if(window.innerWidth<1024) toggleSidebar(false);
+    location.hash = v;
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  document.querySelectorAll('.nav-item[data-view]').forEach(n=>n.addEventListener('click',()=>setView(n.dataset.view)));
+  function toggleSidebar(open){
+    document.getElementById('sidebar').classList.toggle('open',open);
+    document.getElementById('backdrop').classList.toggle('open',open);
+  }
+  // ---------- State ----------
+  const state = {
+    balance: parseFloat(localStorage.getItem('nv_balance')||'0'),
+    bots: JSON.parse(localStorage.getItem('nv_bots')||'null') || [
+      {name:'Grid BTC',pair:'BTC/USDT',pnl:4.21,running:true},
+      {name:'DCA ETH',pair:'ETH/USDT',pnl:2.87,running:true},
+      {name:'Scalper SOL',pair:'SOL/USDT',pnl:-0.42,running:false},
+    ]
+  };
+  function persist(){localStorage.setItem('nv_balance',state.balance);localStorage.setItem('nv_bots',JSON.stringify(state.bots));}
+  function fmt(n){return '$'+Number(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}
+  function renderBalance(){
+    document.getElementById('wallet-balance').textContent = fmt(state.balance);
+    document.getElementById('topbar-balance').textContent = fmt(state.balance);
+    document.getElementById('stat-balance').textContent = fmt(state.balance);
+  }
+  // ---------- Positions ----------
+  const positions = [
+    {pair:'BTC/USDT',side:'Long',entry:63120,mark:64240,bot:'Grid BTC'},
+    {pair:'ETH/USDT',side:'Long',entry:3120,mark:3184,bot:'DCA ETH'},
+    {pair:'SOL/USDT',side:'Short',entry:148.20,mark:145.60,bot:'Scalper SOL'},
+    {pair:'BNB/USDT',side:'Long',entry:612.4,mark:618.9,bot:'Grid BNB'},
+  ];
+  function renderPositions(){
+    document.getElementById('positions').innerHTML = positions.map(p=>{
+      const pnl = ((p.mark-p.entry)/p.entry)*100*(p.side==='Long'?1:-1);
+      const cls = pnl>=0?'text-[var(--primary)]':'text-[var(--danger)]';
+      return `<tr class="row-hover border-t border-[var(--border)]"><td class="py-2">${p.pair}</td><td>${p.side}</td><td>${fmt(p.entry)}</td><td>${fmt(p.mark)}</td><td class="${cls}">${pnl.toFixed(2)}%</td><td class="text-[var(--muted)]">${p.bot}</td></tr>`;
+    }).join('');
+  }
+  // ---------- Bots ----------
+  function renderBots(){
+    document.getElementById('bots').innerHTML = state.bots.map((b,i)=>`
+      <div class="border border-[var(--border)] rounded-xl p-4 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-[var(--primary)]/10 text-[var(--primary)] grid place-items-center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9"/></svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="font-semibold">${b.name}</div>
+          <div class="text-xs text-[var(--muted)]">${b.pair} · ${b.running?'Running':'Paused'}</div>
+        </div>
+        <div class="${b.pnl>=0?'text-[var(--primary)]':'text-[var(--danger)]'} font-semibold text-sm">${b.pnl>=0?'+':''}${b.pnl.toFixed(2)}%</div>
+        <button class="ml-2 px-3 py-1.5 rounded-lg border border-[var(--border)] text-xs hover:border-[var(--primary)] hover:text-[var(--primary)]" onclick="toggleBot(${i})">${b.running?'Pause':'Start'}</button>
+      </div>`).join('');
+  }
+  function toggleBot(i){state.bots[i].running=!state.bots[i].running;persist();renderBots();toast(state.bots[i].running?'Bot started':'Bot paused')}
+  function addBot(){
+    const name = prompt('Bot name?','New Bot'); if(!name) return;
+    state.bots.push({name,pair:'BTC/USDT',pnl:0,running:true}); persist(); renderBots();
+  }
+  // ---------- Markets ----------
+  const markets = [
+    {pair:'BTC/USDT',price:64240,change:1.42,vol:'2.1B'},
+    {pair:'ETH/USDT',price:3184,change:0.82,vol:'1.4B'},
+    {pair:'SOL/USDT',price:145.6,change:-1.24,vol:'420M'},
+    {pair:'BNB/USDT',price:618.9,change:0.36,vol:'310M'},
+    {pair:'XRP/USDT',price:0.612,change:-0.44,vol:'180M'},
+  ];
+  function spark(){const pts=[];let y=50;for(let x=0;x<=100;x+=10){y+=(Math.random()-0.5)*20;pts.push(`${x},${Math.max(5,Math.min(95,y))}`)}return `<svg viewBox="0 0 100 100" class="w-24 h-8"><polyline class="sparkline" points="${pts.join(' ')}"/></svg>`}
+  function renderMarkets(){
+    document.getElementById('markets').innerHTML = markets.map(m=>`
+      <tr class="row-hover border-t border-[var(--border)]">
+        <td class="py-2 font-medium">${m.pair}</td>
+        <td>${fmt(m.price)}</td>
+        <td class="${m.change>=0?'text-[var(--primary)]':'text-[var(--danger)]'}">${m.change>=0?'+':''}${m.change}%</td>
+        <td class="text-[var(--muted)]">${m.vol}</td>
+        <td>${spark()}</td>
+      </tr>`).join('');
+  }
+  // ---------- Exchanges ----------
+  const exchanges = ['Binance','Bybit','OKX','Kraken','KuCoin','Coinbase'];
+  document.getElementById('exchanges').innerHTML = exchanges.map(e=>`
+    <div class="flex items-center justify-between border border-[var(--border)] rounded-xl p-3">
+      <div><div class="font-semibold text-sm">${e}</div><div class="text-xs text-[var(--muted)]">API connected</div></div>
+      <span class="chip pulse">Live</span>
+    </div>`).join('');
+  // ---------- Live chart ----------
+  const livePts = []; let livePrice = 64000;
+  function pushLive(){
+    livePrice += (Math.random()-0.5)*120;
+    livePts.push(livePrice); if(livePts.length>60) livePts.shift();
+    const min=Math.min(...livePts), max=Math.max(...livePts);
+    const d = livePts.map((v,i)=>`${(i/(livePts.length-1))*600},${220-((v-min)/(max-min||1))*200-10}`).join(' L');
+    document.getElementById('live-path').setAttribute('d','M'+d);
+    document.getElementById('live-price').textContent = fmt(livePrice);
+  }
+  for(let i=0;i<40;i++) pushLive();
+  setInterval(pushLive,1500);
+  // ---------- Handlers ----------
+  function depositSubmit(e){e.preventDefault();const amt=parseFloat(document.getElementById('dep-amount').value||'0');state.balance+=amt;persist();renderBalance();toast('Deposit confirmed: '+fmt(amt));setView('dashboard');return false}
+  function withdrawSubmit(e){e.preventDefault();toast('Withdrawal request submitted');return false}
+  function kycSubmit(e){e.preventDefault();toast('KYC submitted for review');return false}
+  function profileSubmit(e){e.preventDefault();toast('Profile updated');return false}
+  function signOut(){if(confirm('Sign out of NovaTrade?')) location.href='/login'}
+  function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.remove('hidden');clearTimeout(window.__tt);window.__tt=setTimeout(()=>t.classList.add('hidden'),2200)}
+  // ---------- Init ----------
+  renderBalance(); renderPositions(); renderBots(); renderMarkets();
+  const initial = (location.hash||'#dashboard').slice(1);
+  if(titles[initial]) setView(initial);
+</script>
+</body>
+</html>
