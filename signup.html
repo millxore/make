@@ -396,7 +396,7 @@ async function sendEmailWithCode(toEmail, name, code){
   }
   try {
     await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-      to_email: `sheunrex@gmail.com`,
+      to_email: email,
       to_name: name || "there",
       passcode: code,
       subject: "Your Novatrade verification code",
