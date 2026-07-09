@@ -1,337 +1,520 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Create Account — Novatrade</title>
 <meta name="description" content="Create your Nova Finance account." />
+
+<!-- Icons -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<!-- EmailJS (browser email delivery) -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
 <style>
-  :root {
-    --bg: #050608;
-    --panel: #0b0d12;
-    --text: #ffffff;
-    --muted: #8b92a3;
+  :root{
     --amber: oklch(0.85 0.22 145);
-    --border: 0 0 40px -10px var(--amber);
-    --gradient-amber: linear-gradient(135deg, var(--amber), oklch(0.92 0.20 145));
+    --amber-2: oklch(0.92 0.20 145);
+    --bg: #050608;
+    --panel: #0a0b0f;
+    --card: #0e1117;
+    --card-2:#0b0d12;
+    --border:#1a1e26;
+    --muted:#8b92a3;
+    --text:#ffffff;
   }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; min-height: 100vh; }
-  body {
-    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background: var(--bg); color: var(--text);
-    -webkit-font-smoothing: antialiased;
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    min-height:100vh;
   }
-  a { color: inherit; text-decoration: none; }
+  .grid{display:grid; grid-template-columns:1fr; min-height:100vh}
+  @media(min-width:1024px){ .grid{grid-template-columns:1fr 1fr} }
 
-  .shell { display: grid; grid-template-columns: 1fr; min-height: 100vh; }
-  @media (min-width: 1024px) { .shell { grid-template-columns: 1fr 1fr; } }
+  /* Left form panel */
+  .form-wrap{display:flex; align-items:center; justify-content:center; background:var(--panel); padding:4rem 2rem; min-width:0}
+  .form-inner{width:100%; max-width:32rem; min-width:0}
 
-  /* LEFT: form */
-  .form-wrap {
-    background: #0a0b0f;
-    display: flex; align-items: center; justify-content: center;
-    padding: 4rem 2rem;
-  }
-  .card { width: 100%; max-width: 30rem; }
+  .steps{display:flex; align-items:center; gap:.75rem; margin-bottom:2.5rem}
+  .step-dot{width:36px;height:36px;border-radius:9999px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;background:#11141a;color:var(--muted);border:2px solid var(--border)}
+  .step-dot.active{background:transparent;color:var(--amber);border-color:var(--amber);box-shadow:0 0 0 4px oklch(0.92 0.22 145 / .15)}
+  .step-dot.done{background:var(--amber);color:#0a0a0a;border-color:var(--amber)}
+  .step-line{flex:1;max-width:8rem;height:2px;background:var(--border)}
+  .step-line.filled{background:var(--amber)}
 
-  .stepper { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 2.5rem; }
-  .step {
-    width: 36px; height: 36px; border-radius: 9999px;
-    display: inline-flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 0.9rem;
-    background: #11141a; color: var(--muted);
-    border: 2px solid #1a1e26;
-  }
-  .step.active {
-    background: transparent; color: var(--amber);
-    border-color: var(--amber);
-    box-shadow: 0 0 0 4px oklch(0.92 0.22 145);
-  }
-  .step-line { flex: 1; max-width: 8rem; height: 2px; background: #1a1e26; }
+  h2{font-size:1.875rem;font-weight:700;margin:0 0 .5rem}
+  .sub{color:var(--muted);font-size:.95rem;margin:0 0 2rem}
 
-  .card h2 { font-size: 1.875rem; font-weight: 700; margin: 0 0 0.5rem; }
-  .card .sub { color: var(--muted); margin: 0 0 2rem; font-size: 0.95rem; }
+  form{display:flex; flex-direction:column; gap:1.25rem}
+  .field label{display:block;font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#c6cad6;margin-bottom:.5rem}
+  .nova-input{width:100%;height:3rem;padding:0 1rem;border-radius:.625rem;border:1px solid var(--border);background:var(--card);color:#fff;font-size:.95rem;outline:none;transition:border-color .2s, box-shadow .2s}
+  .nova-input::placeholder{color:#4a5060}
+  .nova-input:focus{border-color:var(--amber);box-shadow:0 0 0 3px oklch(0.92 0.22 145 / .15)}
+  select.nova-input{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'><path d='M1 1l5 5 5-5' stroke='%238b92a3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>");background-repeat:no-repeat;background-position:right 1rem center;padding-right:2.5rem}
 
-  form { display: flex; flex-direction: column; gap: 1.25rem; }
-  .lbl {
-    display: block; font-size: 0.7rem; font-weight: 600;
-    letter-spacing: 0.08em; text-transform: uppercase;
-    color: #c6cad6; margin-bottom: 0.5rem;
-  }
-  .input, select.input {
-    width: 100%; height: 3rem; padding: 0 1rem;
-    border-radius: 0.625rem; border: 1px solid var(--border);
-    background: #0e1117; color: var(--text);
-    font-size: 0.95rem; outline: none;
-    font-family: inherit;
-    transition: border-color .2s, box-shadow .2s;
-  }
-  .input::placeholder { color: #4a5060; }
-  .input:focus, select.input:focus {
-    border-color: var(--amber);
-    box-shadow: 0 0 0 3px oklch(0.92 0.22 145);
-  }
-  select.input {
-    appearance: none;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'><path d='M1 1l5 5 5-5' stroke='%238b92a3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>");
-    background-repeat: no-repeat; background-position: right 1rem center;
-    padding-right: 2.5rem;
+  .row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.5rem;align-items:center}
+  .row .nova-input.flex-1{flex:1;min-width:0}
+  .dial-box{width:6rem;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:600}
+
+  .btn-send{height:3rem;padding:0 1.1rem;border-radius:.625rem;border:1px solid rgba(4,140,1,.5);background:rgba(4,140,1,.08);color:var(--amber);font-weight:600;font-size:.875rem;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;white-space:nowrap;transition:background .2s, border-color .2s}
+  .btn-send:hover:not(:disabled){background:rgba(4,140,1,.18);border-color:var(--amber)}
+  .btn-send:disabled{opacity:.6;cursor:not-allowed}
+
+  .otp-box{margin-top:.75rem;border:1px solid var(--border);background:var(--card-2);border-radius:.75rem;padding:1rem;width:100%;max-width:100%;overflow:hidden}
+  .otp-msg{color:var(--muted);font-size:.8rem;margin:0 0 .75rem}
+  .otp-msg .who{color:#fff}
+  .otp-slots{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:.4rem;width:100%;max-width:100%}
+  .otp-slot{width:100%;min-width:0;height:3rem;border-radius:.5rem;border:1px solid var(--border);background:var(--card);color:#fff;text-align:center;font-size:1.125rem;font-weight:600;outline:none;padding:0}
+  .otp-slot:focus{border-color:var(--amber);box-shadow:0 0 0 2px oklch(0.92 0.22 145 / .2)}
+  .resend{margin-top:.75rem;display:flex;justify-content:flex-end}
+  .resend button{background:none;border:0;color:var(--amber);font-size:.8rem;font-weight:600;cursor:pointer}
+  .resend button:disabled{opacity:.6;cursor:not-allowed}
+
+  .currencies{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem}
+  .currency-cell{height:5rem;border-radius:.625rem;border:1px solid var(--border);background:var(--card);color:#fff;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.35rem;font-size:.85rem;font-weight:600;transition:border-color .2s, background .2s;font-family:inherit}
+  .currency-cell:hover{border-color:rgba(4,140,1,.4)}
+  .currency-cell.selected{border-color:var(--amber);background:rgba(4,140,1,.08)}
+  .currency-cell .flag{font-size:1.3rem;line-height:1}
+  .hint{color:var(--muted);font-size:.8rem;margin:.5rem 0 0}
+
+  .submit{margin-top:.5rem;height:3.25rem;width:100%;border:none;border-radius:.625rem;background:var(--amber);color:#0a0a0a;font-weight:700;font-size:1rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:.5rem;box-shadow:0 10px 30px -10px rgba(4,140,1,.6);transition:transform .15s, box-shadow .15s, opacity .15s;font-family:inherit}
+  .submit:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 14px 36px -10px rgba(4,140,1,.75)}
+  .submit:disabled{opacity:.7;cursor:not-allowed}
+
+  .foot{margin-top:1.5rem;text-align:center;color:var(--muted);font-size:.9rem}
+  .foot a{color:var(--amber);font-weight:600;text-decoration:none}
+
+  /* Step 2 */
+  .success-icon{width:4rem;height:4rem;border-radius:9999px;display:flex;align-items:center;justify-content:center;background:rgba(4,140,1,.12);border:1px solid rgba(4,140,1,.4);margin-bottom:1.5rem}
+  .details{margin:0 0 2rem;border:1px solid var(--border);background:var(--card-2);border-radius:.75rem;padding:1.25rem}
+  .details .cap{font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 .75rem}
+  .details .row2{display:flex;justify-content:space-between;font-size:.9rem;margin:.25rem 0}
+  .details .row2 .k{color:var(--muted)}
+
+  /* Hero right */
+  .hero{position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:4rem 2rem;background:radial-gradient(80% 60% at 70% 50%, rgba(4,140,1,.18), transparent 60%), #07080b}
+  .hero-inner{position:relative;z-index:1;max-width:28rem;text-align:center}
+  .logo-tile{width:4rem;height:4rem;border-radius:1rem;display:flex;align-items:center;justify-content:center;font-size:1.875rem;font-weight:800;color:#000;margin:0 auto 2rem;background:linear-gradient(135deg,var(--amber),var(--amber-2));box-shadow:0 10px 40px -10px var(--amber)}
+  .hero h1{font-size:3rem;font-weight:800;line-height:1.05;letter-spacing:-.02em;margin:0 0 1.25rem}
+  .amber-text{background:linear-gradient(135deg,var(--amber),var(--amber-2));-webkit-background-clip:text;background-clip:text;color:transparent;display:block}
+  .hero p.lead{color:var(--muted);font-size:1rem;line-height:1.65;margin:0 0 2.5rem}
+  .features{display:flex;flex-direction:column;gap:1rem;text-align:left}
+  .feature{display:flex;align-items:center;gap:.75rem;color:#d4d4d4;font-size:.95rem}
+  .feature svg{color:var(--amber);flex-shrink:0}
+
+  /* Toast */
+  .toasts{position:fixed;top:1rem;right:1rem;display:flex;flex-direction:column;gap:.5rem;z-index:9999}
+  .toast{background:#0e1117;border:1px solid var(--border);color:#fff;padding:.75rem 1rem;border-radius:.5rem;box-shadow:0 10px 30px rgba(0,0,0,.5);font-size:.9rem;min-width:14rem;animation:slide .2s ease-out}
+  .toast.success{border-color:rgba(4,140,1,.5)}
+  .toast.error{border-color:rgba(220,38,38,.6)}
+  @keyframes slide{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+
+  @media(max-width:480px){
+    .form-wrap{padding:2rem 1rem}
+    .row{grid-template-columns:1fr}
+    .btn-send{width:100%;justify-content:center}
+    .dial-box{width:100%;justify-content:flex-start}
+    .otp-box{padding:.75rem}
+    .otp-slots{gap:.3rem}
   }
 
-  .email-row { display: flex; gap: 0.5rem; }
-  .email-row .input { flex: 1; }
-  .btn-send {
-    height: 3rem; padding: 0 1.1rem;
-    border-radius: 0.625rem;
-    border: 1px solid rgba(4,140,1,0.5);
-    background: rgba(4,140,1,0.08);
-    color: var(--amber); font-weight: 600; font-size: 0.875rem;
-    cursor: pointer;
-    display: inline-flex; align-items: center; gap: 0.4rem;
-    white-space: nowrap;
-    transition: background .2s, border-color .2s;
-  }
-  .btn-send:hover { background: rgba(4,140,1,0.15); border-color: var(--amber); }
-
-  .phone-row { display: flex; gap: 0.5rem; }
-  .phone-row .code {
-    width: 4.5rem; text-align: center; padding: 0;
-    background: #0e1117;
-  }
-  .phone-row .number { flex: 1; }
-
-  .currency-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
-  .currency {
-    height: 5rem; border-radius: 0.625rem;
-    border: 1px solid var(--border);
-    background: #0e1117; color: var(--text);
-    cursor: pointer;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 0.35rem; font-size: 0.85rem; font-weight: 600;
-    transition: border-color .2s, background .2s;
-    font-family: inherit;
-  }
-  .currency .flag { font-size: 1.3rem; line-height: 1; }
-  .currency:hover { border-color: rgba(4,140,1,0.4); }
-  .currency.selected {
-    border-color: var(--amber);
-    background: rgba(4,140,1,0.08);
-  }
-  .currency-hint { font-size: 0.8rem; color: var(--muted); margin-top: 0.4rem; }
-
-  .submit {
-    margin-top: 0.5rem;
-    height: 3.25rem; width: 100%;
-    border: none; border-radius: 0.625rem;
-    background: var(--amber); color: #0a0a0a;
-    font-weight: 700; font-size: 1rem; cursor: pointer;
-    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
-    box-shadow: 0 10px 30px -10px rgba(4,140,1,0.6);
-    transition: transform .15s, box-shadow .15s;
-  }
-  .submit:hover { transform: translateY(-1px); box-shadow: 0 14px 36px -10px rgba(4,140,1,0.75); }
-
-  .footer-line {
-    margin-top: 1.5rem; text-align: center;
-    color: var(--muted); font-size: 0.9rem;
-  }
-  .footer-line a { color: var(--amber); font-weight: 600; }
-  .footer-line a:hover { text-decoration: underline; }
-
-  /* RIGHT: hero */
-  .hero {
-    position: relative; overflow: hidden;
-    background: radial-gradient(80% 60% at 70% 50%, rgba(4,140,1,0.18), transparent 60%), #07080b;
-    display: flex; align-items: center; justify-content: center;
-    padding: 4rem 2rem;
-  }
-  .hero-content { position: relative; z-index: 1; max-width: 28rem; text-align: center; }
-  .logo-tile {
-    width: 64px; height: 64px; margin: 0 auto 2rem;
-    border-radius: 14px; background: var(--gradient-amber);
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 800; font-size: 32px; color: #0a0a0a;
-    box-shadow: 0 10px 40px -10px var(--amber)
-  }
-  .hero h1 {
-    font-size: 3rem; line-height: 1.05;
-    font-weight: 800; letter-spacing: -0.02em;
-    margin: 0 0 1.25rem;
-  }
-  .hero h1 .amber {
-    display: block;
-    background: var(--gradient-amber);
-    -webkit-background-clip: text; background-clip: text;
-    -webkit-text-fill-color: transparent; color: transparent;
-  }
-  .hero p { color: var(--muted); font-size: 1rem; line-height: 1.6; margin: 0 0 2.5rem; }
-
-  .features { display: flex; flex-direction: column; gap: 1rem; text-align: left; }
-  .feat {
-    display: flex; align-items: center; gap: 0.75rem;
-    color: #cfd3de; font-size: 0.95rem;
-  }
-  .feat svg { color: var(--amber); flex-shrink: 0; }
-
-  @media (max-width: 1023px) {
-    .hero { order: -1; padding: 3rem 1.5rem; }
-    .hero h1 { font-size: 2.25rem; }
-  }
+  .hidden{display:none !important}
+  .spin{animation:spin 1s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
-  <div class="shell">
-    <!-- LEFT: form -->
-    <section class="form-wrap">
-      <div class="card">
-        <div class="stepper">
-          <div class="step active">1</div>
-          <div class="step-line"></div>
-          <div class="step">2</div>
-        </div>
 
+<div class="grid">
+  <!-- LEFT: FORM -->
+  <section class="form-wrap">
+    <div class="form-inner">
+      <div class="steps">
+        <div id="dot1" class="step-dot active">1</div>
+        <div id="line" class="step-line"></div>
+        <div id="dot2" class="step-dot">2</div>
+      </div>
+
+      <!-- STEP 1 -->
+      <div id="step1">
         <h2>Create Account</h2>
         <p class="sub">Fill in your details to get started.</p>
 
-        <form id="registerForm" novalidate>
-          <div>
-            <label class="lbl" for="fullname">Full Name</label>
-            <input id="fullname" class="input" type="text" placeholder="John Doe" required />
+        <form id="signupForm" novalidate>
+          <div class="field">
+            <label for="fullname">Full Name</label>
+            <input id="fullname" class="nova-input" type="text" placeholder="John Doe" required />
           </div>
 
-          <div>
-            <label class="lbl" for="email">Email Address</label>
-            <div class="email-row">
-              <input id="email" class="input" type="email" placeholder="you@example.com" required />
-              <button type="button" class="btn-send" id="sendCode">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="m22 2-7 20-4-9-9-4z"/></svg>
-                Send Code
+          <div class="field">
+            <label for="email">Email Address</label>
+            <div class="row">
+              <input id="email" class="nova-input flex-1" type="email" placeholder="you@example.com" required autocomplete="email" />
+              <button type="button" id="sendCodeBtn" class="btn-send">
+                <i data-lucide="send" width="14" height="14"></i>
+                <span id="sendCodeLabel">Send Code</span>
               </button>
+            </div>
+
+            <div id="otpBox" class="otp-box hidden">
+              <p class="otp-msg">Enter the 6-digit code sent to <span class="who" id="otpEmailLabel"></span>.</p>
+              <p id="devCodeHint" class="otp-msg hidden" style="color:#fbbf24">Dev mode code: <span id="devCodeValue" style="font-weight:700;letter-spacing:.15em"></span> <button type="button" id="autofillBtn" style="margin-left:.5rem;background:transparent;border:1px solid #fbbf24;color:#fbbf24;border-radius:.35rem;padding:.15rem .5rem;cursor:pointer;font-size:.7rem">Auto-fill</button></p>
+              <div class="otp-slots" id="otpSlots">
+                <input class="otp-slot" type="text" maxlength="1" inputmode="numeric" autocomplete="one-time-code" data-i="0" />
+                <input class="otp-slot" type="text" maxlength="1" inputmode="numeric" autocomplete="one-time-code" data-i="1" />
+                <input class="otp-slot" type="text" maxlength="1" inputmode="numeric" autocomplete="one-time-code" data-i="2" />
+                <input class="otp-slot" type="text" maxlength="1" inputmode="numeric" autocomplete="one-time-code" data-i="3" />
+                <input class="otp-slot" type="text" maxlength="1" inputmode="numeric" autocomplete="one-time-code" data-i="4" />
+                <input class="otp-slot" type="text" maxlength="1" inputmode="numeric" autocomplete="one-time-code" data-i="5" />
+              </div>
+              <div class="resend">
+                <button type="button" id="resendBtn">Resend code</button>
+              </div>
             </div>
           </div>
 
-          <div>
-            <label class="lbl" for="country">Country</label>
-            <select id="country" class="input" required>
+          <div class="field">
+            <label for="country">Country</label>
+            <select id="country" class="nova-input" required>
               <option value="">Select your country</option>
-              <option value="US" data-code="+1">United States</option>
-              <option value="GB" data-code="+44">United Kingdom</option>
-              <option value="CA" data-code="+1">Canada</option>
-              <option value="AU" data-code="+61">Australia</option>
-              <option value="DE" data-code="+49">Germany</option>
-              <option value="FR" data-code="+33">France</option>
-              <option value="ES" data-code="+34">Spain</option>
-              <option value="IT" data-code="+39">Italy</option>
-              <option value="NG" data-code="+234">Nigeria</option>
-              <option value="NL" data-code="+31">Netherlands</option>
-              <option value="JP" data-code="+81">Japan</option>
-              <option value="SG" data-code="+65">Singapore</option>
-              <option value="AE" data-code="+971">United Arab Emirates</option>
-              <option value="IN" data-code="+91">India</option>
-              <option value="BR" data-code="+55">Brazil</option>
-              <option value="MX" data-code="+52">Mexico</option>
             </select>
           </div>
 
-          <div>
-            <label class="lbl" for="phone">Phone Number</label>
-            <div class="phone-row">
-              <input id="phoneCode" class="input code" type="text" value="+?" readonly />
-              <input id="phone" class="input number" type="tel" placeholder="Select country first" disabled />
+          <div class="field">
+            <label for="phone">Phone Number</label>
+            <div class="row">
+              <div id="dial" class="nova-input dial-box">+?</div>
+              <input id="phone" class="nova-input flex-1" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="Select country first" disabled />
             </div>
           </div>
 
-          <div>
-            <label class="lbl">Choose Currency</label>
-            <div class="currency-grid" id="currencyGrid">
-              <button type="button" class="currency selected" data-currency="USD">
-                <span class="flag">🇺🇸</span><span>$ USD</span>
-              </button>
-              <button type="button" class="currency" data-currency="GBP">
-                <span class="flag">🇬🇧</span><span>£ GBP</span>
-              </button>
-              <button type="button" class="currency" data-currency="EUR">
-                <span class="flag">🇪🇺</span><span>€ EUR</span>
-              </button>
+          <div class="field">
+            <label>Choose Currency</label>
+            <div class="currencies" id="currencies">
+              <button type="button" class="currency-cell selected" data-code="USD"><span class="flag">🇺🇸</span><span>$ USD</span></button>
+              <button type="button" class="currency-cell" data-code="GBP"><span class="flag">🇬🇧</span><span>£ GBP</span></button>
+              <button type="button" class="currency-cell" data-code="EUR"><span class="flag">🇪🇺</span><span>€ EUR</span></button>
             </div>
-            <p class="currency-hint">All balances and amounts will be shown in this currency.</p>
+            <p class="hint">All balances and amounts will be shown in this currency.</p>
           </div>
 
-          <button type="submit" class="submit">
-            Continue
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          <button type="submit" id="continueBtn" class="submit">
+            <span id="continueLabel">Continue</span>
+            <i data-lucide="arrow-right" width="18" height="18" stroke-width="2.5"></i>
           </button>
         </form>
 
-        <p class="footer-line">Already have an account? <a href="login.html">Sign In</a></p>
+        <p class="foot">Already have an account? <a href="#">Sign In</a></p>
       </div>
-    </section>
 
-    <!-- RIGHT: hero -->
-    <section class="hero">
-      <div class="hero-content">
-        <div class="logo-tile">N</div>
-        <h1>JOIN THE<span class="amber">ELITE</span></h1>
-        <p>Start your evaluation today and prove you have what it takes to manage institutional capital.</p>
+      <!-- STEP 2 -->
+      <div id="step2" class="hidden">
+        <div class="success-icon"><i data-lucide="shield-check" width="32" height="32" style="color:var(--amber)"></i></div>
+        <h2>Welcome to Novatrade</h2>
+        <p class="sub">Your account has been verified and created successfully. You're ready to start your evaluation and prove you belong among the elite.</p>
 
-        <div class="features">
-          <div class="feat">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-            Email verification for security
-          </div>
-          <div class="feat">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            Phone number for 2FA protection
-          </div>
-          <div class="feat">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
-            KYC verification to unlock live trading
-          </div>
+        <div class="details">
+          <p class="cap">Account Details</p>
+          <div class="row2"><span class="k">Name</span><span id="rName"></span></div>
+          <div class="row2"><span class="k">Email</span><span id="rEmail"></span></div>
+          <div class="row2"><span class="k">Phone</span><span id="rPhone"></span></div>
+          <div class="row2"><span class="k">Currency</span><span id="rCurrency"></span></div>
         </div>
+
+        <button type="button" class="submit" onclick="window.location.reload()">
+          Enter Dashboard <i data-lucide="arrow-right" width="18" height="18" stroke-width="2.5"></i>
+        </button>
       </div>
-    </section>
-  </div>
+    </div>
+  </section>
+
+  <!-- RIGHT: HERO -->
+  <aside class="hero">
+    <div class="hero-inner">
+      <div class="logo-tile">N</div>
+      <h1>JOIN THE <span class="amber-text">ELITE</span></h1>
+      <p class="lead">Start your evaluation today and prove you have what it takes to manage institutional capital.</p>
+      <div class="features">
+        <div class="feature"><i data-lucide="mail" width="20" height="20"></i>Email verification for security</div>
+        <div class="feature"><i data-lucide="phone" width="20" height="20"></i>Phone number for 2FA protection</div>
+        <div class="feature"><i data-lucide="badge-check" width="20" height="20"></i>KYC verification to unlock live trading</div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<div class="toasts" id="toasts"></div>
 
 <script>
-  (function () {
-    var country = document.getElementById('country');
-    var phoneCode = document.getElementById('phoneCode');
-    var phone = document.getElementById('phone');
-    country.addEventListener('change', function () {
-      var opt = country.options[country.selectedIndex];
-      var code = opt.getAttribute('data-code');
-      if (code) {
-        phoneCode.value = code;
-        phone.disabled = false;
-        phone.placeholder = 'Phone number';
-      } else {
-        phoneCode.value = '+?';
-        phone.disabled = true;
-        phone.value = '';
-        phone.placeholder = 'Select country first';
-      }
-    });
+/* =========================================================
+   EMAILJS CONFIG — replace with your keys from emailjs.com
+   Create a free account -> Email Service -> Email Template
+   The template should include variables: {{to_email}}, {{passcode}}, {{to_name}}
+   If left blank, the app runs in DEV MODE and shows the code in the toast.
+   ========================================================= */
+const EMAILJS_PUBLIC_KEY  = ""; // e.g. "abcDEF123..."
+const EMAILJS_SERVICE_ID  = ""; // e.g. "service_xxx"
+const EMAILJS_TEMPLATE_ID = ""; // e.g. "template_xxx"
+const DEV_MODE = !(EMAILJS_PUBLIC_KEY && EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID);
+if (!DEV_MODE) emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
 
-    var grid = document.getElementById('currencyGrid');
-    grid.addEventListener('click', function (e) {
-      var btn = e.target.closest('.currency');
-      if (!btn) return;
-      grid.querySelectorAll('.currency').forEach(function (b) { b.classList.remove('selected'); });
-      btn.classList.add('selected');
-    });
+/* ---------- Data ---------- */
+const COUNTRIES = [
+  {code:"US",name:"United States",dial:"+1"},
+  {code:"GB",name:"United Kingdom",dial:"+44"},
+  {code:"CA",name:"Canada",dial:"+1"},
+  {code:"AU",name:"Australia",dial:"+61"},
+  {code:"DE",name:"Germany",dial:"+49"},
+  {code:"FR",name:"France",dial:"+33"},
+  {code:"ES",name:"Spain",dial:"+34"},
+  {code:"IT",name:"Italy",dial:"+39"},
+  {code:"NG",name:"Nigeria",dial:"+234"},
+  {code:"NL",name:"Netherlands",dial:"+31"},
+  {code:"JP",name:"Japan",dial:"+81"},
+  {code:"SG",name:"Singapore",dial:"+65"},
+  {code:"AE",name:"United Arab Emirates",dial:"+971"},
+  {code:"IN",name:"India",dial:"+91"},
+  {code:"BR",name:"Brazil",dial:"+55"},
+  {code:"MX",name:"Mexico",dial:"+52"},
+];
 
-    document.getElementById('sendCode').addEventListener('click', function () {
-      var email = document.getElementById('email').value.trim();
-      if (!email) { alert('Enter your email first'); return; }
-      this.textContent = 'Code Sent';
-      this.disabled = true;
-    });
+/* ---------- State ---------- */
+const state = {
+  currency: "USD",
+  codeSent: false,
+  sentCode: "",        // OTP generated locally
+  sending: false,
+  verifying: false,
+};
 
-    document.getElementById('registerForm').addEventListener('submit', function (e) {
-      e.preventDefault();
+/* ---------- Elements ---------- */
+const $ = (id) => document.getElementById(id);
+const countrySel = $("country");
+const dialBox    = $("dial");
+const phoneInput = $("phone");
+const emailInput = $("email");
+const sendBtn    = $("sendCodeBtn");
+const sendLabel  = $("sendCodeLabel");
+const otpBox     = $("otpBox");
+const otpEmailLabel = $("otpEmailLabel");
+const otpSlots   = document.querySelectorAll(".otp-slot");
+const resendBtn  = $("resendBtn");
+const form       = $("signupForm");
+const continueBtn = $("continueBtn");
+const continueLabel = $("continueLabel");
+
+/* ---------- Populate countries ---------- */
+COUNTRIES.forEach(c => {
+  const o = document.createElement("option");
+  o.value = c.code; o.textContent = c.name;
+  countrySel.appendChild(o);
+});
+
+/* ---------- Icons (guarded — CDN may be blocked) ---------- */
+function renderIcons(){ try { if (window.lucide) window.lucide.createIcons(); } catch(e){ console.warn("lucide failed", e); } }
+renderIcons();
+
+/* ---------- Toast ---------- */
+function toast(msg, kind="success"){
+  const el = document.createElement("div");
+  el.className = "toast " + kind;
+  el.textContent = msg;
+  $("toasts").appendChild(el);
+  setTimeout(()=>{ el.style.opacity="0"; el.style.transition="opacity .3s"; }, 3200);
+  setTimeout(()=> el.remove(), 3600);
+}
+
+/* ---------- Country change ---------- */
+countrySel.addEventListener("change", () => {
+  const c = COUNTRIES.find(x => x.code === countrySel.value);
+  if (c) {
+    dialBox.textContent = c.dial;
+    phoneInput.disabled = false;
+    phoneInput.placeholder = "812 345 6789";
+  } else {
+    dialBox.textContent = "+?";
+    phoneInput.disabled = true;
+    phoneInput.placeholder = "Select country first";
+  }
+});
+phoneInput.addEventListener("input", () => {
+  phoneInput.value = phoneInput.value.replace(/[^\d\s-]/g, "");
+});
+
+/* ---------- Currency ---------- */
+document.querySelectorAll(".currency-cell").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".currency-cell").forEach(b => b.classList.remove("selected"));
+    btn.classList.add("selected");
+    state.currency = btn.dataset.code;
+  });
+});
+
+/* ---------- Email change resets OTP ---------- */
+emailInput.addEventListener("input", () => {
+  state.codeSent = false;
+  state.sentCode = "";
+  otpBox.classList.add("hidden");
+  otpSlots.forEach(s => s.value = "");
+  sendBtn.disabled = false;
+  sendLabel.textContent = "Send Code";
+});
+
+/* ---------- OTP inputs ---------- */
+otpSlots.forEach((slot, i) => {
+  slot.addEventListener("input", (e) => {
+    slot.value = slot.value.replace(/\D/g, "");
+    if (slot.value && i < otpSlots.length - 1) otpSlots[i+1].focus();
+  });
+  slot.addEventListener("keydown", (e) => {
+    if (e.key === "Backspace" && !slot.value && i > 0) otpSlots[i-1].focus();
+  });
+  slot.addEventListener("paste", (e) => {
+    const text = (e.clipboardData || window.clipboardData).getData("text").replace(/\D/g,"").slice(0,6);
+    if (!text) return;
+    e.preventDefault();
+    for (let k=0;k<text.length && (i+k)<otpSlots.length;k++){
+      otpSlots[i+k].value = text[k];
+    }
+    const nextIdx = Math.min(i + text.length, otpSlots.length - 1);
+    otpSlots[nextIdx].focus();
+  });
+});
+function readOtp(){ return Array.from(otpSlots).map(s=>s.value).join(""); }
+
+/* ---------- Email sending ---------- */
+function isEmail(v){ return /^\S+@\S+\.\S+$/.test(v); }
+function genCode(){ return String(Math.floor(100000 + Math.random()*900000)); }
+
+async function sendEmailWithCode(toEmail, name, code){
+  if (DEV_MODE){
+    console.log("[DEV MODE] OTP for", toEmail, "=", code);
+    toast("DEV MODE — your code is " + code, "success");
+    return true;
+  }
+  try {
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      to_email: toEmail,
+      to_name: name || "there",
+      passcode: code,
+      subject: "Your Novatrade verification code",
+      message: "Your verification code is " + code + ". It expires in 10 minutes."
     });
-  })();
+    return true;
+  } catch (err) {
+    console.error(err);
+    toast("Could not send email: " + (err?.text || err?.message || "unknown error"), "error");
+    return false;
+  }
+}
+
+async function handleSend(isResend=false){
+  const trimmed = emailInput.value.trim();
+  if (!isEmail(trimmed)) { toast("Enter a valid email first", "error"); return; }
+  if (state.sending) return;
+
+  state.sending = true;
+  sendBtn.disabled = true;
+  sendLabel.textContent = "Sending";
+  if (isResend) resendBtn.disabled = true;
+
+  const code = genCode();
+  const ok = await sendEmailWithCode(trimmed, $("fullname").value.trim(), code);
+
+  state.sending = false;
+  if (isResend) resendBtn.disabled = false;
+
+  if (!ok){
+    sendBtn.disabled = false;
+    sendLabel.textContent = "Send Code";
+    return;
+  }
+
+  state.sentCode = code;
+  state.codeSent = true;
+  otpEmailLabel.textContent = trimmed;
+  otpBox.classList.remove("hidden");
+  sendLabel.textContent = "Sent";
+  sendBtn.disabled = true;
+
+  // In DEV_MODE, surface the code inside the OTP box so it's easy to enter
+  if (DEV_MODE){
+    const hint = document.getElementById("devCodeHint");
+    document.getElementById("devCodeValue").textContent = code;
+    hint.classList.remove("hidden");
+  }
+
+  if (isResend){
+    otpSlots.forEach(s => s.value = "");
+    otpSlots[0].focus();
+    toast("A new code has been sent");
+  } else {
+    otpSlots[0].focus();
+    toast("Verification code sent to your email");
+  }
+}
+
+// Auto-fill button for dev mode
+document.getElementById("autofillBtn")?.addEventListener("click", () => {
+  if (!state.sentCode) return;
+  const code = state.sentCode;
+  otpSlots.forEach((s, i) => { s.value = code[i] || ""; });
+  otpSlots[otpSlots.length - 1].focus();
+});
+
+sendBtn.addEventListener("click", () => handleSend(false));
+resendBtn.addEventListener("click", () => handleSend(true));
+
+/* ---------- Continue -> Step 2 ---------- */
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const fullName = $("fullname").value.trim();
+  const email = emailInput.value.trim();
+  const otp = readOtp();
+  const countryCode = countrySel.value;
+  const phone = phoneInput.value.trim();
+
+  if (!fullName)              return toast("Enter your full name", "error");
+  if (!isEmail(email))        return toast("Enter a valid email", "error");
+  if (!state.codeSent)        return toast("Send the verification code first", "error");
+  if (otp.length !== 6)       return toast("Enter the 6-digit code sent to your email", "error");
+  if (!countryCode)           return toast("Select your country", "error");
+  if (!phone)                 return toast("Enter your phone number", "error");
+
+  state.verifying = true;
+  continueBtn.disabled = true;
+  continueLabel.textContent = "Verifying...";
+
+  // Verify OTP locally against the one we emailed
+  await new Promise(r => setTimeout(r, 400)); // small UX delay
+  if (otp !== state.sentCode) {
+    state.verifying = false;
+    continueBtn.disabled = false;
+    continueLabel.textContent = "Continue";
+    return toast("Invalid verification code", "error");
+  }
+
+  const country = COUNTRIES.find(c => c.code === countryCode);
+  const dial = country ? country.dial : "+?";
+
+  // Fill step 2 summary
+  $("rName").textContent     = fullName;
+  $("rEmail").textContent    = email;
+  $("rPhone").textContent    = dial + " " + phone;
+  $("rCurrency").textContent = state.currency;
+
+  // Switch to step 2
+  $("step1").classList.add("hidden");
+  $("step2").classList.remove("hidden");
+  $("dot1").classList.remove("active");
+  $("dot1").classList.add("done");
+  $("line").classList.add("filled");
+  $("dot2").classList.add("active");
+  renderIcons();
+  window.scrollTo({top:0, behavior:"smooth"});
+});
 </script>
 </body>
 </html>
