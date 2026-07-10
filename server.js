@@ -21,11 +21,11 @@ app.use((req, res, next) => {
 
 // Serve HTML pages
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'sender.html'));
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-app.get('/receiver', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'receiver.html'));
+app.get('/signup', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'signup.html'));
 });
 
 
