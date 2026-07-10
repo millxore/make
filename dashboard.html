@@ -136,20 +136,6 @@
             <li class="py-2 flex justify-between text-sm"><span>SOL/USDT · Buy</span><span class="text-[var(--danger)]">-$12.90</span></li>
           </ul>
         </div>
-        <div class="card p-5 mt-4">
-          <div class="flex items-center justify-between mb-3">
-            <div class="font-semibold">Open Positions</div>
-            <span class="text-xs text-[var(--muted)]">Auto-refreshing</span>
-          </div>
-          <div class="overflow-x-auto">
-            <table class="w-full text-sm">
-              <thead class="text-left text-[var(--muted)] text-xs">
-                <tr><th class="py-2">Pair</th><th>Side</th><th>Entry</th><th>Mark</th><th>PnL</th><th>Bot</th></tr>
-              </thead>
-              <tbody id="positions"></tbody>
-            </table>
-          </div>
-        </div>
         <div class="tradingview-widget-container">
           <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js">
           {
@@ -245,12 +231,23 @@
       <section class="view" data-view="market">
         <div class="card p-5">
           <div class="font-semibold mb-3">Markets</div>
-          <div class="overflow-x-auto">
-            <table class="w-full text-sm">
-              <thead class="text-left text-[var(--muted)] text-xs"><tr><th class="py-2">Pair</th><th>Price</th><th>24h</th><th>Volume</th><th>Chart</th></tr></thead>
-              <tbody id="markets"></tbody>
-            </table>
-          </div>
+        </div>
+        <div class="tradingview-widget-container">
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js">
+          {
+          "symbols": [
+            ["XAUUSD","OANDA:XAUUSD|1D"],
+            ["EURUSD","OANDA:EURUSD|1D"],
+            ["BTCUSD","BINANCE:BTCUSDT|1D"]
+          ],
+          "chartOnly": false,
+          "colorTheme": "dark",
+          "width": "100%",
+          "height": "600",
+          "largeChartUrl": "dashboard.html",
+          "locale": "en"
+          }
+          </script>
         </div>
       </section>
       <!-- LIVE PLATFORM -->
