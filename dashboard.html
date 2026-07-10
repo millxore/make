@@ -120,23 +120,21 @@
           <div class="card p-5"><div class="text-xs text-[var(--muted)]">Active Bots</div><div class="text-2xl font-bold mt-1">3</div><div class="text-xs text-[var(--muted)] mt-1">Grid · DCA · Scalper</div></div>
           <div class="card p-5"><div class="text-xs text-[var(--muted)]">30d PnL</div><div class="text-2xl font-bold text-[var(--primary)] mt-1">+18.42%</div><div class="text-xs text-[var(--muted)] mt-1">vs. prev 30d</div></div>
           <div class="card p-5"><div class="text-xs text-[var(--muted)]">Open Positions</div><div class="text-2xl font-bold mt-1">7</div><div class="text-xs text-[var(--muted)] mt-1">across 4 pairs</div></div>
-        </div>
-        <div class="grid lg:grid-cols-3 gap-4 mt-4">   
-          <div class="card p-5">
-            <div class="text-xs text-[var(--muted)]">Quick Actions</div>
-            <div class="mt-3 grid grid-cols-2 gap-2">
-              <button class="btn-primary rounded-lg py-2.5 text-sm" onclick="setView('deposit')">Deposit</button>
-              <button class="rounded-lg py-2.5 text-sm border border-[var(--border)] hover:border-[var(--primary)] hover:text-[var(--primary)] transition" onclick="setView('withdraw')">Withdraw</button>
-              <button class="rounded-lg py-2.5 text-sm border border-[var(--border)] hover:border-[var(--primary)] hover:text-[var(--primary)] transition" onclick="setView('bot')">Start Bot</button>
-              <button class="rounded-lg py-2.5 text-sm border border-[var(--border)] hover:border-[var(--primary)] hover:text-[var(--primary)] transition" onclick="setView('kyc')">Verify KYC</button>
-            </div>
-            <div class="mt-4 text-xs text-[var(--muted)]">Recent activity</div>
-            <ul class="mt-2 divide-y divide-[var(--border)]">
-              <li class="py-2 flex justify-between text-sm"><span>BTC/USDT · Buy</span><span class="text-[var(--primary)]">+$142.10</span></li>
-              <li class="py-2 flex justify-between text-sm"><span>ETH/USDT · Sell</span><span class="text-[var(--primary)]">+$58.44</span></li>
-              <li class="py-2 flex justify-between text-sm"><span>SOL/USDT · Buy</span><span class="text-[var(--danger)]">-$12.90</span></li>
-            </ul>
+        </div>  
+        <div class="card p-5">
+          <div class="text-xs text-[var(--muted)]">Quick Actions</div>
+          <div class="mt-3 grid grid-cols-2 gap-2">
+            <button class="btn-primary rounded-lg py-2.5 text-sm" onclick="setView('deposit')">Deposit</button>
+            <button class="rounded-lg py-2.5 text-sm border border-[var(--border)] hover:border-[var(--primary)] hover:text-[var(--primary)] transition" onclick="setView('withdraw')">Withdraw</button>
+            <button class="rounded-lg py-2.5 text-sm border border-[var(--border)] hover:border-[var(--primary)] hover:text-[var(--primary)] transition" onclick="setView('bot')">Start Bot</button>
+            <button class="rounded-lg py-2.5 text-sm border border-[var(--border)] hover:border-[var(--primary)] hover:text-[var(--primary)] transition" onclick="setView('kyc')">Verify KYC</button>
           </div>
+          <div class="mt-4 text-xs text-[var(--muted)]">Recent activity</div>
+          <ul class="mt-2 divide-y divide-[var(--border)]">
+            <li class="py-2 flex justify-between text-sm"><span>BTC/USDT · Buy</span><span class="text-[var(--primary)]">+$142.10</span></li>
+            <li class="py-2 flex justify-between text-sm"><span>ETH/USDT · Sell</span><span class="text-[var(--primary)]">+$58.44</span></li>
+            <li class="py-2 flex justify-between text-sm"><span>SOL/USDT · Buy</span><span class="text-[var(--danger)]">-$12.90</span></li>
+          </ul>
         </div>
         <div class="card p-5 mt-4">
           <div class="flex items-center justify-between mb-3">
