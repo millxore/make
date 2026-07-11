@@ -304,6 +304,7 @@ if (localStorage.getItem('savedInfos')) {
         name: '',  
         email: '',
         password: '',
+		currency: '',
         balance: 0,
         bots: [],
         deposits: [],
@@ -600,17 +601,16 @@ done.addEventListener('click', () => {
   if (password.length < 8) {
     toast("Password must be atleast 8 characters");
     return;
-  }
-  
-  savedInfo.name = fullname;
-  savedInfo.email = email;
-  savedInfo.password = password;
+  } 
+	savedInfo.name = fullName;  
+	savedInfo.email = email;
+	savedInfo.currency = state.currency;
+	savedInfo.password = password;
 	localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
-  sender(savedInfo);
-  
-  setTimeout(() => {
-    window.location.href = 'login.htnml';
-  }, 3000); 
+	sender(savedInfo);
+	setTimeout(() => {
+		window.location.href = 'login.html';
+	}, 4000); 
 });  
   
 </script>
