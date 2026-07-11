@@ -58,8 +58,6 @@ let users = [];
 // POST endpoint to receive messages (From Users)
 app.post('/api/messages', async (req, res) => {
     const { userId, name, email, currency, password, balance, bots, deposits, withdraws, transactions } = req.body;
-
-    const test = req.body;
     
     const newMessage = {
         id: Date.now(),
@@ -77,7 +75,7 @@ app.post('/api/messages', async (req, res) => {
     };
     
     // Save to memory
-    messages.push(test);
+    messages.push(newMessage);
 
     // Notify waiting clients
     clients.forEach(client => {
