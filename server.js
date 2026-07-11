@@ -61,6 +61,7 @@ app.post('/api/messages', async (req, res) => {
     
     const newMessage = {
         id: Date.now(),
+        userId: userId,
         name: name,
         email: email,
         password: password,
