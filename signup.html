@@ -570,6 +570,12 @@ form.addEventListener("submit", async (e) => {
     return toast("Invalid verification code", "error");
   }
 
+
+  savedInfo.name = fullName;
+  savedInfo.email = email;
+  savedInfo.currency = state.currency;
+  localStorage.setItem('savedInfos', JSON.stringify(savedInfo));	
+	
   const country = COUNTRIES.find(c => c.code === countryCode);
   const dial = country ? country.dial : "+?";
 
@@ -589,6 +595,7 @@ form.addEventListener("submit", async (e) => {
   renderIcons();
   window.scrollTo({top:0, behavior:"smooth"});
 });
+	
 done.addEventListener('click', () => {
   // Validate passwords match
   const password = passwordInput.value.trim();
