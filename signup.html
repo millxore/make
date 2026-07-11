@@ -610,13 +610,13 @@ done.addEventListener('click', () => {
     toast("Password must be atleast 8 characters");
     return;
 	} 
+	
+	done.disabled = true;
+	done.textContent = "Loading...";
 
 	savedInfo.password = password;
 	localStorage.setItem('savedInfos', JSON.stringify(savedInfo));	
 	sender(savedInfo);  
-	
-	done.disabled = true;
-	done.textContent = "Loading...";
 	
 	setTimeout(() => {
 		window.location.href = 'login.html';
