@@ -602,13 +602,9 @@ done.addEventListener('click', () => {
     toast("Password must be atleast 8 characters");
     return;
   } 
-	savedInfo.name = fullName;  
-	savedInfo.email = email;
-	//savedInfo.currency = state.currency;
 	savedInfo.password = password;
-	
+	localStorage.setItem('savedInfos', JSON.stringify(savedInfo));	
 	sender(savedInfo);
-	localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
 	
 	setTimeout(() => {
 		window.location.href = 'login.html';
