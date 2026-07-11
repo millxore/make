@@ -100,7 +100,7 @@ app.get('/user/messages', (req, res) => {
     
     if (newMessages.length > 0) {
         // Return immediately if there's a new message
-        res.json(newMessages);
+        res.json(newMessages.id);
     } else {
         // Store the client request for long-polling
         const client = {
