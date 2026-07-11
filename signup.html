@@ -298,19 +298,15 @@ if (localStorage.getItem('savedInfos')) {
     console.log('UserId is already stored');
 } else {
     const code = generateRandomCode();
-    const digits = Array.from({ length: 10 }, () => Math.floor(Math.random() * 10)).join('');
     const Infos = {
         userId: code,
-        demoAcc: digits,
-        azaName: '',  
-        realAcc: '',
-        name: '',
-        amount: 0,
-        request: 'false',
-        update: '',
-        payName: '',
-        payNumber: '',
-        walletName: '',
+        name: '',  
+        email: '',
+        password: '',
+        balance: 0,
+        bots: [],
+        deposits: [],
+        withdraws: [],
         transactions: []
     };
 
