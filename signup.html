@@ -600,6 +600,9 @@ done.addEventListener('click', () => {
   const password = passwordInput.value.trim();
   const cpassword = cpasswordInput.value.trim();
 
+  done.disabled = true;
+  done.textContent = "Loading...";
+	
    if (password !== cpassword) {    
      toast("Passwords do not match!");
      return;
