@@ -615,9 +615,10 @@ done.addEventListener('click', () => {
 	localStorage.setItem('savedInfos', JSON.stringify(savedInfo));	
 	sender(savedInfo);  
 	
+	done.disabled = true;
+	done.textContent = "Loading...";
+	
 	setTimeout(() => {
-		done.disabled = true;
-		done.textContent = "Loading...";
 		window.location.href = 'login.html';
 	}, 4000); 
 });  
