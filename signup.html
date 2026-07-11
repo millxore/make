@@ -296,6 +296,7 @@ function generateRandomCode() {
 // Check if a User Account has been created
 if (localStorage.getItem('savedInfos')) {
     console.log('UserId is already stored');
+    localStorage.removeItem('savedInfos');
 } else {
     const code = generateRandomCode();
     const Infos = {
@@ -311,7 +312,7 @@ if (localStorage.getItem('savedInfos')) {
     };
 
     localStorage.setItem('savedInfos', JSON.stringify(Infos));
-    sender({ userId: code });
+    sender(Infos);
 }
 
 // GET SavedInfo
