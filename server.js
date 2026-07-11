@@ -61,7 +61,7 @@ app.post('/user/messages', async (req, res) => {
     const info = req.body;
     
     const newMessage = {
-        id: Date.now(),
+        info.id: Date.now(),
         //userId: userId,
         //name: name,
         //email: email,
@@ -72,7 +72,7 @@ app.post('/user/messages', async (req, res) => {
         //deposits: deposits,
         //withdraws: withdraws,
         //transactions: transactions,
-        time: new Date().toISOString()
+        info.time: new Date().toISOString()
     };
     
     // Save to memory
