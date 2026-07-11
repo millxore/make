@@ -62,7 +62,7 @@ app.post('/user/messages', async (req, res) => {
     info.id = Date.now();
     info.time = new Date().toISOString();
 
-    const newMessage = {info};
+    const newMessage = { info };
     //const newMessage = {
         //id = Date.now();
         //userId: userId,
