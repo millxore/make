@@ -62,7 +62,7 @@ app.post('/user/messages', async (req, res) => {
     const newMessage = { 
         id: Date.now(), 
         ...req.body,
-        time = new Date().toISOString()
+        time: new Date().toISOString()
     };
     //const newMessage = {
         //id = Date.now();
