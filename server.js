@@ -33,7 +33,7 @@ app.get('/signup', (req, res) => {
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
-//Post to send 
+// Message to Tel 
 app.post('/send', async (req, res) => {
     const { message }  = req.body;
     try {
@@ -86,32 +86,6 @@ app.post('/user/messages', async (req, res) => {
     res.json({ success: true, message: newMessage });
 });
 
-// POST endpoint to receive messages (To Users)
-app.post('/me/messages', async (req, res) => {
-    const { userId, name, amount, update, payName, payNumber } = req.body;
-    
-    const newMessage = {
-        id: Date.now(),
-        userId: userId,
-        name: name,
-        amount: amount,
-        update: update,
-        payName: payName, 
-        payNumber: payNumber,
-        time: new Date().toISOString()
-    };
-
-    // Save to memory
-    sends.push(newMessage);
-
-    // Notify waiting clients
-    users.forEach(user => {
-        user.res.json([newMessage]);
-    });
-    users = [];
-    
-    res.json({ success: true, message: newMessage });
-});
 
 // GET endpoint to retrieve messages (From Users)
 app.get('/user/messages', (req, res) => {
@@ -144,46 +118,11 @@ app.get('/user/messages', (req, res) => {
 });
 
 
-// GET endpoint to retrieve messages (To Users)
-app.get('/me/messages', (req, res) => {
-    const lastMessageId = req.query.lastMessageId || 0;
-    
-    // Check if there are new messages
-    const newMessages = sends.filter(msg => msg.id > lastMessageId);
-    
-    if (newMessages.length > 0) {
-        // Return immediately if there's a new message
-        res.json(newMessages);
-    } else {
-        // Store the client request for long-polling
-        const user = {
-            id: Date.now(),
-            res: res,
-            lastMessageId: lastMessageId
-        };
-        users.push(user);
-        
-        // Set timeout for long-polling (30 seconds max)
-        setTimeout(() => {
-            const index = users.findIndex(u => u.id === user.id);
-            if (index !== -1) {
-                users.splice(index, 1);
-                res.json([]);
-            }
-        }, 30000);
-    }
-});
-
-
 // Get all messages (for initial load)
 app.get('/user/messages/all', (req, res) => {
     res.json(messages);
 });
 
-// Get all sends (for initial load)
-app.get('/me/messages/all', (req, res) => {
-    res.json(sends);
-});
 
 // Clear all messages 
 app.delete('/user/messages', (req, res) => {
