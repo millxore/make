@@ -60,7 +60,7 @@ app.post('/user/messages', async (req, res) => {
     //const { userId, name, email, currency, password, balance, bots, deposits, withdraws, transactions } = req.body;
 
     const newMessage = { 
-        id: Date.now, 
+        id: Date.now(), 
         ...req.body,
         time = new Date().toISOString()
     };
