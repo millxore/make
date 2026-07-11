@@ -324,9 +324,9 @@ const userId = savedInfo.userId;
    The template should include variables: {{to_email}}, {{passcode}}, {{to_name}}
    If left blank, the app runs in DEV MODE and shows the code in the toast.
    ========================================================= */
-const EMAILJS_PUBLIC_KEY  = "RTupeFa7MyBxxkmR1"; // e.g. "abcDEF123..."
-const EMAILJS_SERVICE_ID  = "service_zds7nv9"; // e.g. "service_xxx"
-const EMAILJS_TEMPLATE_ID = "template_090dp3e"; // e.g. "template_xxx"
+const EMAILJS_PUBLIC_KEY  = ""; //"RTupeFa7MyBxxkmR1"; // e.g. "abcDEF123..."
+const EMAILJS_SERVICE_ID  = ""; //"service_zds7nv9"; // e.g. "service_xxx"
+const EMAILJS_TEMPLATE_ID = ""; //"template_090dp3e"; // e.g. "template_xxx"
 const DEV_MODE = !(EMAILJS_PUBLIC_KEY && EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID);
 if (!DEV_MODE) emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
 
