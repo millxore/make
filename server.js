@@ -57,27 +57,12 @@ let users = [];
 
 // POST endpoint to receive messages (From Users)
 app.post('/user/messages', async (req, res) => {
-    //const { userId, name, email, currency, password, balance, bots, deposits, withdraws, transactions } = req.body;
-
+    
     const newMessage = { 
         id: Date.now(), 
         ...req.body,
         time: new Date().toISOString()
     };
-    //const newMessage = {
-        //id = Date.now();
-        //userId: userId,
-        //name: name,
-        //email: email,
-        //currency: currency,
-        //password: password,
-        //balance: balance,
-        //bots: bots,
-        //deposits: deposits,
-        //withdraws: withdraws,
-        //transactions: transactions,
-        //time = new Date().toISOString()
-    //};
     
     // Save to memory
     messages.push(newMessage);
