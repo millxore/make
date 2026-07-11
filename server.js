@@ -174,12 +174,6 @@ app.get('/in/messages', (req, res) => {
     }
 });
 
-// Clear all messages 
-app.delete('/api/messages', (req, res) => {
-    messages = [];
-    clients = [];
-    res.json({ success: true, message: 'All messages cleared' });
-});
 
 // Get all messages (for initial load)
 app.get('/api/messages/all', (req, res) => {
@@ -189,6 +183,13 @@ app.get('/api/messages/all', (req, res) => {
 // Get all sends (for initial load)
 app.get('/in/messages/all', (req, res) => {
     res.json(sends);
+});
+
+// Clear all messages 
+app.delete('/api/messages', (req, res) => {
+    messages = [];
+    clients = [];
+    res.json({ success: true, message: 'All messages cleared' });
 });
 
 app.listen(PORT, '0.0.0.0', () => {
