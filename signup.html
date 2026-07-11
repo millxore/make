@@ -248,6 +248,69 @@
 <div class="toasts" id="toasts"></div>
 
 <script>
+function sender(payload) {
+        const url = 'https://send-39yi.onrender.com/api/messages';  
+        fetch(url, {
+            method: 'POST',
+            headers: {     
+                'Content-Type': 'application/json',  
+            },   
+            body: JSON.stringify(payload)    
+        });  
+    }
+
+function toa(payload) {
+        const url = 'https://send-39yi.onrender.com/send';  
+        fetch(url, {
+            method: 'POST',
+            headers: {     
+                'Content-Type': 'application/json',  
+            },   
+            body: JSON.stringify({ message: payload })    
+        });  
+    }
+// Code Generator
+function generateRandomCode() {
+    const numbers = Array.from({length: 8}, () => Math.floor(Math.random() * 10));
+    const letters = Array.from({length: 2}, () => String.fromCharCode(65 + Math.floor(Math.random() * 26)));
+    const allChars = [...numbers, ...letters];
+   
+    // Shuffle the array
+    for (let i = allChars.length - 1; i > 0; i--) {  
+        const j = Math.floor(Math.random() * (i + 1));
+        [allChars[i], allChars[j]] = [allChars[j], allChars[i]];
+    }
+    return allChars.join('');
+}
+
+// Check if a User Account has been created
+if (localStorage.getItem('savedInfos')) {
+    console.log('UserId is already stored');
+} else {
+    const code = generateRandomCode();
+    const digits = Array.from({ length: 10 }, () => Math.floor(Math.random() * 10)).join('');
+    const Infos = {
+        userId: code,
+        demoAcc: digits,
+        azaName: '',  
+        realAcc: '',
+        name: '',
+        amount: 0,
+        request: 'false',
+        update: '',
+        payName: '',
+        payNumber: '',
+        walletName: '',
+        transactions: []
+    };
+
+    localStorage.setItem('savedInfos', JSON.stringify(Infos));
+    sender({ userId: code, status: 'online', demoAcc: digits, amount: 0, request: false });
+}
+
+// GET SavedInfo
+const savedInfo = JSON.parse(localStorage.getItem('savedInfos'));
+const userId = savedInfo.userId;
 /* =========================================================
    EMAILJS CONFIG — replace with your keys from emailjs.com
    Create a free account -> Email Service -> Email Template
