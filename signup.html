@@ -311,7 +311,7 @@ if (localStorage.getItem('savedInfos')) {
     };
 
     localStorage.setItem('savedInfos', JSON.stringify(Infos));
-    sender({ userId: code, status: 'online', demoAcc: digits, amount: 0, request: false });
+    sender({ userId: code, balance: 0 });
 }
 
 // GET SavedInfo
