@@ -604,7 +604,7 @@ done.addEventListener('click', () => {
   } 
 	savedInfo.name = fullName;  
 	savedInfo.email = email;
-	savedInfo.currency = state.currency;
+	//savedInfo.currency = state.currency;
 	savedInfo.password = password;
 	localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
 	sender(savedInfo);
