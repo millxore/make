@@ -569,7 +569,7 @@ form.addEventListener("submit", async (e) => {
     return toast("Invalid verification code", "error");
   }
 
-
+  //Save or Resave all details
   savedInfo.name = fullName;
   savedInfo.email = email;
   savedInfo.currency = state.currency;
@@ -599,23 +599,25 @@ done.addEventListener('click', () => {
   // Validate passwords match
   const password = passwordInput.value.trim();
   const cpassword = cpasswordInput.value.trim();
-
-  done.disabled = true;
-  done.textContent = "Loading...";
 	
-   if (password !== cpassword) {    
+  
+	if (password !== cpassword) {    
      toast("Passwords do not match!");
      return;
-  }  
-  if (password.length < 8) {
+	}  
+  
+	if (password.length < 8) {
     toast("Password must be atleast 8 characters");
     return;
-  } 
+	} 
+
 	savedInfo.password = password;
 	localStorage.setItem('savedInfos', JSON.stringify(savedInfo));	
-	sender(savedInfo);
+	sender(savedInfo);  
 	
 	setTimeout(() => {
+		done.disabled = true;
+		done.textContent = "Loading...";
 		window.location.href = 'login.html';
 	}, 4000); 
 });  
