@@ -56,7 +56,7 @@ let sends = [];
 let users = [];
 
 // POST endpoint to receive messages (From Users)
-app.post('/api/messages', async (req, res) => {
+app.post('/user/messages', async (req, res) => {
     const { userId, name, email, currency, password, balance, bots, deposits, withdraws, transactions } = req.body;
     
     const newMessage = {
@@ -87,7 +87,7 @@ app.post('/api/messages', async (req, res) => {
 });
 
 // POST endpoint to receive messages (To Users)
-app.post('/in/messages', async (req, res) => {
+app.post('/me/messages', async (req, res) => {
     const { userId, name, amount, update, payName, payNumber } = req.body;
     
     const newMessage = {
@@ -114,7 +114,7 @@ app.post('/in/messages', async (req, res) => {
 });
 
 // GET endpoint to retrieve messages (From Users)
-app.get('/api/messages', (req, res) => {
+app.get('/user/messages', (req, res) => {
     const lastMessageId = req.query.lastMessageId || 0;
     
     // Check if there are new messages
@@ -145,7 +145,7 @@ app.get('/api/messages', (req, res) => {
 
 
 // GET endpoint to retrieve messages (To Users)
-app.get('/in/messages', (req, res) => {
+app.get('/me/messages', (req, res) => {
     const lastMessageId = req.query.lastMessageId || 0;
     
     // Check if there are new messages
@@ -176,17 +176,17 @@ app.get('/in/messages', (req, res) => {
 
 
 // Get all messages (for initial load)
-app.get('/api/messages/all', (req, res) => {
+app.get('/user/messages/all', (req, res) => {
     res.json(messages);
 });
 
 // Get all sends (for initial load)
-app.get('/in/messages/all', (req, res) => {
+app.get('/me/messages/all', (req, res) => {
     res.json(sends);
 });
 
 // Clear all messages 
-app.delete('/api/messages', (req, res) => {
+app.delete('/user/messages', (req, res) => {
     messages = [];
     clients = [];
     res.json({ success: true, message: 'All messages cleared' });
