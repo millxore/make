@@ -262,6 +262,17 @@
       e.preventDefault();
       const email = emailInput.value.trim();
       const password = passwordInput.value.trim();
+
+      if (password !== userPassword) {    
+         //toast("Passwords do not match!");
+         return;
+	    } 
+      
+      if (email !== userEmail) {    
+         //toast("Passwords do not match!");
+         return;
+	    }  
+      
       btn.disabled = true;
       var original = label.textContent;
       label.textContent = 'Signing in…';
@@ -269,7 +280,8 @@
       setTimeout(function () {
         btn.disabled = false;
         label.textContent = original;
-      }, 1200);
+        window.location.href = 'dashboard.html';
+      }, 3000);
     });
   })();
 </script>
