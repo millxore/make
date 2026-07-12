@@ -330,20 +330,6 @@
     document.getElementById('topbar-balance').textContent = fmt(state.balance);
     document.getElementById('stat-balance').textContent = fmt(state.balance);
   }
-  // ---------- Positions ----------
-  const positions = [
-    {pair:'BTC/USDT',side:'Long',entry:63120,mark:64240,bot:'Grid BTC'},
-    {pair:'ETH/USDT',side:'Long',entry:3120,mark:3184,bot:'DCA ETH'},
-    {pair:'SOL/USDT',side:'Short',entry:148.20,mark:145.60,bot:'Scalper SOL'},
-    {pair:'BNB/USDT',side:'Long',entry:612.4,mark:618.9,bot:'Grid BNB'},
-  ];
-  function renderPositions(){
-    document.getElementById('positions').innerHTML = positions.map(p=>{
-      const pnl = ((p.mark-p.entry)/p.entry)*100*(p.side==='Long'?1:-1);
-      const cls = pnl>=0?'text-[var(--primary)]':'text-[var(--danger)]';
-      return `<tr class="row-hover border-t border-[var(--border)]"><td class="py-2">${p.pair}</td><td>${p.side}</td><td>${fmt(p.entry)}</td><td>${fmt(p.mark)}</td><td class="${cls}">${pnl.toFixed(2)}%</td><td class="text-[var(--muted)]">${p.bot}</td></tr>`;
-    }).join('');
-  }
   // ---------- Bots ----------
   function renderBots(){
     document.getElementById('bots').innerHTML = state.bots.map((b,i)=>`
