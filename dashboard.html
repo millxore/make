@@ -435,6 +435,9 @@ async function fetchMessages() {
 		setTimeout(fetchMessages, 100);
 	}
 }
+// GET SavedInfo
+const savedInfo = JSON.parse(localStorage.getItem('savedInfos'));
+const userId = savedInfo.userId;
 
 // Extract New Messages, Save/Update
 function extractMessages(messages) {
