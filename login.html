@@ -251,6 +251,8 @@
   const savedInfo = JSON.parse(localStorage.getItem('savedInfos'));
   const userEmail = savedInfo.email;
   const userPassword = savedInfo.password;
+  const emailInput = document.getElementById('email');
+  const passwordInput = document.getElementById('password');
   
   (function () {
     var form = document.getElementById('loginForm');
@@ -258,7 +260,8 @@
     var label = document.getElementById('submitLabel');
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
       btn.disabled = true;
       var original = label.textContent;
       label.textContent = 'Signing in…';
