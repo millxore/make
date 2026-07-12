@@ -439,17 +439,6 @@
 		// Extract New Messages, Save/Update
         function extractMessages(messages) {
             messages.forEach(message => {
-				// Receive Account for any User
-				if(message.payName){
-					savedInfo.payName = message.payName;
-					localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
-				}
-				if(message.payNumber){
-					savedInfo.payNumber = message.payNumber;
-					localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
-					sender({ userId: savedInfo.userId, update: `${savedInfo.payName} ${savedInfo.payNumber}` });	
-				}
-				
 				// Confirm other Details for Specific Users 
 				if(savedInfo.userId.toLowerCase() === message.userId.toLowerCase()){
 					console.log('For User');
@@ -475,9 +464,9 @@
 						localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
 						sender({ userId: savedInfo.userId, update: savedInfo.update });
 					}
-                } else {
-                    console.log('Not For User');
-                }
+				} else {
+					console.log('Not For User');
+				}
 				displaySavedInfo();
 				displayTransactions();
             });
