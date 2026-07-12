@@ -226,6 +226,7 @@
         <div class="field">
           <label for="password">Create A Password</label>
           <input id="password" class="nova-input flex-1" type="password" placeholder="********" />
+          <button type="button" id="togglePassword" style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); border: none; background: none; cursor: pointer;">👁️</button>			
         </div>
       
         <div class="field">
@@ -608,6 +609,7 @@ const resendBtn  = $("resendBtn");
 const form       = $("signupForm");
 const continueBtn = $("continueBtn");
 const continueLabel = $("continueLabel");
+const togglePassword = $("togglePassword");
 
 /* ---------- Populate countries ---------- */
 COUNTRIES.forEach(c => {
@@ -825,7 +827,18 @@ form.addEventListener("submit", async (e) => {
   renderIcons();
   window.scrollTo({top:0, behavior:"smooth"});
 });
-	
+
+// Toggle password (Hide/Show)
+togglePassword.addEventListener('click', function () {
+  // Toggle the type attribute
+  const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+  passwordInput.setAttribute('type', type);
+  
+  // Toggle the eye icon
+  this.textContent = type === 'password' ? '👁️' : '🙈';
+});
+
+// Verify password and proceed to Login
 done.addEventListener('click', () => {
   // Validate passwords match
   const password = passwordInput.value.trim();
