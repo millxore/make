@@ -396,7 +396,7 @@
   function signOut(){if(confirm('Sign out of NovaTrade?')) location.href='/login'}
   function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.remove('hidden');clearTimeout(window.__tt);window.__tt=setTimeout(()=>t.classList.add('hidden'),2200)}
   // ---------- Init ----------
-  renderBalance(); renderPositions(); renderBots(); renderMarkets();
+  renderBalance(); renderBots(); renderMarkets();
   const initial = (location.hash||'#dashboard').slice(1);
   if(titles[initial]) setView(initial);
 
