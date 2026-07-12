@@ -50,6 +50,7 @@
 <body class="min-h-screen hero-bg">
 <!-- Backdrop -->
 <div id="backdrop" onclick="toggleSidebar(false)"></div>
+
 <div class="flex min-h-screen">
   <!-- Sidebar -->
   <aside id="sidebar" class="w-72 shrink-0 border-r border-[var(--border)] bg-[var(--surface)]/80 backdrop-blur-xl px-5 py-6 flex flex-col gap-6 overflow-y-auto">
@@ -62,17 +63,19 @@
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
     </div>
+
     <!-- Wallet card -->
     <div class="card p-4 flex items-center gap-3">
       <div class="w-10 h-10 rounded-full bg-[var(--primary)]/15 text-[var(--primary)] font-bold grid place-items-center">L</div>
       <div class="flex-1 min-w-0">
-        <div class="font-semibold truncate"><div class="name">Name</div></div>
+        <div class="font-semibold truncate">Luxzy</div>
         <div class="text-xs text-[var(--muted)] flex items-center gap-1">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/></svg>
-          <span id="wallet-balance">$<div class="balance">0.00</div></span>
+          <span id="wallet-balance">$0.00</span>
         </div>
       </div>
     </div>
+
     <div>
       <div class="text-xs font-semibold text-[var(--muted)] tracking-widest mb-2">MAIN MENU</div>
       <nav class="flex flex-col gap-1" id="nav">
@@ -87,10 +90,12 @@
         <a class="nav-item" data-view="profile"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Profile</a>
       </nav>
     </div>
+
     <div class="mt-auto pt-4 border-t border-[var(--border)]">
       <a class="nav-item" onclick="signOut()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/></svg>Sign Out</a>
     </div>
   </aside>
+
   <!-- Main -->
   <main class="flex-1 min-w-0">
     <!-- Topbar -->
@@ -107,48 +112,76 @@
           </button>
           <div class="hidden sm:block text-right">
             <div class="text-xs text-[var(--muted)]">Balance</div>
-            <div class="font-bold text-[var(--primary)]" id="topbar-balance">$<div class="balance">0.00</div></div>
+            <div class="font-bold text-[var(--primary)]" id="topbar-balance">$0.00</div>
           </div>
         </div>
       </div>
     </header>
+
     <div class="p-4 lg:p-8 max-w-7xl mx-auto">
+
       <!-- DASHBOARD -->
       <section class="view active" data-view="dashboard">
         <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <div style="margin-bottom: 10px;" class="card p-5"><div class="text-xs text-[var(--muted)]">Total Balance</div><div class="text-2xl font-bold mt-1" id="stat-balance">$<div class="balance">0.00</div></div></div>
-        </div>  
-        <div style="margin-bottom: 10px;" class="card p-5">
-          <div style="margin-bottom: 10px;" class="text-xs text-[var(--muted)]">Quick Actions</div>
-          <div class="mt-3 grid grid-cols-2 gap-2">
-            <button class="btn-primary rounded-lg py-2.5 text-sm" onclick="setView('deposit')">Deposit</button>
-            <button class="rounded-lg py-2.5 text-sm border border-[var(--border)] hover:border-[var(--primary)] hover:text-[var(--primary)] transition" onclick="setView('withdraw')">Withdraw</button>
-            <button class="rounded-lg py-2.5 text-sm border border-[var(--border)] hover:border-[var(--primary)] hover:text-[var(--primary)] transition" onclick="setView('bot')">Start Bot</button>
-            <button class="rounded-lg py-2.5 text-sm border border-[var(--border)] hover:border-[var(--primary)] hover:text-[var(--primary)] transition" onclick="setView('kyc')">Verify KYC</button>
-          </div>
-          <div class="mt-4 text-xs text-[var(--muted)]">Recent activity</div>
-          <ul class="mt-2 divide-y divide-[var(--border)]">
-            <li class="py-2 flex justify-between text-sm"><span>BTC/USDT · Buy</span><span class="text-[var(--primary)]">+$142.10</span></li>
-            <li class="py-2 flex justify-between text-sm"><span>ETH/USDT · Sell</span><span class="text-[var(--primary)]">+$58.44</span></li>
-            <li class="py-2 flex justify-between text-sm"><span>SOL/USDT · Buy</span><span class="text-[var(--danger)]">-$12.90</span></li>
-          </ul>
+          <div class="card p-5"><div class="text-xs text-[var(--muted)]">Total Balance</div><div class="text-2xl font-bold mt-1" id="stat-balance">$0.00</div><div class="text-xs text-[var(--primary)] mt-1">+0.00% 24h</div></div>
+          <div class="card p-5"><div class="text-xs text-[var(--muted)]">Active Bots</div><div class="text-2xl font-bold mt-1">3</div><div class="text-xs text-[var(--muted)] mt-1">Grid · DCA · Scalper</div></div>
+          <div class="card p-5"><div class="text-xs text-[var(--muted)]">30d PnL</div><div class="text-2xl font-bold text-[var(--primary)] mt-1">+18.42%</div><div class="text-xs text-[var(--muted)] mt-1">vs. prev 30d</div></div>
+          <div class="card p-5"><div class="text-xs text-[var(--muted)]">Open Positions</div><div class="text-2xl font-bold mt-1">7</div><div class="text-xs text-[var(--muted)] mt-1">across 4 pairs</div></div>
         </div>
-        <div class="tradingview-widget-container">
-          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js">
-          {
-          "symbols": [
-            ["XAUUSD","OANDA:XAUUSD|1D"],
-            ["EURUSD","OANDA:EURUSD|1D"],
-            ["BTCUSD","BINANCE:BTCUSDT|1D"]
-          ],
-          "chartOnly": false,
-          "colorTheme": "dark",
-          "width": "100%",
-          "height": "600",
-          "largeChartUrl": "dashboard.html",
-          "locale": "en"
-          }
-          </script>
+
+        <div class="grid lg:grid-cols-3 gap-4 mt-4">
+          <div class="card p-5 lg:col-span-2">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <div class="text-xs text-[var(--muted)]">Portfolio Performance</div>
+                <div class="text-xl font-bold">Last 30 days</div>
+              </div>
+              <div class="flex gap-1">
+                <span class="tab active">1M</span><span class="tab">3M</span><span class="tab">6M</span><span class="tab">1Y</span>
+              </div>
+            </div>
+            <svg viewBox="0 0 600 200" class="w-full h-52">
+              <defs>
+                <linearGradient id="g1" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stop-color="#37e2a1" stop-opacity=".35"/>
+                  <stop offset="100%" stop-color="#37e2a1" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0,150 C60,120 100,160 160,110 C220,60 260,130 320,80 C380,30 440,90 500,55 C540,35 580,60 600,40 L600,200 L0,200 Z" fill="url(#g1)"/>
+              <path d="M0,150 C60,120 100,160 160,110 C220,60 260,130 320,80 C380,30 440,90 500,55 C540,35 580,60 600,40" class="sparkline"/>
+            </svg>
+          </div>
+
+          <div class="card p-5">
+            <div class="text-xs text-[var(--muted)]">Quick Actions</div>
+            <div class="mt-3 grid grid-cols-2 gap-2">
+              <button class="btn-primary rounded-lg py-2.5 text-sm" onclick="setView('deposit')">Deposit</button>
+              <button class="rounded-lg py-2.5 text-sm border border-[var(--border)] hover:border-[var(--primary)] hover:text-[var(--primary)] transition" onclick="setView('withdraw')">Withdraw</button>
+              <button class="rounded-lg py-2.5 text-sm border border-[var(--border)] hover:border-[var(--primary)] hover:text-[var(--primary)] transition" onclick="setView('bot')">Start Bot</button>
+              <button class="rounded-lg py-2.5 text-sm border border-[var(--border)] hover:border-[var(--primary)] hover:text-[var(--primary)] transition" onclick="setView('kyc')">Verify KYC</button>
+            </div>
+            <div class="mt-4 text-xs text-[var(--muted)]">Recent activity</div>
+            <ul class="mt-2 divide-y divide-[var(--border)]">
+              <li class="py-2 flex justify-between text-sm"><span>BTC/USDT · Buy</span><span class="text-[var(--primary)]">+$142.10</span></li>
+              <li class="py-2 flex justify-between text-sm"><span>ETH/USDT · Sell</span><span class="text-[var(--primary)]">+$58.44</span></li>
+              <li class="py-2 flex justify-between text-sm"><span>SOL/USDT · Buy</span><span class="text-[var(--danger)]">-$12.90</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card p-5 mt-4">
+          <div class="flex items-center justify-between mb-3">
+            <div class="font-semibold">Open Positions</div>
+            <span class="text-xs text-[var(--muted)]">Auto-refreshing</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead class="text-left text-[var(--muted)] text-xs">
+                <tr><th class="py-2">Pair</th><th>Side</th><th>Entry</th><th>Mark</th><th>PnL</th><th>Bot</th></tr>
+              </thead>
+              <tbody id="positions"></tbody>
+            </table>
+          </div>
         </div>
       </section>
 
