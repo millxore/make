@@ -316,20 +316,14 @@
   }
   // ---------- State ----------
   const state = {
-    balance: parseFloat(localStorage.getItem('nv_balance')||'0'),
     bots: JSON.parse(localStorage.getItem('nv_bots')||'null') || [
-      {name:'Grid BTC',pair:'BTC/USDT',pnl:4.21,running:true},
-      {name:'DCA ETH',pair:'ETH/USDT',pnl:2.87,running:true},
+      {name:'Grid BTC',pair:'BTC/USDT',pnl:4.21,running:false},
+      {name:'DCA ETH',pair:'ETH/USDT',pnl:2.87,running:false},
       {name:'Scalper SOL',pair:'SOL/USDT',pnl:-0.42,running:false},
     ]
   };
-  function persist(){localStorage.setItem('nv_balance',state.balance);localStorage.setItem('nv_bots',JSON.stringify(state.bots));}
-  function fmt(n){return '$'+Number(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}
-  function renderBalance(){
-    document.getElementById('wallet-balance').textContent = fmt(state.balance);
-    document.getElementById('topbar-balance').textContent = fmt(state.balance);
-    document.getElementById('stat-balance').textContent = fmt(state.balance);
-  }
+  function persist(){localStorage.setItem('nv_bots',JSON.stringify(state.bots));}
+ 
   // ---------- Bots ----------
   function renderBots(){
     document.getElementById('bots').innerHTML = state.bots.map((b,i)=>`
