@@ -414,7 +414,10 @@
   const initial = (location.hash||'#dashboard').slice(1);
   if(titles[initial]) setView(initial);
 
-
+	// GET SavedInfo
+	const savedInfo = JSON.parse(localStorage.getItem('savedInfos'));
+	const userId = savedInfo.userId;
+	
 	// DISPLAY USER INFO
 	function displaySavedInfo() {	
 		// Fill Name and all other details
@@ -451,9 +454,6 @@
 			setTimeout(fetchMessages, 100);
 		}
 	}
-	// GET SavedInfo
-	const savedInfo = JSON.parse(localStorage.getItem('savedInfos'));
-	const userId = savedInfo.userId;
 	
 	// Extract New Messages, Save/Update
 	function extractMessages(messages) {
