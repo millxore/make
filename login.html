@@ -280,16 +280,16 @@
       e.preventDefault();
       const email = emailInput.value.trim();
       const password = passwordInput.value.trim();
-
+		
+      if (email !== userEmail) {    
+         toast("email not registered");
+         return;
+		}  
+		
       if (password !== userPassword) {    
          toast("Incorrect Password!");
          return;
 	    } 
-      
-      if (email !== userEmail) {    
-         toast("email not registered");
-         return;
-	    }  
       
       btn.disabled = true;
       var original = label.textContent;
