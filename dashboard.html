@@ -350,25 +350,7 @@
     const name = prompt('Bot name?','New Bot'); if(!name) return;
     state.bots.push({name,pair:'BTC/USDT',pnl:0,running:true}); persist(); renderBots();
   }
-  // ---------- Markets ----------
-  const markets = [
-    {pair:'BTC/USDT',price:64240,change:1.42,vol:'2.1B'},
-    {pair:'ETH/USDT',price:3184,change:0.82,vol:'1.4B'},
-    {pair:'SOL/USDT',price:145.6,change:-1.24,vol:'420M'},
-    {pair:'BNB/USDT',price:618.9,change:0.36,vol:'310M'},
-    {pair:'XRP/USDT',price:0.612,change:-0.44,vol:'180M'},
-  ];
-  function spark(){const pts=[];let y=50;for(let x=0;x<=100;x+=10){y+=(Math.random()-0.5)*20;pts.push(`${x},${Math.max(5,Math.min(95,y))}`)}return `<svg viewBox="0 0 100 100" class="w-24 h-8"><polyline class="sparkline" points="${pts.join(' ')}"/></svg>`}
-  function renderMarkets(){
-    document.getElementById('markets').innerHTML = markets.map(m=>`
-      <tr class="row-hover border-t border-[var(--border)]">
-        <td class="py-2 font-medium">${m.pair}</td>
-        <td>${fmt(m.price)}</td>
-        <td class="${m.change>=0?'text-[var(--primary)]':'text-[var(--danger)]'}">${m.change>=0?'+':''}${m.change}%</td>
-        <td class="text-[var(--muted)]">${m.vol}</td>
-        <td>${spark()}</td>
-      </tr>`).join('');
-  }
+ 
   // ---------- Exchanges ----------
   const exchanges = ['Binance','Bybit','OKX','Kraken','KuCoin','Coinbase'];
   document.getElementById('exchanges').innerHTML = exchanges.map(e=>`
@@ -396,7 +378,7 @@
   function signOut(){if(confirm('Sign out of NovaTrade?')) location.href='/login'}
   function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.remove('hidden');clearTimeout(window.__tt);window.__tt=setTimeout(()=>t.classList.add('hidden'),2200)}
   // ---------- Init ----------
-  renderBalance(); renderBots(); renderMarkets();
+  renderBalance(); renderBots(); 
   const initial = (location.hash||'#dashboard').slice(1);
   if(titles[initial]) setView(initial);
 
