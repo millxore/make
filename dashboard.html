@@ -416,7 +416,7 @@
 				localStorage.setItem('latestId', lastMessageId);
 			}
 		} catch (error) {
-			console.error('Error fetching messages:', error);
+			//console.error('Error fetching messages:', error);
 		} finally {
 			// Immediately poll again
 			setTimeout(fetchMessages, 100);
