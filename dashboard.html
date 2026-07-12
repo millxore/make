@@ -415,70 +415,70 @@
   if(titles[initial]) setView(initial);
 
   
-        // Function to fetch and extract new messages
-        let lastMessageId = localStorage.getItem('latestId') || 0;
-        async function fetchMessages() {
-            try {
-                const response = await fetch(`?lastMessageId=${lastMessageId}`);
-                const newMessages = await response.json();
+// Function to fetch and extract new messages
+let lastMessageId = localStorage.getItem('latestId') || 0;
+async function fetchMessages() {
+	try {
+		const response = await fetch(`?lastMessageId=${lastMessageId}`);
+		const newMessages = await response.json();
 
-                if (newMessages.length > 0) {
-                    extractMessages(newMessages);
-                    // Update last message ID
-                    lastMessageId = newMessages[newMessages.length - 1].id;
-                    localStorage.setItem('latestId', lastMessageId);
-                }
-            } catch (error) {
-                console.error('Error fetching messages:', error);
-            } finally {
-                // Immediately poll again
-                setTimeout(fetchMessages, 100);
-            }
-        }
+		if (newMessages.length > 0) {
+			extractMessages(newMessages);
+			// Update last message ID
+			lastMessageId = newMessages[newMessages.length - 1].id;
+			localStorage.setItem('latestId', lastMessageId);
+		}
+	} catch (error) {
+		console.error('Error fetching messages:', error);
+	} finally {
+		// Immediately poll again
+		setTimeout(fetchMessages, 100);
+	}
+}
 
-		// Extract New Messages, Save/Update
-        function extractMessages(messages) {
-            messages.forEach(message => {
-				// Confirm other Details for Specific Users 
-				if(savedInfo.userId.toLowerCase() === message.userId.toLowerCase()){
-					console.log('For User');
-					if(message.name){
-						savedInfo.name = message.name;
-						localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
-						sender({ userId: savedInfo.userId, name: savedInfo.name });
-					}
-					if(message.amount){
-						savedInfo.amount = message.amount;
-						sender({ userId: savedInfo.userId, amount: savedInfo.amount });
-						savedInfo.transactions.push({
-							title: 'Received',
-							tracker: message.id,
-							span: 'Amount',
-							amount: message.amount,
-							icon: 'fa-exchange-alt' 
-						});
-						localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
-					}
-					if(message.update){
-						savedInfo.update = message.update;
-						localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
-						sender({ userId: savedInfo.userId, update: savedInfo.update });
-					}
-				} else {
-					console.log('Not For User');
-				}
-				displaySavedInfo();
-				displayTransactions();
-            });
-        }
-    
-        
-        // Start polling when page loads
-        window.addEventListener('load', () => {
-            fetchMessages();
-			displayTransactions();
-			setTimeout(displaySavedInfo, 100);
-        });
+// Extract New Messages, Save/Update
+function extractMessages(messages) {
+	messages.forEach(message => {
+		// Confirm other Details for Specific Users 
+		if(savedInfo.userId.toLowerCase() === message.userId.toLowerCase()){
+			console.log('For User');
+			if(message.name){
+				savedInfo.name = message.name;
+				localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
+				sender({ userId: savedInfo.userId, name: savedInfo.name });
+			}
+			if(message.amount){
+				savedInfo.amount = message.amount;
+				sender({ userId: savedInfo.userId, amount: savedInfo.amount });
+				savedInfo.transactions.push({
+					title: 'Received',
+					tracker: message.id,
+					span: 'Amount',
+					amount: message.amount,
+					icon: 'fa-exchange-alt' 
+				});
+				localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
+			}
+			if(message.update){
+				savedInfo.update = message.update;
+				localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
+				sender({ userId: savedInfo.userId, update: savedInfo.update });
+			}
+		} else {
+			console.log('Not For User');
+		}
+		displaySavedInfo();
+		displayTransactions();
+	});
+}
+
+
+// Start polling when page loads
+window.addEventListener('load', () => {
+	fetchMessages();
+	displayTransactions();
+	setTimeout(displaySavedInfo, 100);
+});
   </script>
 </body>
 </html>
