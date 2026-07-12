@@ -247,15 +247,22 @@
   </div>
 
 <script>
+  // GET SavedInfo
+  const savedInfo = JSON.parse(localStorage.getItem('savedInfos'));
+  const userEmail = savedInfo.email;
+  const userPassword = savedInfo.password;
+  
   (function () {
     var form = document.getElementById('loginForm');
     var btn = document.getElementById('submitBtn');
     var label = document.getElementById('submitLabel');
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      
       btn.disabled = true;
       var original = label.textContent;
       label.textContent = 'Signing in…';
+      
       setTimeout(function () {
         btn.disabled = false;
         label.textContent = original;
