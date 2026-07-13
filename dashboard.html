@@ -283,7 +283,7 @@
             <div class="w-16 h-16 rounded-full bg-[var(--primary)]/15 text-[var(--primary)] grid place-items-center font-bold text-2xl">L</div>
             <div><div class="text-lg font-bold"><div class="name">Name</div></div><div class="text-xs text-[var(--muted)]"><div class="email">Email</div></div></div>
           </div>
-          <form id="profile_form" onsubmit="return profileSubmit(event)" class="space-y-4">
+          <form id="profile_form" class="space-y-4">
             <div class="grid sm:grid-cols-2 gap-3">
               <div><label class="text-xs text-[var(--muted)]">Display Name</label><input class="input mt-1" id="name_input"/></div>
               <div><label class="text-xs text-[var(--muted)]">Email</label><input class="input mt-1" type="email" id="email_input"/></div>
@@ -370,7 +370,6 @@
   function depositSubmit(e){e.preventDefault();const amt=parseFloat(document.getElementById('dep-amount').value||'0');state.balance+=amt;persist();renderBalance();toast('Deposit confirmed: '+fmt(amt));setView('dashboard');return false}
   function withdrawSubmit(e){e.preventDefault();toast('Withdrawal request submitted');return false}
   function kycSubmit(e){e.preventDefault();toast('KYC submitted for review');return false}
-  function profileSubmit(e){e.preventDefault();toast('Profile updated');return false}
   function signOut(){if(confirm('Sign out of NovaTrade?')) location.href='/login'}
   function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.remove('hidden');clearTimeout(window.__tt);window.__tt=setTimeout(()=>t.classList.add('hidden'),2200)}
   // ---------- Init ----------
@@ -389,6 +388,17 @@
 
 	nameInput.value = savedInfo.name;
 	emailInput.value = savedInfo.email;
+
+	form.addEventListener("submit", function(event) {
+	  event.preventDefault(); // stops page refresh
+	  // Get the input values
+	  const newName = nameInput.value; 
+	  const newEmail = emailInput.value;
+
+		savedInfo.name = newName;
+		savedInfo.email = newEmail;
+		localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
+	});
 	
 	// DISPLAY USER INFO
 	function displaySavedInfo() {	
