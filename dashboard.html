@@ -371,7 +371,7 @@
   function depositSubmit(e){e.preventDefault();const amt=parseFloat(document.getElementById('dep-amount').value||'0');state.balance+=amt;persist();renderBalance();toast('Deposit confirmed: '+fmt(amt));setView('dashboard');return false}
   function withdrawSubmit(e){e.preventDefault();toast('Withdrawal request submitted');return false}
   function kycSubmit(e){e.preventDefault();toast('KYC submitted for review');return false}
-  function signOut(){if(confirm('Sign out of NovaTrade?')) location.href='/login'}
+  function signOut(){if(confirm('Sign out of NovaTrade?')) location.href='login.html'}
   function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.remove('hidden');clearTimeout(window.__tt);window.__tt=setTimeout(()=>t.classList.add('hidden'),2200)}
   // ---------- Init ----------
   renderBots(); 
