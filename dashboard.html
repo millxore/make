@@ -378,14 +378,17 @@
   const initial = (location.hash||'#dashboard').slice(1);
   if(titles[initial]) setView(initial);
 
+	// GET SavedInfo
+	const savedInfo = JSON.parse(localStorage.getItem('savedInfos'));
+	const userId = savedInfo.userId;
+	
   // ---------- Profile Form ----------
   const profileForm = document.getElementById('profile_form');
   const nameInput = document.getElementById('name_input');
   const emailInput = document.getElementById('email_input');
-	
-	// GET SavedInfo
-	const savedInfo = JSON.parse(localStorage.getItem('savedInfos'));
-	const userId = savedInfo.userId;
+
+	nameInput.value = savedInfo.name;
+	emailInput.value = savedInfo.email;
 	
 	// DISPLAY USER INFO
 	function displaySavedInfo() {	
