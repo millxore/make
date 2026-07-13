@@ -356,7 +356,7 @@
       <span class="chip pulse">Live</span>
     </div>`).join('');
   // ---------- Live chart ----------
-  const livePts = []; let livePrice = 13080;
+  const livePts = []; let livePrice = 3080;
   function pushLive(){
     livePrice += (Math.random()-0.5)*120;
     livePts.push(livePrice); if(livePts.length>60) livePts.shift();
