@@ -398,6 +398,7 @@
 		savedInfo.name = newName;
 		savedInfo.email = newEmail;
 		localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
+		toast('Profile Updated');
 	});
 	
 	// DISPLAY USER INFO
