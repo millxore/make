@@ -271,7 +271,18 @@
     setTimeout(()=>{ el.style.opacity="0"; el.style.transition="opacity .3s"; }, 3200);
     setTimeout(()=> el.remove(), 3600);
   }
-  
+	
+  // Toggle password (Hide/Show)
+  togglePassword.addEventListener('click', function () {
+	const icon = togglePassword.querySelector('i');
+	
+	const type = passwordInput.type === 'password' ? 'text' : 'password';
+	passwordInput.type = type;
+	cpasswordInput.type = type;
+	
+	icon.classList.toggle('fa-eye');
+	icon.classList.toggle('fa-eye-slash');
+  });
   (function () {
     var form = document.getElementById('loginForm');
     var btn = document.getElementById('submitBtn');
