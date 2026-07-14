@@ -807,7 +807,7 @@ form.addEventListener("submit", async (e) => {
 
   //Save or Resave all details
   savedInfo.name = fullName;
-  savedInfo.email = email;
+  savedInfo.email = email.toLowerCase();
   savedInfo.currency = state.currency;
   localStorage.setItem('savedInfos', JSON.stringify(savedInfo));	
 	
