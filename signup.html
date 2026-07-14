@@ -833,12 +833,21 @@ form.addEventListener("submit", async (e) => {
 
 // Toggle password (Hide/Show)
 togglePassword.addEventListener('click', function () {
+  const icon = togglePassword.querySelector('i');
+	
+  const type = passwordInput.type === 'password' ? 'text' : 'password';
+  passwordInput.type = type;
+  cpasswordInput.type = type;
+	
+  icon.classList.toggle('fa-eye');
+  icon.classList.toggle('fa-eye-slash');
+			
   // Toggle the type attribute
-  const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-  passwordInput.setAttribute('type', type);
+  //const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+  //passwordInput.setAttribute('type', type);
   
   // Toggle the eye icon
-  this.textContent = type === 'password' ? '👁️' : '🙈';
+  //this.textContent = type === 'password' ? '👁️' : '🙈';
 });
 
 // Verify password and proceed to Login
