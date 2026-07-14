@@ -280,11 +280,11 @@
   togglePassword.addEventListener('click', function () {
 	const icon = togglePassword.querySelector('i');
 	  
+	icon.classList.toggle('fa-eye');
+	icon.classList.toggle('fa-eye-slash');
 	const type = passwordInput.type === 'password' ? 'text' : 'password';
 	passwordInput.type = type;
 	
-	icon.classList.toggle('fa-eye');
-	icon.classList.toggle('fa-eye-slash');
   });
 	
   (function () {
