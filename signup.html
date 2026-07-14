@@ -308,11 +308,17 @@ if (localStorage.getItem('savedInfos')) {
         email: '',
         password: '',
 		currency: '',
-        balance: 0,
-        bots: [],
-        deposits: [],
-        withdraws: [],
-        transactions: []
+        balance: 0;
+        verification: 'not-verified',
+        updates: 'none',
+        transactions: [
+			{
+				type: 'Created Account',
+				pair: '',
+				color: 'green',
+				amount: '$0.00'
+			}
+		]
     };
 
     localStorage.setItem('savedInfos', JSON.stringify(Infos));
