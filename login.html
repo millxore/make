@@ -297,7 +297,7 @@
       const email = emailInput.value.trim();
       const password = passwordInput.value.trim();
 		
-      if (email !== userEmail) {    
+      if (email.toLowerCase() !== userEmail) {    
          toast("email not registered");
          return;
 		}  
