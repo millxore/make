@@ -417,7 +417,7 @@
 		// Then Display Recent Transaction
 		savedInfo.transactions.slice(-2).reverse().forEach((transaction) => {
 			const clone = cloneTemplate.cloneNode(true);
-			clone.querySelector('.transaction-title').textContent = transaction.title;				
+			clone.querySelector('.transaction-title').textContent = transaction.type;				
 			cloneParent.appendChild(clone);
 		});
 	}
