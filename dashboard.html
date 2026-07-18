@@ -451,7 +451,7 @@
 			}
 			
 			// Ensure USD balance doesn't go below zero
-			if (currentBalance < 0) currentBalance = 100;
+			if (currentBalance < 0) currentBalance = 0;
 	
 			// Store the updated balance
 			savedInfo.balance = currentBalance;
