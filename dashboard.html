@@ -441,7 +441,9 @@
 		    //const currentUsdBalance = storedBalance;
 		    //localStorage.setItem('currentUsdBalance', currrentUSdBalance.toString());		    
 		    // Clear any existing interval
-		    if (balanceInterval) clearInterval(balanceInterval);
+		    if (balanceInterval) {
+				clearInterval(balanceInterval);
+			}
   
 		    // Start new interval
 		    balanceInterval = setInterval(() => {
