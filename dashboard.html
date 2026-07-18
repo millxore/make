@@ -426,10 +426,8 @@
 
 	function startBalanceFluctuation() {
 		// Try to get stored balance from localStorage
-		//currentBalance = savedInfo.balance;
-		currentBalance = 101;
+		currentBalance = savedInfo.balance;
 		let balanceInterval;
-		// Store the initial balance if it wasn't stored before
 		if (currentBalance < 100) {
 		    toast('Minimum deposit of $100 required to start bot');
 		return;
