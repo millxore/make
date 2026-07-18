@@ -408,7 +408,7 @@
 	const cloneParent = document.getElementById('recentParent');
 	const cloneTemplate = cloneParent.querySelector('.recentClone');
 	cloneTemplate.textContent = "Hello World";	
-	//cloneParent.children[0].remove();
+	cloneParent.children[0].remove();
 	
 	function displayTransactions() {			
 		// Hide Current Display First on every refresh
@@ -425,7 +425,7 @@
 		});
 	}
 	
-	displayTransactions();
+	//displayTransactions();
 
 	// DISPLAY USER INFO
 	function displaySavedInfo() {	
