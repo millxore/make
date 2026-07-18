@@ -131,7 +131,7 @@
           <div class="mt-4 text-xs text-[var(--muted)]">Recent activity</div>
             <div id="recentParent">
 	          <div class="recentClone mt-2 divide-y divide-[var(--border)]">
-	            <div class="transaction-title tpy-2 flex justify-between text-sm"><span>BTC/USDT · Buy</span><span class="recentAmount text-[var(--primary)]">+$142.10</span></div>
+	            <div class="transaction-type tpy-2 flex justify-between text-sm"><span>BTC/USDT · Buy</span><span class="recentAmount text-[var(--primary)]">+$142.10</span></div>
 	          </div>
 			</div>
         </div>
@@ -417,7 +417,7 @@
 		// Then Display Recent Transaction
 		savedInfo.transactions.slice(-2).reverse().forEach((transaction) => {
 			const clone = cloneTemplate.cloneNode(true);
-			clone.querySelector('.transaction-title').textContent = transaction.type;	
+			clone.querySelector('.transaction-type').textContent = transaction.type;	
 			// New clones goes down
 			cloneParent.appendChild(clone);
 		});
