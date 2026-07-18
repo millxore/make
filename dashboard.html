@@ -429,7 +429,42 @@
 		// Fill Name and all other details
 		document.querySelectorAll('.name').forEach(demoAcc => demoAcc.textContent = savedInfo.name);
 		document.querySelectorAll('.email').forEach(azaName => azaName.textContent = savedInfo.email);
-		document.querySelectorAll('.balance').forEach(realAcc => realAcc.textContent = savedInfo.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+		//document.querySelectorAll('.balance').forEach(realAcc => realAcc.textContent = savedInfo.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+		function startBalanceFluctuation() {
+		    // Try to get stored balance from localStorage
+		    const currentBalance = savedInfo.balance;
+			// Store the initial balance if it wasn't stored before
+		    //if (storedBalance < 100) {
+		    //    toast('Minimum deposit of $100 required to start bot');
+			//return;
+		    //}
+		    //const currentUsdBalance = storedBalance;
+		    //localStorage.setItem('currentUsdBalance', currrentUSdBalance.toString());		    
+		    // Clear any existing interval
+		    if (balanceInterval) clearInterval(balanceInterval);
+  
+		    // Start new interval
+		    balanceInterval = setInterval(() => {
+		        // Randomly decide to increase or decrease (60% chance of increase, 40% chance of decrease)
+		        const shouldIncrease = Math.random() > 0.4;
+		        
+		        // Apply changes to USD only (BTC remains fixed)
+		        if (shouldIncrease) {
+		            currentBalance += 0.99;
+		        } else {
+		            currentBalance -= 0.46;
+		        }
+		        
+		        // Ensure USD balance doesn't go below zero
+		        if (currentBalance < 0) currentBalance = 0;
+		        
+		        // Store the updated balance
+		        //localStorage.setItem('currentUsdBalance', currentUsdBalance.toString());
+		        savedInfo.balance = currentBalance;
+				localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
+		        document.querySelectorAll('.balance').forEach(realAcc => realAcc.textContent = = `$${currentUsdBalance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+		    }, 1000); // Update every second
+		}
 		//document.querySelectorAll('.name').forEach(name => name.textContent = rename);
 		//document.querySelectorAll('.avatar').forEach(vatar => vatar.textContent = avatar);
 		//document.querySelectorAll('.amount').forEach(amount => amount.textContent = savedInfo.amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
