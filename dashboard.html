@@ -425,6 +425,7 @@
 	displayTransactions();
 
 	function startBalanceFluctuation() {
+		document.querySelectorAll('.balance').forEach(realAcc => realAcc.textContent = savedInfo.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
 		// Try to get stored balance from localStorage
 		currentBalance = savedInfo.balance;
 		let balanceInterval;
