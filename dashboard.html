@@ -401,6 +401,10 @@
 		displaySavedInfo();
 		toast('Profile Updated');
 	});
+
+	const cloneParent = document.getElementById('recentParent');
+	const cloneTemplate = cloneParent.querySelector('.recentClone);
+	cloneParent.children[0].remove();
 	
 	// DISPLAY USER INFO
 	function displaySavedInfo() {	
