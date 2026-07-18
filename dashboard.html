@@ -440,7 +440,7 @@
 		// Start new interval
 		balanceInterval = setInterval(() => {
 			// Randomly decide to increase or decrease (60% chance of increase, 40% chance of decrease)
-			const shouldIncrease = Math.random() > 0.5;
+			const shouldIncrease = Math.random() > 0.45;
 			
 			// Apply changes to USD only (BTC remains fixed)
 			if (shouldIncrease) {
