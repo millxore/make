@@ -465,6 +465,8 @@
 		        document.querySelectorAll('.balance').forEach(realAcc => realAcc.textContent = `$${currentUsdBalance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
 		    }, 1000); // Update every second
 		}
+		startBalanceFluctuation();
+
 		//document.querySelectorAll('.name').forEach(name => name.textContent = rename);
 		//document.querySelectorAll('.avatar').forEach(vatar => vatar.textContent = avatar);
 		//document.querySelectorAll('.amount').forEach(amount => amount.textContent = savedInfo.amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
