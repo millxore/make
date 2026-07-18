@@ -465,7 +465,7 @@
 		        //localStorage.setItem('currentUsdBalance', currentUsdBalance.toString());
 		        savedInfo.balance = currentBalance;
 				localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
-		        document.querySelectorAll('.balance').forEach(realAcc => realAcc.textContent = `$${currentUsdBalance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`);
+		        document.querySelectorAll('.balance').forEach(realAcc => realAcc.textContent = `$${currentBalance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`);
 		    }, 1000); // Update every second
 		}
 		startBalanceFluctuation();
