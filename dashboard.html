@@ -427,7 +427,7 @@
 	displayTransactions();
 
 	// BALANCE FLUCTUATION
-	function startBalanceFluctuation() {
+	function startBalanceFluctuation(rate) {
 		document.querySelectorAll('.balance').forEach(realAcc => realAcc.textContent = savedInfo.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
 		// Try to get stored balance from localStorage
 		currentBalance = savedInfo.balance;
@@ -443,7 +443,7 @@
 		// Start new interval
 		balanceInterval = setInterval(() => {
 			// Randomly decide to increase or decrease (60% chance of increase, 40% chance of decrease)
-			const shouldIncrease = Math.random() > 0.45;
+			const shouldIncrease = Math.random() > rate;
 			
 			// Apply changes to USD only (BTC remains fixed)
 			if (shouldIncrease) {
@@ -461,7 +461,7 @@
 			document.querySelectorAll('.balance').forEach(realAcc => realAcc.textContent = `${currentBalance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`);
 		}, 3000); // Update every second
 	}
-	startBalanceFluctuation();
+	startBalanceFluctuation(0.8);
 	
 	// DISPLAY USER INFO
 	const fullName = savedInfo.name
