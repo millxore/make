@@ -198,7 +198,7 @@
           <div class="card p-5">
             <div class="font-semibold mb-2">Strategy</div>
             <ul class="space-y-2 text-sm text-[var(--muted)]">
-              <li>• Grid Trading</li><li>• DCA Accumulator</li><li>• Scalper</li><li>• Arbitrage</li><li>• Trend Follower</li>
+              <li>• Scalper</li><li>• Grid Trading</li><li>• DCA Accumulator</li><li>• Arbitrage</li><li>• Trend Follower</li>
             </ul>
           </div>
         </div>
@@ -319,9 +319,11 @@
   // ---------- State ----------
   const state = {
     bots: JSON.parse(localStorage.getItem('nv_bots')||'null') || [
+      {name:'Scalper XAU',pair:'XAU/USDT',pnl:-0.42,running:false},
       {name:'Grid BTC',pair:'BTC/USDT',pnl:4.21,running:false},
       {name:'DCA ETH',pair:'ETH/USDT',pnl:2.87,running:false},
-      {name:'Scalper SOL',pair:'SOL/USDT',pnl:-0.42,running:false},
+      {name:'Arbitrage GBP',pair:'GBP/USDT',pnl:-0.42,running:false},
+      {name:'Trending EUR',pair:'EUR/USDT',pnl:-0.42,running:false},
     ]
   };
   function persist(){localStorage.setItem('nv_bots',JSON.stringify(state.bots));}
