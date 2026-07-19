@@ -67,7 +67,7 @@
     <div class="card p-4 flex items-center gap-3">
       <div class="w-10 h-10 rounded-full bg-[var(--primary)]/15 text-[var(--primary)] font-bold grid place-items-center">~</div>
       <div class="flex-1 min-w-0">
-        <div class="font-semibold truncate"><div class="name">Name</div></div>
+        <div class="font-semibold truncate"><div class="halfName">Name</div></div>
         <div class="text-xs text-[var(--muted)] flex items-center gap-1">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/></svg>
           <span id="wallet-balance">$<span class="balance">0.00</span></span>
@@ -463,9 +463,11 @@
 	startBalanceFluctuation();
 	
 	// DISPLAY USER INFO
-	document.querySelectorAll('.name').forEach(demoAcc => demoAcc.textContent = savedInfo.name);
+	const fullName = savedInfo.name
+	const firstName = fullName.trim().split(' ')[0];
+	document.querySelectorAll('.name').forEach(demoAcc => demoAcc.textContent = fullName);
 	document.querySelectorAll('.email').forEach(azaName => azaName.textContent = savedInfo.email);
-	//document.querySelectorAll('.balance').forEach(realAcc => realAcc.textContent = savedInfo.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+	document.querySelectorAll('.halfName').forEach(realAcc => realAcc.textContent = firstName);
 		
 
   
