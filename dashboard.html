@@ -463,21 +463,10 @@
 	startBalanceFluctuation();
 	
 	// DISPLAY USER INFO
-	function displaySavedInfo() {	
-		// Fill Name and all other details
-		document.querySelectorAll('.name').forEach(demoAcc => demoAcc.textContent = savedInfo.name);
-		document.querySelectorAll('.email').forEach(azaName => azaName.textContent = savedInfo.email);
-		//document.querySelectorAll('.balance').forEach(realAcc => realAcc.textContent = savedInfo.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+	document.querySelectorAll('.name').forEach(demoAcc => demoAcc.textContent = savedInfo.name);
+	document.querySelectorAll('.email').forEach(azaName => azaName.textContent = savedInfo.email);
+	//document.querySelectorAll('.balance').forEach(realAcc => realAcc.textContent = savedInfo.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
 		
-
-		//document.querySelectorAll('.name').forEach(name => name.textContent = rename);
-		//document.querySelectorAll('.avatar').forEach(vatar => vatar.textContent = avatar);
-		//document.querySelectorAll('.amount').forEach(amount => amount.textContent = savedInfo.amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-		//document.querySelectorAll('.walletName').forEach(walletName => walletName.textContent = savedInfo.walletName);
-		//document.querySelectorAll('update').forEach(update => update.textContent = savedInfo.update;
-		//document.querySelectorAll('payName').forEach(payName => payName.textContent = savedInfo.payName;	
-		//document.querySelectorAll('payNumber').forEach(payNumber => payNumber.textContent = savedInfo.payNumber;
-	}
 
   
 	// Function to fetch and extract new messages
@@ -541,9 +530,7 @@
 	// Start polling when page loads
 	window.addEventListener('load', () => {
 		fetchMessages();
-		//displayTransactions();
-		displaySavedInfo();
-		//setTimeout(displaySavedInfo, 100);
+		displayTransactions();
 	});
   </script>
 </body>
