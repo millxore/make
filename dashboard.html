@@ -461,7 +461,7 @@
 			document.querySelectorAll('.balance').forEach(realAcc => realAcc.textContent = `${currentBalance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`);
 		}, time); // Update every second
 	}
-	startBalanceFluctuation(300, 0.4, 1000, 0.6, 0.1);
+	startBalanceFluctuation(100, 0.4, 1000, 0.6, 0.1);
 	
 	// DISPLAY USER INFO
 	const fullName = savedInfo.name
