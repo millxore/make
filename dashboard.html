@@ -343,6 +343,9 @@
 <!-- Toast -->
 <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[80] hidden card px-4 py-3 text-sm"></div>
 <script>
+  // GET SavedInfo
+  const savedInfo = JSON.parse(localStorage.getItem('savedInfos'));
+  const userId = savedInfo.userId;
   // ---------- Navigation ----------
   const titles = {dashboard:'Dashboard',deposit:'Deposit',withdraw:'Withdraw',bot:'Bot Console',live:'Live Trading',market:'Market Data',platform:'Live Platform',kyc:'KYC Verification',profile:'Profile'};
   function setView(v){
@@ -424,7 +427,7 @@
     document.getElementById('bd-profit').textContent = fmt(b.profit);
     document.getElementById('bd-runs').textContent = b.runs;
     document.getElementById('bd-trades').textContent = b.trades;
-    document.getElementById('bd-balance').textContent = fmt(state.balance);
+    document.getElementById('bd-balance').textContent = savedInfo.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
     document.getElementById('bd-strategy').textContent = b.strategy;
     document.getElementById('bd-pair').textContent = b.pair;
     document.getElementById('bd-risk').innerHTML = `<span class="${riskColor(b.risk)} font-medium">${b.risk}</span>`;
@@ -466,9 +469,6 @@
   const initial = (location.hash||'#dashboard').slice(1);
   if(titles[initial]) setView(initial);
 
-	// GET SavedInfo
-	const savedInfo = JSON.parse(localStorage.getItem('savedInfos'));
-	const userId = savedInfo.userId;
 	
   // ---------- Profile Form ----------
   const profileForm = document.getElementById('profile_form');
