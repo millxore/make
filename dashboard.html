@@ -364,14 +364,16 @@
   // ---------- State ----------
   const state = {
     bots: JSON.parse(localStorage.getItem('nv_bots')||'null') || [
-      {id:'scalper-xau',name:'Scalper XAU',strategy:'Scalper',pair:'XAU/USDT',pnl:-0.42,running:false,desc:'Places layered buy/sell orders in a defined range to capture sideways volatility.',risk:'Low',perf:78,rating:4.5,minCapital:250},
-      {id:'grid-btc',name:'Grid BTC',strategy:'Grid Trading',pair:'BTC/USDT',pnl:4.21,running:false,desc:'Averages down entries over time to build a long-term position with reduced timing risk.',risk:'Low',perf:71,rating:4.2,minCapital:150},
-      {id:'dca-eth',name:'DCA ETH',strategy:'DCA Accumulator',pair:'ETH/USDT',pnl:2.87,running:false,desc:'High-frequency micro-trades targeting small intraday movements on high volume.',risk:'High',perf:64,rating:4.0,minCapital:500},
-      {id:'arbitrage-gbp',name:'Arbitrage GBP',strategy:'Arbitrage',pair:'GBP/USDT',pnl:-0.42,running:false,desc:'Rides confirmed momentum using EMA crossovers and volume filters.',risk:'Medium',perf:82,rating:3.6,minCapital:300},
-      {id:'trending-eur',name:'Trending EUR',strategy:'Trending Trading',pair:'EUR/USDT',pnl:-0.42,running:false,desc:'Exploits short-lived price gaps across connected exchanges.',risk:'Low',perf:69,rating:3.0,minCapital:1000},
+      {id:'scalper-xau',name:'Scalper XAU',strategy:'Scalper',pair:'XAU/USDT',pnl:-0.42,desc:'Places layered buy/sell orders in a defined range to capture sideways volatility.',risk:'Low',perf:78,rating:4.5,minCapital:250},
+      {id:'grid-btc',name:'Grid BTC',strategy:'Grid Trading',pair:'BTC/USDT',pnl:4.21,desc:'Averages down entries over time to build a long-term position with reduced timing risk.',risk:'Low',perf:71,rating:4.2,minCapital:150},
+      {id:'dca-eth',name:'DCA ETH',strategy:'DCA Accumulator',pair:'ETH/USDT',pnl:2.87,desc:'High-frequency micro-trades targeting small intraday movements on high volume.',risk:'High',perf:64,rating:4.0,minCapital:500},
+      {id:'arbitrage-gbp',name:'Arbitrage GBP',strategy:'Arbitrage',pair:'GBP/USDT',pnl:-0.42,desc:'Rides confirmed momentum using EMA crossovers and volume filters.',risk:'Medium',perf:82,rating:3.6,minCapital:300},
+      {id:'trending-eur',name:'Trending EUR',strategy:'Trending Trading',pair:'EUR/USDT',pnl:-0.42,desc:'Exploits short-lived price gaps across connected exchanges.',risk:'Low',perf:69,rating:3.0,minCapital:1000},
     ],
 	activeBotId: null,
   };
+	
+  state.bots.forEach(b=>{if(b.status==='running') b.status='idle'; b.profit=b.profit||0; b.runs=b.runs||0; b.trades=b.trades||0;});
   function persist(){localStorage.setItem('nv_bots',JSON.stringify(state.bots));}
   function fmt(n){return '$'+Number(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}
 
