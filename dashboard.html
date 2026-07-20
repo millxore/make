@@ -369,6 +369,7 @@
       {id:'arbitrage-gbp',name:'Arbitrage GBP',strategy:'Arbitrage',pair:'GBP/USDT',pnl:-0.42,desc:'Rides confirmed momentum using EMA crossovers and volume filters.',risk:'Medium',perf:82,rating:3.6,minCapital:300},
       {id:'trending-eur',name:'Trending EUR',strategy:'Trending Trading',pair:'EUR/USDT',pnl:-0.42,desc:'Exploits short-lived price gaps across connected exchanges.',risk:'Low',perf:69,rating:3.0,minCapital:1000},
     ];
+  const savedBots = JSON.parse(localStorage.getItem('nv_bots')||'null');
   const state = {
     bots: (savedBots && Array.isArray(savedBots) && savedBots[0] && savedBots[0].id) ? savedBots : defaultBots.map(b=>({...b,status:'idle',profit:0,runs:0,trades:0})),
 	activeBotId: null,
