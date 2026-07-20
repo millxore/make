@@ -514,7 +514,7 @@
 	displayTransactions();
 
 	// BALANCE FLUCTUATION
-	function startBalanceFluctuation(price, rate, time, up, down) {
+	function startBalanceFluctuation(price, rate, up, down) {
 		document.querySelectorAll('.balance').forEach(realAcc => realAcc.textContent = savedInfo.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
 		// Try to get stored balance from localStorage
 		currentBalance = savedInfo.balance;
@@ -546,7 +546,7 @@
 			savedInfo.balance = currentBalance;
 			localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
 			document.querySelectorAll('.balance').forEach(realAcc => realAcc.textContent = `${currentBalance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`);
-		}, time); // Update every second
+		}, 2000); // Update every two second
 	}
 	//startBalanceFluctuation(100, 0.4, 1000, 0.6, 0.1);
 	
