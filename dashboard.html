@@ -493,7 +493,7 @@
 	
   function botStart(){const b=getActiveBot(); if(!b||b.status==='running') return; if(b.status!=='paused') b.runs += 1; b.status='running'; persist(); renderBotDetail(); startBalanceFluctuation(1000, 0.5, 10, 5), toast(b.name+' started');}
   function botPause(){const b=getActiveBot(); if(!b||b.status!=='running') return; b.status='paused'; persist(); renderBotDetail(); stopBalanceFluctuation(); toast(b.name+' paused');}
-  function botStop(){const b=getActiveBot(); if(!b||b.status==='idle') return; b.status='idle'; persist(); renderBotDetail(); toast(b.name+' stopped');}	
+  function botStop(){const b=getActiveBot(); if(!b||b.status==='idle') return; b.status='idle'; persist(); renderBotDetail(); stopBalanceFluctuation(); toast(b.name+' stopped');}	
  
 	
   // ---------- Exchanges ----------
