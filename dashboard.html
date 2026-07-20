@@ -400,9 +400,23 @@
         </div>
       </div>`).join('');
   }
+
+  function getActiveBot(){return state.bots.find(b=>b.id===state.activeBotId);}
+  function openBot(id){
+    state.activeBotId = id;
+    document.getElementById('bot-list-wrap').classList.add('hidden');
+    document.getElementById('bot-detail-wrap').classList.remove('hidden');
+    renderBotDetail();
+  }
+  function closeBot(){
+    state.activeBotId = null;
+    document.getElementById('bot-detail-wrap').classList.add('hidden');
+    document.getElementById('bot-list-wrap').classList.remove('hidden');
+    renderBots();
+  }
   
   function toggleBot(i){state.bots[i].running=!state.bots[i].running;persist();renderBots();toast(state.bots[i].running?'Bot started':'Bot paused')}
-
+  
   // ---------- Exchanges ----------
   const exchanges = ['Binance','Bybit','OKX','Kraken','KuCoin','Coinbase'];
   document.getElementById('exchanges').innerHTML = exchanges.map(e=>`
