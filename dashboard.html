@@ -479,7 +479,7 @@
 			// Store the updated balance
 			savedInfo.balance = currentBalance;
 			localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
-			document.querySelectorAll('.balance').forEach(realAcc => realAcc.textContent = `${currentBalance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`);
+			document.querySelectorAll('.balance').forEach(bal => bal.textContent = `${currentBalance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`);
 		}, 2000); // Update every two second
   }
 
