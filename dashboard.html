@@ -571,7 +571,7 @@
 	// DISPLAY USER INFO
 	const fullName = savedInfo.name
 	const firstName = fullName.trim().split(' ')[0];
-	document.querySelectorAll('.name').forEach(Name => Name.textContent = fullName);
+	document.querySelectorAll('.name').forEach(Namefull => Namefull.textContent = fullName);
 	document.querySelectorAll('.email').forEach(email => email.textContent = savedInfo.email);
 	document.querySelectorAll('.halfName').forEach(firstName => firstName.textContent = firstName);
 	document.querySelectorAll('.balance').forEach(bal => bal.textContent = `${savedInfo.balance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`);
