@@ -414,7 +414,27 @@
     document.getElementById('bot-list-wrap').classList.remove('hidden');
     renderBots();
   }
-  
+
+  function renderBotDetail(){
+    const b = getActiveBot(); if(!b) return;
+    document.getElementById('bd-name').textContent = b.name;
+    document.getElementById('bd-desc').textContent = b.desc;
+    const oldStatus = document.getElementById('bd-status');
+    if(oldStatus) oldStatus.outerHTML = statusChip(b.status,'bd-status');
+    document.getElementById('bd-profit').textContent = fmt(b.profit);
+    document.getElementById('bd-runs').textContent = b.runs;
+    document.getElementById('bd-trades').textContent = b.trades;
+    document.getElementById('bd-balance').textContent = fmt(state.balance);
+    document.getElementById('bd-strategy').textContent = b.strategy;
+    document.getElementById('bd-pair').textContent = b.pair;
+    document.getElementById('bd-risk').innerHTML = `<span class="${riskColor(b.risk)} font-medium">${b.risk}</span>`;
+    document.getElementById('bd-perf-val').textContent = b.perf+'%';
+    document.getElementById('bd-perf-bar').style.width = b.perf+'%';
+    document.getElementById('bd-rating-val').textContent = b.rating.toFixed(1)+' / 5';
+    document.getElementById('bd-rating-stars').textContent = stars(b.rating);
+    document.getElementById('bd-min').textContent = fmt(b.minCapital);
+  }
+	renderBotDetail();
   function toggleBot(i){state.bots[i].running=!state.bots[i].running;persist();renderBots();toast(state.bots[i].running?'Bot started':'Bot paused')}
   
   // ---------- Exchanges ----------
