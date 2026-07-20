@@ -449,40 +449,40 @@
     stopBtn.disabled = b.status==='idle';
     pauseBtn.disabled = !running;
     [startBtn,stopBtn,pauseBtn].forEach(btn=>{btn.classList.toggle('opacity-40',btn.disabled); btn.classList.toggle('cursor-not-allowed',btn.disabled);});  
-	  
-	  // BALANCE FLUCTUATION
-	  function startBalanceFluctuation(price, rate, up, down) {
-			document.querySelectorAll('.balance').forEach(realAcc => realAcc.textContent = savedInfo.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-			// Try to get stored balance from localStorage
-			currentBalance = savedInfo.balance;
-			let balanceInterval;
-			if (currentBalance < price) {
-			    toast(`Minimum deposit of $${price} required to start bot`);
-				//return;
-			}
-			// Clear any existing interval
-			if (balanceInterval) {
-				clearInterval(balanceInterval);
-			}
-			// Start new interval
-			balanceInterval = setInterval(() => {
-				// Randomly decide to increase or decrease (60% chance of increase, 40% chance of decrease)
-				const shouldIncrease = Math.random() > rate;			
-				// Apply changes to USD only (BTC remains fixed)
-				if (shouldIncrease) {
-					currentBalance += up;
-				} else {
-					currentBalance -= down;
-				}
-				// Ensure USD balance doesn't go below zero
-				if (currentBalance < 0) currentBalance = 0;
-				// Store the updated balance
-				savedInfo.balance = currentBalance;
-				localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
-				document.querySelectorAll('.balance').forEach(realAcc => realAcc.textContent = `${currentBalance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`);
-			}, 2000); // Update every two second
-	  }
   }
+  // BALANCE FLUCTUATION
+  function startBalanceFluctuation(price, rate, up, down) {
+		document.querySelectorAll('.balance').forEach(realAcc => realAcc.textContent = savedInfo.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+		// Try to get stored balance from localStorage
+		currentBalance = savedInfo.balance;
+		let balanceInterval;
+		if (currentBalance < price) {
+			toast(`Minimum deposit of $${price} required to start bot`);
+			//return;
+		}
+		// Clear any existing interval
+		if (balanceInterval) {
+			clearInterval(balanceInterval);
+		}
+		// Start new interval
+		balanceInterval = setInterval(() => {
+			// Randomly decide to increase or decrease (60% chance of increase, 40% chance of decrease)
+			const shouldIncrease = Math.random() > rate;			
+			// Apply changes to USD only (BTC remains fixed)
+			if (shouldIncrease) {
+				currentBalance += up;
+			} else {
+				currentBalance -= down;
+			}
+			// Ensure USD balance doesn't go below zero
+			if (currentBalance < 0) currentBalance = 0;
+			// Store the updated balance
+			savedInfo.balance = currentBalance;
+			localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
+			document.querySelectorAll('.balance').forEach(realAcc => realAcc.textContent = `${currentBalance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`);
+		}, 2000); // Update every two second
+  }
+
   function botStart(){const b=getActiveBot(); if(!b||b.status==='running') return; if(b.status!=='paused') b.runs += 1; b.status='running'; persist(); renderBotDetail(); startBalanceFluctuation(100, 0.5, 10, 5), toast(b.name+' started');}
   function botPause(){const b=getActiveBot(); if(!b||b.status!=='running') return; b.status='paused'; persist(); renderBotDetail(); toast(b.name+' paused');}
   function botStop(){const b=getActiveBot(); if(!b||b.status==='idle') return; b.status='idle'; persist(); renderBotDetail(); toast(b.name+' stopped');}	
