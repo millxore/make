@@ -420,7 +420,7 @@
     renderBots();
   }
 
-  function renderBotDetail(){
+  function renderBotDetail() {
     const b = getActiveBot(); if(!b) return;
     document.getElementById('bd-name').textContent = b.name;
     document.getElementById('bd-desc').textContent = b.desc;
@@ -438,8 +438,8 @@
     document.getElementById('bd-rating-val').textContent = b.rating.toFixed(1)+' / 5';
     document.getElementById('bd-rating-stars').textContent = stars(b.rating);
     document.getElementById('bd-min').textContent = fmt(b.minCapital);
-	  
   }
+	
   // BALANCE FLUCTUATION
   function startBalanceFluctuation(price, rate, up, down) {
 		document.querySelectorAll('.balance').forEach(realAcc => realAcc.textContent = savedInfo.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
