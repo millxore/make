@@ -438,7 +438,15 @@
     document.getElementById('bd-rating-val').textContent = b.rating.toFixed(1)+' / 5';
     document.getElementById('bd-rating-stars').textContent = stars(b.rating);
     document.getElementById('bd-min').textContent = fmt(b.minCapital);
-
+	
+	const running = b.status==='running';
+    const startBtn = document.getElementById('bd-start');
+    const stopBtn = document.getElementById('bd-stop');
+    const pauseBtn = document.getElementById('bd-pause');
+    startBtn.disabled = running;
+    stopBtn.disabled = b.status==='idle';
+    pauseBtn.disabled = !running;
+    [startBtn,stopBtn,pauseBtn].forEach(btn=>{btn.classList.toggle('opacity-40',btn.disabled); btn.classList.toggle('cursor-not-allowed',btn.disabled);});  
 	  
   }
 	
