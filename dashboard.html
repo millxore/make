@@ -366,7 +366,8 @@
       {id:'dca-eth',name:'DCA ETH',pair:'ETH/USDT',pnl:2.87,running:false,desc:'High-frequency micro-trades targeting small intraday movements on high volume.',risk:'High',perf:64,rating:3.8,minCapital:500},
       {id:'arbitrage-gbp',name:'Arbitrage GBP',pair:'GBP/USDT',pnl:-0.42,running:false,desc:'Rides confirmed momentum using EMA crossovers and volume filters.',risk:'Medium',perf:82,rating:4.6,minCapital:300},
       {id:'trending-eur',name:'Trending EUR',pair:'EUR/USDT',pnl:-0.42,running:false,desc:'Exploits short-lived price gaps across connected exchanges.',risk:'Low',perf:69,rating:4.0,minCapital:1000},
-    ]
+    ],
+	activeBotId: null,
   };
   function persist(){localStorage.setItem('nv_bots',JSON.stringify(state.bots));}
   function fmt(n){return '$'+Number(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}
