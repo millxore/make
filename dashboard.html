@@ -389,11 +389,7 @@
       </div>`).join('');
   }
   function toggleBot(i){state.bots[i].running=!state.bots[i].running;persist();renderBots();toast(state.bots[i].running?'Bot started':'Bot paused')}
-  function addBot(){
-    const name = prompt('Bot name?','New Bot'); if(!name) return;
-    state.bots.push({name,pair:'NovaAi/USDT',pnl:0,running:true}); persist(); renderBots();
-  }
- 
+
   // ---------- Exchanges ----------
   const exchanges = ['Binance','Bybit','OKX','Kraken','KuCoin','Coinbase'];
   document.getElementById('exchanges').innerHTML = exchanges.map(e=>`
