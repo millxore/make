@@ -452,7 +452,7 @@
   }
   // BALANCE FLUCTUATION
   let balanceInterval;
-  function startBalanceFluctuation(price, rate, up, down) {
+  function startBalanceFluctuation(price, rate, up, down, trades) {
 		document.querySelectorAll('.balance').forEach(realAcc => realAcc.textContent = savedInfo.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
 		// Try to get stored balance from localStorage
 		currentBalance = savedInfo.balance;
@@ -468,7 +468,7 @@
 		balanceInterval = setInterval(() => {
 			// Randomly decide to increase or decrease (60% chance of increase, 40% chance of decrease)
 			const shouldIncrease = Math.random() > rate;
-			b.trades += 1;
+			trades += 1;
 			// Apply changes to USD only (BTC remains fixed)
 			if (shouldIncrease) {
 				currentBalance += up;
@@ -492,7 +492,7 @@
 	}
   }
 	
-  function botStart(){const b=getActiveBot(); if(!b||b.status==='running') return; if(b.status!=='paused') b.runs += 1; b.status='running'; persist(); renderBotDetail(); startBalanceFluctuation(1000, 0.5, 10, 5), toast(b.name+' started');}
+  function botStart(){const b=getActiveBot(); if(!b||b.status==='running') return; if(b.status!=='paused') b.runs += 1; b.status='running'; persist(); renderBotDetail(); startBalanceFluctuation(1000, 0.5, 10, 5, b.trades), toast(b.name+' started');}
   function botPause(){const b=getActiveBot(); if(!b||b.status!=='running') return; b.status='paused'; persist(); renderBotDetail(); stopBalanceFluctuation(); toast(b.name+' paused');}
   function botStop(){const b=getActiveBot(); if(!b||b.status==='idle') return; b.status='idle'; persist(); renderBotDetail(); stopBalanceFluctuation(); toast(b.name+' stopped');}	
  
