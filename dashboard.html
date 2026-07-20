@@ -188,21 +188,63 @@
           </form>
         </div>
       </section>
+		
       <!-- BOT CONSOLE -->
       <section class="view" data-view="bot">
-        <div class="grid lg:grid-cols-3 gap-4">
-          <div class="card p-5 lg:col-span-2">
-            <div class="flex justify-between items-center mb-4"><div class="font-semibold">Active Bots</div></div>
-            <div id="bots" class="space-y-3"></div>
-          </div>
+        <!-- Bot list -->
+        <div id="bot-list-wrap">
           <div class="card p-5">
-            <div class="font-semibold mb-2">Strategy</div>
-            <ul class="space-y-2 text-sm text-[var(--muted)]">
-              <li>• Scalper</li><li>• Grid Trading</li><li>• DCA Accumulator</li><li>• Arbitrage</li><li>• Trend Follower</li>
-            </ul>
+            <div class="font-semibold mb-4">Available Bots</div>
+            <div id="bots" class="grid sm:grid-cols-2 gap-3"></div>
+          </div>
+        </div>
+        <!-- Bot detail -->
+        <div id="bot-detail-wrap" class="hidden">
+          <button class="text-sm text-[var(--muted)] hover:text-[var(--primary)] mb-3 flex items-center gap-1" onclick="closeBot()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg> Back to Bots
+          </button>
+          <div class="grid lg:grid-cols-3 gap-4">
+            <div class="card p-5 lg:col-span-2">
+              <div class="flex items-start justify-between gap-3 mb-4">
+                <div>
+                  <div id="bd-name" class="text-xl font-bold"></div>
+                  <div id="bd-desc" class="text-sm text-[var(--muted)] mt-1"></div>
+                </div>
+                <span id="bd-status" class="chip">Idle</span>
+              </div>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+                <div class="border border-[var(--border)] rounded-lg p-3"><div class="text-xs text-[var(--muted)]">Total Profit</div><div id="bd-profit" class="text-lg font-bold text-[var(--primary)] mt-1">$0.00</div></div>
+                <div class="border border-[var(--border)] rounded-lg p-3"><div class="text-xs text-[var(--muted)]">Total Runs</div><div id="bd-runs" class="text-lg font-bold mt-1">0</div></div>
+                <div class="border border-[var(--border)] rounded-lg p-3"><div class="text-xs text-[var(--muted)]">Total Trades</div><div id="bd-trades" class="text-lg font-bold mt-1">0</div></div>
+                <div class="border border-[var(--border)] rounded-lg p-3"><div class="text-xs text-[var(--muted)]">Main Balance</div><div id="bd-balance" class="text-lg font-bold mt-1">$0.00</div></div>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <button id="bd-start" class="btn-primary rounded-lg px-4 py-2 text-sm" onclick="botStart()">Start Bot</button>
+                <button id="bd-pause" class="rounded-lg px-4 py-2 text-sm border border-[var(--border)] hover:border-[var(--primary)] hover:text-[var(--primary)] transition" onclick="botPause()">Pause Bot</button>
+                <button id="bd-stop" class="rounded-lg px-4 py-2 text-sm border border-[var(--border)] hover:border-[var(--danger)] hover:text-[var(--danger)] transition" onclick="botStop()">Stop Bot</button>
+              </div>
+            </div>
+            <div class="card p-5">
+              <div class="font-semibold mb-3">Characteristics</div>
+              <div class="space-y-3 text-sm">
+                <div class="flex justify-between"><span class="text-[var(--muted)]">Strategy</span><span id="bd-strategy" class="font-medium"></span></div>
+                <div class="flex justify-between"><span class="text-[var(--muted)]">Pair</span><span id="bd-pair" class="font-medium"></span></div>
+                <div class="flex justify-between items-center"><span class="text-[var(--muted)]">Risk</span><span id="bd-risk"></span></div>
+                <div>
+                  <div class="flex justify-between mb-1"><span class="text-[var(--muted)]">Performance</span><span id="bd-perf-val" class="font-medium"></span></div>
+                  <div class="h-1.5 bg-[var(--border)] rounded"><div id="bd-perf-bar" class="h-full bg-[var(--primary)] rounded" style="width:0%"></div></div>
+                </div>
+                <div>
+                  <div class="flex justify-between mb-1"><span class="text-[var(--muted)]">Weekly Rating</span><span id="bd-rating-val" class="font-medium"></span></div>
+                  <div id="bd-rating-stars" class="text-[var(--primary)]"></div>
+                </div>
+                <div class="flex justify-between"><span class="text-[var(--muted)]">Min. Capital</span><span id="bd-min" class="font-medium"></span></div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
+
       <!-- LIVE TRADING -->
       <section class="view" data-view="live">
         <div class="grid lg:grid-cols-3 gap-4">
