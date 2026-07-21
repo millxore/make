@@ -431,7 +431,7 @@
     document.getElementById('bd-profit').textContent = fmt(b.profit);
     document.getElementById('bd-runs').textContent = b.runs;
     document.getElementById('bd-trades').textContent = b.trades;
-    document.getElementById('bd-balance').textContent = savedInfo.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    document.querySelectorAll('.balance').forEach(bal => bal.textContent = `${savedInfo.balance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`);
     document.getElementById('bd-strategy').textContent = b.strategy;
     document.getElementById('bd-pair').textContent = b.pair;
     document.getElementById('bd-risk').innerHTML = `<span class="${riskColor(b.risk)} font-medium">${b.risk}</span>`;
