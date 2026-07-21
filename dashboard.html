@@ -175,6 +175,7 @@
           </form>
         </div>
       </section>
+	
       <section class="view" data-view="address">
         <div class="card p-6 max-w-2xl">
           <h2 class="text-xl font-bold mb-1">Wallet Address</h2>
@@ -362,7 +363,7 @@
   const savedInfo = JSON.parse(localStorage.getItem('savedInfos'));
   const userId = savedInfo.userId;
   // ---------- Navigation ----------
-  const titles = {dashboard:'Dashboard',deposit:'Deposit',withdraw:'Withdraw',bot:'Bot Console',live:'Live Trading',market:'Market Data',platform:'Live Platform',kyc:'KYC Verification',profile:'Profile'};
+  const titles = {dashboard:'Dashboard',deposit:'Deposit',address:'Deposit',withdraw:'Withdraw',bot:'Bot Console',live:'Live Trading',market:'Market Data',platform:'Live Platform',kyc:'KYC Verification',profile:'Profile'};
   function setView(v){
     document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.view===v));
     document.querySelectorAll('.view').forEach(s=>s.classList.toggle('active',s.dataset.view===v));
