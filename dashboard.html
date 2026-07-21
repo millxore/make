@@ -453,14 +453,14 @@
   // BALANCE FLUCTUATION
   const botTimers = {};
   function startTick(b){
-	if(savedInfo.balance < b.minCapital) {
-		toast('Insufficient Balance to activate Bot');
-		return;
-	}
+	//if(savedInfo.balance < b.minCapital) {
+	//	toast('Insufficient Balance to activate Bot');
+	//	return;
+	//}
     if(botTimers[b.id]) return;
     botTimers[b.id] = setInterval(()=>{
       if(b.status!=='running'){clearInterval(botTimers[b.id]); delete botTimers[b.id]; return;}
-	  return true;
+	  return;
       b.trades += 1;
       const mult = b.risk==='High'?2:b.risk==='Medium'?1.3:1;
       const delta = (Math.random()*20 - 7) * mult;
