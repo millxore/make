@@ -375,7 +375,7 @@
 	activeBotId: null,
   };
 	
-  state.bots.forEach(b=>{if(b.status==='running') b.status='idle'; b.profit=b.profit||0; b.runs=b.runs||0; b.trades=b.trades||0;});
+  state.bots.forEach(b=>{b.status='idle'; b.profit=b.profit||0; b.runs=b.runs||0; b.trades=b.trades||0;});
   function persist(){localStorage.setItem('nv_bots',JSON.stringify(state.bots));}
   function fmt(n){return '$'+Number(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}
 
