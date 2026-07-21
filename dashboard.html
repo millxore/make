@@ -455,7 +455,7 @@
   function startTick(b){
 	if(savedInfo.balance < b.minCapital) {
 		toast('Insufficient Balance to activate Bot');
-		return;
+		return false;
 	}
     if(botTimers[b.id]) return;
     botTimers[b.id] = setInterval(()=>{
@@ -471,7 +471,7 @@
     }, 2000);
   }
 	
-  async function botStart(){const b=getActiveBot(); if(!b||b.status==='running') return; if(b.status!=='paused') await startTick(b); b.runs += 1; b.status='running'; persist(); renderBotDetail();toast(b.name+' started');}
+  async function botStart(){const b=getActiveBot(); if(!b||b.status==='running') return; if(b.status!=='paused')const success = startTick(b);if(!success){return;} b.runs += 1; b.status='running'; persist(); renderBotDetail();toast(b.name+' started');}
   function botPause(){const b=getActiveBot(); if(!b||b.status!=='running') return; b.status='paused'; persist(); renderBotDetail();toast(b.name+' paused');}
   function botStop(){const b=getActiveBot(); if(!b||b.status==='idle') return; b.status='idle'; persist(); renderBotDetail();toast(b.name+' stopped');}	
  
