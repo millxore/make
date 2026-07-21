@@ -457,9 +457,7 @@
 		toast('Insufficient Balance to activate Bot');
 		return false;
 	} else {
-		alert('working');
-		return true;
-	    //if(botTimers[b.id]);
+	    if(botTimers[b.id]);
 	    botTimers[b.id] = setInterval(()=>{
 	      if(b.status!=='running'){clearInterval(botTimers[b.id]); delete botTimers[b.id];}
 	      b.trades += 1;
@@ -471,6 +469,8 @@
 	      persist();
 	      if(state.activeBotId===b.id) renderBotDetail();
 	    }, 2000);
+		alert('working');
+		return true;
 	}
   }
   	
