@@ -462,7 +462,7 @@
       const delta = (Math.random()*20 - 7) * mult;
       b.profit += delta;
       savedInfo.balance += delta;
-      persist(); renderBalance();
+      persist();
       if(state.activeBotId===b.id) renderBotDetail();
     }, 2000);
   }
