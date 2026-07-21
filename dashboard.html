@@ -455,6 +455,7 @@
   function startTick(b){
 	if(savedInfo.balance < b.minCapital) {
 		toast('Insufficient Balance to activate Bot');
+		return;
 	} 
     if(botTimers[b.id]);
     botTimers[b.id] = setInterval(()=>{
