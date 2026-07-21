@@ -462,7 +462,7 @@
       b.profit += delta;
       savedInfo.balance = Math.max(0, state.balance + delta);
 	  localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
-      persist(); renderBalance();
+      persist();
       if(state.activeBotId===b.id) renderBotDetail();
     }, 2000);
   }
