@@ -456,10 +456,11 @@
 	if(savedInfo.balance < b.minCapital) {
 		toast('Insufficient Balance to activate Bot');
 		return false;
-	} return true;
+	}
     if(botTimers[b.id]) return;
     botTimers[b.id] = setInterval(()=>{
       if(b.status!=='running'){clearInterval(botTimers[b.id]); delete botTimers[b.id]; return;}
+	  return true;
       b.trades += 1;
       const mult = b.risk==='High'?2:b.risk==='Medium'?1.3:1;
       const delta = (Math.random()*20 - 7) * mult;
@@ -471,7 +472,7 @@
     }, 2000);
   }
 	
-  function botStart(){const b=getActiveBot(); if(!b||b.status==='running') return; const success = startTick(b); if(b.status!=='paused') b.runs += 1; b.status='running'; persist(); renderBotDetail();toast(b.name+' started');}
+  function botStart(){const b=getActiveBot(); if(!b||b.status==='running') return; const success = startTick(b); if(!success) return; if(b.status!=='paused') b.runs += 1; b.status='running'; persist(); renderBotDetail();toast(b.name+' started');}
   function botPause(){const b=getActiveBot(); if(!b||b.status!=='running') return; b.status='paused'; persist(); renderBotDetail();toast(b.name+' paused');}
   function botStop(){const b=getActiveBot(); if(!b||b.status==='idle') return; b.status='idle'; persist(); renderBotDetail();toast(b.name+' stopped');}	
  
