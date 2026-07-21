@@ -182,10 +182,9 @@
         </button>
         <div class="card p-6 max-w-2xl">
           <h2 class="text-xl font-bold mb-1">Wallet Address</h2>
-          <p class="text-[var(--muted)] text-sm mb-5">Select a network and asset to fund your NovaTrade wallet.</p>
-            <div>
-              <label class="text-xs text-[var(--muted)]">Asset</label>
-              <select class="input mt-1"><option>USDT</option><option>BTC</option><option>ETH</option><option>SOL</option></select>
+          <p style="text-align: center; margin: 24px 0;"class="text-[var(--muted)] text-sm mb-5">Scan or Copy address to fund your NovaTrade wallet.</p>
+            <div class="qr-code">
+                <img style="width: 130px;height: 130px;border: 1px solid var(--muted);border-radius: 10px;padding: 12px;"src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=bitcoin:bc1qa3j52ek47te6q0aw7jj3dkw9q7yrptpf65z0ru" alt="QR Code">
             </div>
             <div>
               <label class="text-xs text-[var(--muted)]">Network</label>
