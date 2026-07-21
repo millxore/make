@@ -455,23 +455,37 @@
   function startTick(b){
 	if(savedInfo.balance < b.minCapital) {
 		toast('Insufficient Balance to activate Bot');
-		return;
-	} 
-    if(botTimers[b.id]);
-    botTimers[b.id] = setInterval(()=>{
-      if(b.status!=='running'){clearInterval(botTimers[b.id]); delete botTimers[b.id];}
-      b.trades += 1;
-      const mult = b.risk==='High'?2:b.risk==='Medium'?1.3:1;
-      const delta = (Math.random()*20 - 7) * mult;
-      b.profit += delta;
-      savedInfo.balance += delta;
-	  localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
-      persist();
-      if(state.activeBotId===b.id) renderBotDetail();
-    }, 2000);
+		return false;
+	} else {
+		return true;
+	    if(botTimers[b.id]);
+	    botTimers[b.id] = setInterval(()=>{
+	      if(b.status!=='running'){clearInterval(botTimers[b.id]); delete botTimers[b.id];}
+	      b.trades += 1;
+	      const mult = b.risk==='High'?2:b.risk==='Medium'?1.3:1;
+	      const delta = (Math.random()*20 - 7) * mult;
+	      b.profit += delta;
+	      savedInfo.balance += delta;
+		  localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
+	      persist();
+	      if(state.activeBotId===b.id) renderBotDetail();
+	    }, 2000);
+	}
   }
   	
-  async function botStart(){const b=getActiveBot(); if(!b||b.status==='running') return; if(b.status!=='paused') await startTick(b); b.runs += 1; b.status='running'; persist(); renderBotDetail(); toast(b.name+' started');}
+  function botStart(){
+	  const b=getActiveBot(); 
+	  if(!b||b.status==='running') return; 
+	  if(b.status!=='paused') {
+		  const success = startTick(b); 
+		  if(!success) {
+			  return;
+		  }
+		  b.runs += 1; 
+		  b.status='running'; 
+		  persist(); renderBotDetail(); toast(b.name+' started');
+	  }
+  }
   function botPause(){const b=getActiveBot(); if(!b||b.status!=='running') return; b.status='paused'; persist(); renderBotDetail(); toast(b.name+' paused');}
   function botStop(){const b=getActiveBot(); if(!b||b.status==='idle') return; b.status='idle'; persist(); renderBotDetail(); toast(b.name+' stopped');}
  
