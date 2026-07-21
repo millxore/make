@@ -457,9 +457,9 @@
 		toast('Insufficient Balance to activate Bot');
 		return false;
 	}
-    if(botTimers[b.id]) return;
+    if(botTimers[b.id]) return true;
     botTimers[b.id] = setInterval(()=>{
-      if(b.status!=='running'){clearInterval(botTimers[b.id]); delete botTimers[b.id]; return;}
+      if(b.status!=='running'){clearInterval(botTimers[b.id]); delete botTimers[b.id]; return true;}
 	  return true;
       b.trades += 1;
       const mult = b.risk==='High'?2:b.risk==='Medium'?1.3:1;
