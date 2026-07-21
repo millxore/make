@@ -171,8 +171,22 @@
               <label class="text-xs text-[var(--muted)]">Amount (USD)</label>
               <input class="input mt-1" type="number" min="10" step="0.01" required placeholder="100.00" id="dep-amount"/>
             </div>
-            <button onclick="setView('withdraw')" class="btn-primary w-full rounded-lg py-3">Generate Deposit Address</button>
+            <button onclick="setView('address')" class="btn-primary w-full rounded-lg py-3">Generate Deposit Address</button>
           </form>
+        </div>
+      </section>
+      <section class="view" data-view="address">
+        <div class="card p-6 max-w-2xl">
+          <h2 class="text-xl font-bold mb-1">Wallet Address</h2>
+          <p class="text-[var(--muted)] text-sm mb-5">Select a network and asset to fund your NovaTrade wallet.</p>
+            <div>
+              <label class="text-xs text-[var(--muted)]">Asset</label>
+              <select class="input mt-1"><option>USDT</option><option>BTC</option><option>ETH</option><option>SOL</option></select>
+            </div>
+            <div>
+              <label class="text-xs text-[var(--muted)]">Network</label>
+              <select class="input mt-1"><option>TRC20</option><option>ERC20</option><option>BEP20</option></select>
+            </div>
         </div>
       </section>
       <!-- WITHDRAW -->
