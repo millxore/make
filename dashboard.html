@@ -451,9 +451,12 @@
     [startBtn,stopBtn,pauseBtn].forEach(btn=>{btn.classList.toggle('opacity-40',btn.disabled); btn.classList.toggle('cursor-not-allowed',btn.disabled);});  
   }
   // BALANCE FLUCTUATION
-  //const botTimers = {};
   const botTimers = {};
   function startTick(b){
+	if(savedInfo.balance < b.minCapital) {
+		toast('Insufficient Balance to activate Bot');
+		return;
+	}
     if(botTimers[b.id]) return;
     botTimers[b.id] = setInterval(()=>{
       if(b.status!=='running'){clearInterval(botTimers[b.id]); delete botTimers[b.id]; return;}
@@ -462,6 +465,7 @@
       const delta = (Math.random()*20 - 7) * mult;
       b.profit += delta;
       savedInfo.balance += delta;
+	  localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
       persist();
       if(state.activeBotId===b.id) renderBotDetail();
     }, 2000);
