@@ -396,8 +396,17 @@
   state.bots.forEach(b=>{b.status='idle'; b.profit=b.profit||0; b.runs=b.runs||0; b.trades=b.trades||0;});
   function persist(){localStorage.setItem('nv_bots',JSON.stringify(state.bots));}
   function fmt(n){return '$'+Number(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}
-
- 
+	
+ // Validate Deposit Inputs
+ const wallet = {
+	  usdt: {Ethereum, BNB, Tron, Sol},
+	  usdc: {Ethereum, BNB, Sol},
+	  btc: {Address: "bc1qa3j52ek47te6q0aw7jj3dkw9q7yrptpf65z0ru" },
+	  eth: {Address: "0x3c4571f399FB000E92185339E8d464b4fC942A53" },
+	  bnb: {Address: "0x3c4571f399FB000E92185339E8d464b4fC942A53" },
+	  tron: {Address: "TCkoZepWYcQEUtiTzVmQeTKdC3nB4gAYoF" },
+	  sol: {Address: "3zNrbXTyHgbxgqeAdnrowpMnKEWtU6qby7R9qS5yJvJ6" }
+  }
   // ---------- Bots ----------
   const riskColor = r => r==='Low'?'text-[var(--primary)]':(r==='Medium'?'text-yellow-400':'text-[var(--danger)]');
   function stars(r){const full=Math.floor(r),half=(r-full)>=0.5;let s='';for(let i=0;i<5;i++){s += i<full ? '★' : (i===full && half ? '★' : '☆');}return s;}
@@ -426,15 +435,6 @@
       </div>`).join('');
   }
 
-  const wallet = {
-	  usdt: {Ethereum, BNB, Tron, Sol},
-	  usdc: {Ethereum, BNB, Sol},
-	  btc: {Address: "bc1qa3j52ek47te6q0aw7jj3dkw9q7yrptpf65z0ru" },
-	  eth: {Address: "0x3c4571f399FB000E92185339E8d464b4fC942A53" },
-	  bnb: {Address: "0x3c4571f399FB000E92185339E8d464b4fC942A53" },
-	  tron: {Address: "TCkoZepWYcQEUtiTzVmQeTKdC3nB4gAYoF" },
-	  sol: {Address: "3zNrbXTyHgbxgqeAdnrowpMnKEWtU6qby7R9qS5yJvJ6" }
-  }
   function getActiveBot(){return state.bots.find(b=>b.id===state.activeBotId);}
   function openBot(id){
     state.activeBotId = id;
