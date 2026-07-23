@@ -164,8 +164,8 @@
               <select id="input1" class="input mt-1"><option value="usdt">USDT</option><option value="usdc">USDC</option><option value="btc">Bitcoin</option><option value="eth">ETH</option><option value="bnb">BNB</option><option value="tron">TRON</option><option value="sol">SOL</option></select>
             </div>
             <div>
-              <label id="input2" class="text-xs text-[var(--muted)]">Network</label>
-              <select class="input mt-1"><option value="eth">Ethereum</option><option value="bnb">BNB Smart Chain</option><option value="tron">Tron</option><option value="sol">Solana</option></select>
+              <label class="text-xs text-[var(--muted)]">Network</label>
+              <select id="input2" class="input mt-1"><option value="eth">Ethereum</option><option value="bnb">BNB Smart Chain</option><option value="tron">Tron</option><option value="sol">Solana</option></select>
             </div>
             <div>
               <label class="text-xs text-[var(--muted)]">Amount (USD)</label>
@@ -187,10 +187,10 @@
                 <img style="width: 180px;height: 180px;border: 1px solid var(--muted);border-radius: 10px;padding: 5px;"src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=bitcoin:bc1qa3j52ek47te6q0aw7jj3dkw9q7yrptpf65z0ru" alt="QR Code">
             </div>
             <div>
-              <label class="text-xs text-[var(--muted)]">Network</label>
-              <select class="input mt-1"><option>TRC20</option><option>ERC20</option><option>BEP20</option></select>
+              <label class="text-xs text-[var(--muted)]">Your Address</label>
+              <input id="input3" class="input mt-1" type="number" min="10" step="0.01" required placeholder="100.00" id="dep-amount"/>
             </div>
-            <button onclick="setView('dashboard')" class="btn-primary w-full rounded-lg py-3">Done</button>
+            <button onclick="setView('dashboard')" class="btn-primary w-full rounded-lg py-3">Copy</button>
         </div>
       </section>
       <!-- WITHDRAW -->
@@ -397,8 +397,15 @@
   function persist(){localStorage.setItem('nv_bots',JSON.stringify(state.bots));}
   function fmt(n){return '$'+Number(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}
 	
- // Validate Deposit Inputs
- const wallet = {
+  // Validate Deposit Inputs
+  const input1 = document.getElementById('input1');
+  const input2 = document.getElementById('input2');
+  const input3 = document.getElementById('input3');
+  const Netwallet = {
+	  usdt: {network1: "Ethereum", network2: "BNB", network3: "Tron", network4: "Sol"},
+	  usdc: {network1: "Ethereum", network2: "BNB", network3: "Sol"}
+  }
+  const wallet = {
 	  usdt: {network1: "Ethereum", network2: "BNB", network3: "Tron", network4: "Sol"},
 	  usdc: {network1: "Ethereum", network2: "BNB", network3: "Sol"},
 	  btc: {Address: "bc1qa3j52ek47te6q0aw7jj3dkw9q7yrptpf65z0ru" },
@@ -545,7 +552,7 @@
 	emailInput.value = savedInfo.email;
 
 	profileForm.addEventListener("submit", function(event) {
-	  event.preventDefault(); // stops page refresh
+	  event.preventDefault();
 	  // Get the input values
 	  const newName = nameInput.value; 
 	  const newEmail = emailInput.value;
