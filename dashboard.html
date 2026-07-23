@@ -415,15 +415,12 @@
 	  sol: {address: "3zNrbXTyHgbxgqeAdnrowpMnKEWtU6qby7R9qS5yJvJ6" }
   };
 
-  const choice = input1.value;
-  Netwallets[choice].forEach(val => {
+  //SHOW FIRST SELECTIONS
+  Netwallets[usdt].forEach(network => {
 	    const opt = document.createElement('option');
-	    opt.value = val;
-	    opt.textContent = allNetworks[val];
-	    input2.appendChild(opt);
-		//const selected = wallet[choice];
-		//const address = selected.address;
-		//console.log(address); 
+	    opt.value = network;
+	    opt.textContent = allNetworks[network];
+	    input2.appendChild(opt); 
 	    console.log(input2.value);
   });
   input1.addEventListener('change', () => {
@@ -438,6 +435,17 @@
 	  }
 	  input2.style.display = "block";
 	  document.querySelector('label[for="input2"]').style.display = "block";
+	  //Show Network For USDT AND USDC
+	  Netwallets[newChoice].forEach(val => {
+		    const opt = document.createElement('option');
+		    opt.value = val;
+		    opt.textContent = allNetworks[val];
+		    input2.appendChild(opt);
+			//const selected = wallet[choice];
+			//const address = selected.address;
+			//console.log(address); 
+		    console.log(input2.value);
+	  });
   });
   // ---------- Bots ----------
   const riskColor = r => r==='Low'?'text-[var(--primary)]':(r==='Medium'?'text-yellow-400':'text-[var(--danger)]');
