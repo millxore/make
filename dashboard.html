@@ -427,10 +427,11 @@
 	    console.log(input2.value);
   });
   input1.addEventListener('change', () => {
-	  if (!showNetwork.includes(choice)) {
+	  const newChoice = input1.value;
+	  if (!showNetwork.includes(newChoice)) {
 	    input2.style.display = "none";
 	    document.querySelector('label[for="input2"]').style.display = "none";
-		const selected = wallet[choice];
+		const selected = wallet[newChoice];
 		const address = selected.address;
 		console.log(address);
 	    return;
