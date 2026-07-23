@@ -165,7 +165,7 @@
             </div>
             <div>
               <label for="input2" class="text-xs text-[var(--muted)]">Network</label>
-              <select id="input2" class="input mt-1"><option value="eth">Ethereum</option><option value="bnb">BNB Smart Chain</option><option value="tron">Tron</option><option value="sol">Solana</option></select>
+              <select id="input2" class="input mt-1"></select>
             </div>
             <div>
               <label class="text-xs text-[var(--muted)]">Amount (USD)</label>
@@ -426,6 +426,14 @@
 	  }
 	  input2.style.display = "block";
 	  document.querySelector('label[for="input2"]').style.display = "block";
+	  input2.innerHTML = "";
+	  Netwallets[choice].forEach(val => {
+	      const opt = document.createElement('option');
+	      opt.value = val;
+	      opt.textContent = allStorages[val];
+	      input2.appendChild(opt);
+	  });
+	  console.log(input2.value);
   });
   // ---------- Bots ----------
   const riskColor = r => r==='Low'?'text-[var(--primary)]':(r==='Medium'?'text-yellow-400':'text-[var(--danger)]');
