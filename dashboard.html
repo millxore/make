@@ -420,9 +420,9 @@
   document.querySelector('label[for="input2"]').style.display = "none";
   // Show Network input USDT or USDC
   input1.addEventListener('change', () => {
-	  const newChoice = input1.value;
-	  if (!showNetwork.includes(newChoice)) {
-		const selected = wallet[newChoice];
+	  const choice = input1.value;
+	  if (!showNetwork.includes(choice)) {
+		const selected = wallet[choice];
 		const address = selected.address;
 		console.log(address);
 	    return;
@@ -430,7 +430,7 @@
 	  input2.style.display = "block";
 	  document.querySelector('label[for="input2"]').style.display = "block";
 	  //Show Network For USDT AND USDC
-	  Netwallets[newChoice].forEach(val => {
+	  Netwallets[choice].forEach(val => {
 		    const opt = document.createElement('option');
 		    opt.value = val;
 		    opt.textContent = allNetworks[val];
