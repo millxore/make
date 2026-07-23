@@ -402,6 +402,7 @@
   const input2 = document.getElementById('input2');
   const input3 = document.getElementById('input3');
   const showNetwork = ["usdt", "usdc"];
+  const allNetworks = { "Ethereum", "BNB", "Tron", "Sol" };
   const Netwallets = {
 	  usdt: [ "Ethereum", "BNB", "Tron", "Sol"],
 	  usdc: [ "Ethereum", "BNB", "Sol"]
@@ -430,7 +431,7 @@
 	  Netwallets[choice].forEach(val => {
 	      const opt = document.createElement('option');
 	      opt.value = val;
-	      opt.textContent = Netwallets[val];
+	      opt.textContent = allNetworks[val];
 	      input2.appendChild(opt);
 	  });
 	  console.log(input2.value);
