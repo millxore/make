@@ -161,7 +161,7 @@
           <form onsubmit="return depositSubmit(event)" class="space-y-4">
             <div>
               <label for="input1" class="text-xs text-[var(--muted)]">Asset</label>
-              <select id="input1" class="input mt-1"><option value="usdt">USDT</option><option value="usdc">USDC</option><option value="btc">Bitcoin</option><option value="eth">ETH</option><option value="bnb">BNB</option><option value="tron">TRON</option><option value="sol">SOL</option></select>
+              <select id="input1" class="input mt-1"><option value="usdt">-- Choose Crypto --</option><option value="usdt">USDT</option><option value="usdc">USDC</option><option value="btc">Bitcoin</option><option value="eth">ETH</option><option value="bnb">BNB</option><option value="tron">TRON</option><option value="sol">SOL</option></select>
             </div>
             <div>
               <label for="input2" class="text-xs text-[var(--muted)]">Network</label>
@@ -414,20 +414,14 @@
 	  tron: {address: "TCkoZepWYcQEUtiTzVmQeTKdC3nB4gAYoF" },
 	  sol: {address: "3zNrbXTyHgbxgqeAdnrowpMnKEWtU6qby7R9qS5yJvJ6" }
   };
-
-  //SHOW FIRST SELECTIONS
-  Netwallets.usdt.forEach(network => {
-	    const opt = document.createElement('option');
-	    opt.value = network;
-	    opt.textContent = allNetworks[network];
-	    input2.appendChild(opt); 
-	    console.log(input2.value);
-  });
+	
+  // Hide Network First
+  input2.style.display = "none";
+  document.querySelector('label[for="input2"]').style.display = "none";
+  // Show Network input USDT or USDC
   input1.addEventListener('change', () => {
 	  const newChoice = input1.value;
 	  if (!showNetwork.includes(newChoice)) {
-	    input2.style.display = "none";
-	    document.querySelector('label[for="input2"]').style.display = "none";
 		const selected = wallet[newChoice];
 		const address = selected.address;
 		console.log(address);
