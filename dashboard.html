@@ -438,6 +438,8 @@
 		  });
 	  }
 	  if (!showNetwork.includes(choice) && choice !=='') {   
+		input2.style.display = "none";
+		document.querySelector('label[for="input2"]').style.display = "none";
 		const selected = wallet[choice];
 		const address = selected.address;
 		console.log(address);
