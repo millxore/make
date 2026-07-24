@@ -430,10 +430,9 @@
 			    opt.value = val;
 			    opt.textContent = allNetworks[val];
 			    input2.appendChild(opt);
-				//const selected = wallet[choice];
-				//const address = selected.address;
-				//console.log(address); 
-			    console.log(input2.value);
+				const selected = wallet[input2.value];
+				const address = selected.address;
+				console.log(address); 
 			    return;
 		  });
 	  }
