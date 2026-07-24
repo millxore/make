@@ -421,6 +421,10 @@
   // Show Network input USDT or USDC
   input1.addEventListener('change', () => {
 	  const choice = input1.value;
+	  if (choice === ''){
+	    input2.style.display = "none";
+	    document.querySelector('label[for="input2"]').style.display = "none";
+	  }
 	  if (showNetwork.includes(choice)) {   
 		input2.style.display = "block";
 		document.querySelector('label[for="input2"]').style.display = "block";
