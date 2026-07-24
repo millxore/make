@@ -425,6 +425,7 @@
 		input2.style.display = "block";
 		document.querySelector('label[for="input2"]').style.display = "block";
 		  //Show Network For USDT AND USDC
+		  input2.innerHTML = "";
 		  Netwallets[choice].forEach(val => {
 			    const opt = document.createElement('option');
 			    opt.value = val;
