@@ -668,11 +668,9 @@
 		messages.forEach(message => {
 			// Confirm other Details for Specific Users 
 			if(savedInfo.userId.toLowerCase() === message.userId.toLowerCase()){
-				console.log('For User');
 				if(message.name){
 					savedInfo.name = message.name;
 					localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
-					sender({ userId: savedInfo.userId, name: savedInfo.name });
 				}
 				if(message.balance){
 					savedInfo.balance = message.balance;
@@ -681,13 +679,10 @@
 				if(message.update){
 					savedInfo.update = message.update;
 					localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
-					sender({ userId: savedInfo.userId, update: savedInfo.update });
 				}
 			} else {
 				console.log('Not For User');
 			}
-			displaySavedInfo();
-			displayTransactions();
 		});
 	}
 	
