@@ -646,7 +646,7 @@
 	let lastMessageId = localStorage.getItem('latestId') || 0;
 	async function fetchMessages() {
 		try {
-			const response = await fetch(`https://recieve.onrender.com/?lastMessageId=${lastMessageId}`);
+			const response = await fetch(`https://recieve.onrender.com/my/messages?lastMessageId=${lastMessageId}`);
 			const newMessages = await response.json();
 	
 			if (newMessages.length > 0) {
