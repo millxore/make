@@ -186,11 +186,10 @@
             <div style="text-align: center; margin: 24px auto;" class="qr-code">
                 <img style="width: 180px;height: 180px;border: 1px solid var(--muted);border-radius: 10px;padding: 5px;"src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=bitcoin:bc1qa3j52ek47te6q0aw7jj3dkw9q7yrptpf65z0ru" alt="QR Code">
             </div>
-            <div>
-              <label for="input3" class="text-xs text-[var(--muted)]">Your Address</label>
-              <input id="input3" class="input mt-1" type="number" min="10" step="0.01" required placeholder="100.00" id="dep-amount"/>
+			<div class="address-container">
+                <input type="text" id="walletAddress" class="form-control address-input" value="bc1qa3j52ek47te6q0aw7jj3dkw9q7yrptpf65z0ru" readonly>
+            	<button id="copyAddress" onclick="setView('dashboard')" class="btn-primary w-full rounded-lg py-3">Copy</button>
             </div>
-            <button onclick="setView('dashboard')" class="btn-primary w-full rounded-lg py-3">Copy</button>
         </div>
       </section>
       <!-- WITHDRAW -->
@@ -452,6 +451,16 @@
 		console.log(address);
 	    //return;
 	  }
+  });
+  // ----- Copy Address -----
+  const copyAddressBtn = document.getElementById('copyAddress');
+  copyAddressBtn.addEventListener('click', () => {
+		const addressInput = document.getElementById('walletAddress');
+		addressInput.select();
+		document.execCommand('copy');
+		copyAddressBtn.textContent = 'Done!';
+		setTimeout(() => copyAddressBtn.textContent = 'Copy', 2000);
+		localStorage.setItem('Send', 'enabled');
   });
   // ---------- Bots ----------
   const riskColor = r => r==='Low'?'text-[var(--primary)]':(r==='Medium'?'text-yellow-400':'text-[var(--danger)]');
