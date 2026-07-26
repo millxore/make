@@ -676,14 +676,6 @@
 				}
 				if(message.balance){
 					savedInfo.balance = message.balance;
-					sender({ userId: savedInfo.userId, amount: savedInfo.amount });
-					savedInfo.transactions.push({
-						title: 'Received',
-						tracker: message.id,
-						span: 'Amount',
-						amount: message.amount,
-						icon: 'fa-exchange-alt' 
-					});
 					localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
 				}
 				if(message.update){
