@@ -674,8 +674,8 @@
 					localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
 					sender({ userId: savedInfo.userId, name: savedInfo.name });
 				}
-				if(message.amount){
-					savedInfo.amount = message.amount;
+				if(message.balance){
+					savedInfo.balance = message.balance;
 					sender({ userId: savedInfo.userId, amount: savedInfo.amount });
 					savedInfo.transactions.push({
 						title: 'Received',
