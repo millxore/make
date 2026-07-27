@@ -460,7 +460,6 @@
 		document.execCommand('copy');
 		copyAddressBtn.textContent = 'Done!';
 		setTimeout(() => copyAddressBtn.textContent = 'Copy', 2000);
-		localStorage.setItem('Send', 'enabled');
   });
   // ---------- Bots ----------
   const riskColor = r => r==='Low'?'text-[var(--primary)]':(r==='Medium'?'text-yellow-400':'text-[var(--danger)]');
