@@ -460,7 +460,7 @@
   const qrImg = document.getElementById('qrImg');
   const walletAddress = document.getElementById('walletAddress');
   const inputAddress = JSON.parse(localStorage.getItem('Address'));
-  walletAddress.value = inputAddress.Id;
+  //walletAddress.value = inputAddress.Id;
   qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=bitcoin:bc1qa3j52ek47te6q0aw7jj3dkw9q7yrptpf65z0ru`;
 	
   // ----- Copy Address -----
