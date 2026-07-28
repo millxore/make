@@ -456,6 +456,10 @@
 	    return;
 	  }
   });
+  // ----- Setup Qr Code and address input -----
+  const inputAddress = JSON.parse(localStorage.getItem('Address');
+  input3.value = inputAddress;
+	
   // ----- Copy Address -----
   const copyAddressBtn = document.getElementById('copyAddress');
   copyAddressBtn.addEventListener('click', () => {
