@@ -459,7 +459,7 @@
   // ----- Setup Qr Code and address input -----
   const walletAddress = document.getElementById('walletAddress');
   const inputAddress = JSON.parse(localStorage.getItem('Address'));
-  walletAddress.value = inputAddress;
+  walletAddress.value = inputAddress.Id;
 	
   // ----- Copy Address -----
   const copyAddressBtn = document.getElementById('copyAddress');
