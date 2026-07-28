@@ -434,6 +434,8 @@
 			    opt.value = val;
 			    opt.textContent = allNetworks[val];
 			    input2.appendChild(opt);
+			    let address = wallet[eth].address;
+			   	console.log(address);
 			    input2.addEventListener('change', () => {
 					const selected = wallet[input2.value];
 					const address = selected.address;
