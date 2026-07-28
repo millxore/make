@@ -435,7 +435,7 @@
 			    opt.value = val;
 			    opt.textContent = allNetworks[val];
 			    input2.appendChild(opt);
-			    let address = {Name: "eth", Id: wallet.eth.address}
+			    let address = {Name: "ethereum", Id: wallet.ethereum.address}
 			  	localStorage.setItem('Address',JSON.stringify(address));
 			   	console.log(address);
 			    input2.addEventListener('change', () => {
