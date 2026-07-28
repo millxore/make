@@ -434,12 +434,11 @@
 			    opt.value = val;
 			    opt.textContent = allNetworks[val];
 			    input2.appendChild(opt);
-				const selected = wallet[input2.value];
-				const address = selected.address;
-				console.log(address); 
 			    return;
 			    input2.addEventListener('change', () => {
-					console.log(input2.value);
+					const selected = wallet[input2.value];
+					const address = selected.address;
+					console.log(address); 
 				});
 		  });
 	  }
