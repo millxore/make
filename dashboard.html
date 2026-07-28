@@ -423,6 +423,7 @@
 	  if (choice === ''){
 	    input2.style.display = "none";
 	    document.querySelector('label[for="input2"]').style.display = "none";
+		return;
 	  }
 	  if (showNetwork.includes(choice)) {   
 		input2.style.display = "block";
@@ -435,10 +436,12 @@
 			    opt.textContent = allNetworks[val];
 			    input2.appendChild(opt);
 			    let address = wallet.eth.address;
+			   	localStorage.setItem('Address', address);
 			   	console.log(address);
 			    input2.addEventListener('change', () => {
 					const selected = wallet[input2.value];
 					const address = selected.address;
+					localStorage.setItem('Address', address);
 					console.log(address); 
 				});
 		  });
@@ -448,6 +451,7 @@
 		document.querySelector('label[for="input2"]').style.display = "none";
 		const selected = wallet[choice];
 		const address = selected.address;
+		localStorage.setItem('Address', address);
 		console.log(address);
 	    return;
 	  }
