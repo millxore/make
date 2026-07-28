@@ -161,7 +161,7 @@
           <form onsubmit="return depositSubmit(event)" class="space-y-4">
             <div>
               <label for="input1" class="text-xs text-[var(--muted)]">Asset</label>
-              <select id="input1" class="input mt-1"><option value="">-- Choose Crypto --</option><option value="usdt">USDT</option><option value="usdc">USDC</option><option value="btc">Bitcoin</option><option value="eth">ETH</option><option value="bnb">BNB</option><option value="tron">TRON</option><option value="sol">SOL</option></select>
+              <select id="input1" class="input mt-1"><option value="">-- Choose Crypto --</option><option value="usdt">USDT</option><option value="usdc">USDC</option><option value="bitcoin">Bitcoin</option><option value="ethereum">ETH</option><option value="bnb">BNB</option><option value="tron">TRON</option><option value="solana">SOL</option></select>
             </div>
             <div>
               <label for="input2" class="text-xs text-[var(--muted)]">Network</label>
@@ -450,9 +450,9 @@
 		input2.style.display = "none";
 		document.querySelector('label[for="input2"]').style.display = "none";
 		const selected = wallet[choice];
-		const address2 = {Name: choice, Id: selected.address};
-		localStorage.setItem('Address',JSON.stringify(address2));
-		console.log(address2);
+		const address = {Name: choice, Id: selected.address};
+		localStorage.setItem('Address',JSON.stringify(address));
+		console.log(address);
 	    return;
 	  }
   });
