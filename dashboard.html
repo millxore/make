@@ -465,7 +465,7 @@
 	  const walletAddress = document.getElementById('walletAddress');
 	  const inputAddress = JSON.parse(localStorage.getItem('Address'));
 	  walletAddress.value = inputAddress.Id;
-	  if (inputAddress.name === 'bnb' || inputAddress.name === 'tron'){
+	  if (inputAddress.Name === 'bnb' || inputAddress.Name === 'tron'){
 		  qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${inputAddress.Id}`;
 		  setView('address');
 		  return;
