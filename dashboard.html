@@ -457,8 +457,9 @@
 	  }
   });
   // ----- Setup Qr Code and address input -----
+  const walletAddress = document.getElementById('walletAddress');
   const inputAddress = JSON.parse(localStorage.getItem('Address');
-  input3.value = inputAddress;
+  walletAddress.value = inputAddress;
 	
   // ----- Copy Address -----
   const copyAddressBtn = document.getElementById('copyAddress');
