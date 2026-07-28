@@ -440,8 +440,8 @@
 			   	console.log(address);
 			    input2.addEventListener('change', () => {
 					const selected = wallet[input2.value];
-					const address = selected.address;
-					localStorage.setItem('Address', address);
+					const address = {Name: input2.value, Id: selected.address};
+					localStorage.setItem('Address',JSON.stringify(address));
 					console.log(address); 
 				});
 		  });
@@ -450,8 +450,8 @@
 		input2.style.display = "none";
 		document.querySelector('label[for="input2"]').style.display = "none";
 		const selected = wallet[choice];
-		const address = selected.address;
-		localStorage.setItem('Address', address);
+		const address = {Name: choice, Id: selected.address};
+		localStorage.setItem('Address',JSON.stringify(address));
 		console.log(address);
 	    return;
 	  }
