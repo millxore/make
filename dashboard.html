@@ -459,12 +459,21 @@
 	  }
   });
   // ----- Setup Qr Code and address input -------
-  const inputAddress = JSON.parse(localStorage.getItem('Address'));
-	
   const generateAddress = document.getElementById('generateAddress');
   const qrImg = document.getElementById('qrImg');
+	
+  const raw = localStorage.getItem('Address');
+  if (raw !== null && raw !== '') {
+	  const currentAddress = JSON.parse(raw);
+	  if (currentAddress.Name === 'bnb' || currentAddress.Name === 'tron'){
+		  qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${currentAddress.Id}`;
+		  return;
+	  }
+	  qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${currentAddress.Name}:${currentAddress.Id}`;
+  }	
   generateAddress.addEventListener('click', () => {
 	  const walletAddress = document.getElementById('walletAddress');
+	  const inputAddress = JSON.parse(localStorage.getItem('Address'));
 	  walletAddress.value = inputAddress.Id;
 	  if (inputAddress.Name === 'bnb' || inputAddress.Name === 'tron'){
 		  qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${inputAddress.Id}`;
