@@ -439,12 +439,10 @@
 			    input2.appendChild(opt);
 			    let address = {Name: "ethereum", Id: wallet.ethereum.address}
 			  	localStorage.setItem('Address',JSON.stringify(address));
-			   	console.log(address);
 			    input2.addEventListener('change', () => {
 					const selected = wallet[input2.value];
 					const address = {Name: input2.value, Id: selected.address};
 					localStorage.setItem('Address',JSON.stringify(address));
-					console.log(address); 
 				});
 		  });
 	  }
@@ -454,7 +452,6 @@
 		const selected = wallet[choice];
 		const address = {Name: choice, Id: selected.address};
 		localStorage.setItem('Address',JSON.stringify(address));
-		console.log(address);
 	    return;
 	  }
   });
