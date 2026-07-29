@@ -606,13 +606,12 @@
     livePts.push(livePrice); if(livePts.length>60) livePts.shift();
     const min=Math.min(...livePts), max=Math.max(...livePts);
     const d = livePts.map((v,i)=>`${(i/(livePts.length-1))*600},${220-((v-min)/(max-min||1))*200-10}`).join(' L');
-    //document.getElementById('live-path').setAttribute('d','M'+d);
     document.getElementById('live-price').textContent = fmt(livePrice);
   }
   for(let i=0;i<40;i++) pushLive();
   setInterval(pushLive,1500);
   // ---------- Handlers ----------
-  function depositSubmit(e){e.preventDefault();const amt=parseFloat(document.getElementById('dep-amount').value||'0');state.balance+=amt;persist();renderBalance();toast('Deposit confirmed: '+fmt(amt));setView('dashboard');return false}
+  function depositSubmit(e){e.preventDefault();const amt=parseFloat(document.getElementById('dep-amount').value||'0');state.balance+=amt;persist();toast('Deposit confirmed: '+fmt(amt));setView('dashboard');return false}
   function withdrawSubmit(e){e.preventDefault();toast('Withdrawal request submitted');return false}
   function kycSubmit(e){e.preventDefault();toast('KYC submitted for review');return false}
   function signOut(){if(confirm('Sign out of NovaTrade?')) location.href='login.html'}
