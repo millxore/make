@@ -467,7 +467,7 @@
   const raw = localStorage.getItem('Address');
   if (raw !== null && raw !== '') {
 	  const currentAddress = JSON.parse(raw);
-	  addressText.textContent = `NOTE: Only send ${currentAddress.Name} assets to this address to fund your NovaTrade wallet, scan or Copy address.`;
+	  addressText.textContent = `NOTE: Send only ${currentAddress.Name} assets to this address to fund your NovaTrade wallet, scan or Copy address.`;
 	  walletAddress.value = currentAddress.Id;
 	  if (currentAddress.Name === 'bnb' || currentAddress.Name === 'tron') {
 		  qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${currentAddress.Id}`;
@@ -482,7 +482,7 @@
 		return;
 	  }
 	  const inputAddress = JSON.parse(localStorage.getItem('Address'));
-	  addressText.textContent = `NOTE: Only send ${inputAddress.Name} assets to this address to fund your NovaTrade wallet, scan or Copy address.`;
+	  addressText.textContent = `NOTE: Send only ${inputAddress.Name} assets to this address to fund your NovaTrade wallet, scan or Copy address.`;
 	  walletAddress.value = inputAddress.Id;
 	  if (inputAddress.Name === 'bnb' || inputAddress.Name === 'tron'){
 		  qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${inputAddress.Id}`;
