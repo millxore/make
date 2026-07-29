@@ -475,6 +475,10 @@
   }
 	
   generateAddress.addEventListener('click', () => {
+	  if (input1.value === ''){
+	    toast("Please select crypto Wallet");
+		return;
+	  }
 	  const inputAddress = JSON.parse(localStorage.getItem('Address'));
 	  walletAddress.value = inputAddress.Id;
 	  if (inputAddress.Name === 'bnb' || inputAddress.Name === 'tron'){
