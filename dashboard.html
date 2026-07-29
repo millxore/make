@@ -469,10 +469,10 @@
 	  walletAddress.value = currentAddress.Id;
 	  if (currentAddress.Name === 'bnb' || currentAddress.Name === 'tron') {
 		  qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${currentAddress.Id}`;
-		  return;
+	  }else {
+	  	  qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${currentAddress.Name}:${currentAddress.Id}`;
 	  }
-	  qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${currentAddress.Name}:${currentAddress.Id}`;
-  }	
+  }
 	
   generateAddress.addEventListener('click', () => {
 	  const inputAddress = JSON.parse(localStorage.getItem('Address'));
