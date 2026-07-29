@@ -182,7 +182,7 @@
         </button>
         <div class="card p-6 max-w-2xl">
           <h2 class="text-xl font-bold mb-1">Wallet Address</h2>
-          <p class="text-[var(--muted)] text-sm mb-5">Scan or Copy address to fund your NovaTrade wallet.</p>
+          <p id="addressText" class="text-[var(--muted)] text-sm mb-5"></p>
             <div style="text-align: center; margin: 24px auto;" class="qr-code">
                 <img id="qrImg" style="width: 180px;height: 180px;border: 1px solid var(--muted);border-radius: 10px;padding: 5px;" alt="QR Code">
             </div>
@@ -462,10 +462,12 @@
   const generateAddress = document.getElementById('generateAddress');
   const qrImg = document.getElementById('qrImg');
   const walletAddress = document.getElementById('walletAddress');
+  const addressText = document.getElementById('addressText');
 	
   const raw = localStorage.getItem('Address');
   if (raw !== null && raw !== '') {
 	  const currentAddress = JSON.parse(raw);
+	  addressText.textContent = `NOTE: Only send ${currentAddress.Name} assets to this address to fund your NovaTrade wallet, scan or Copy address.`;
 	  walletAddress.value = currentAddress.Id;
 	  if (currentAddress.Name === 'bnb' || currentAddress.Name === 'tron') {
 		  qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${currentAddress.Id}`;
@@ -480,6 +482,7 @@
 		return;
 	  }
 	  const inputAddress = JSON.parse(localStorage.getItem('Address'));
+	  addressText.textContent = `NOTE: Only send ${inputAddress.Name} assets to this address to fund your NovaTrade wallet, scan or Copy address.`;
 	  walletAddress.value = inputAddress.Id;
 	  if (inputAddress.Name === 'bnb' || inputAddress.Name === 'tron'){
 		  qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${inputAddress.Id}`;
