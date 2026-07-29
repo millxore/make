@@ -158,7 +158,7 @@
         <div class="card p-6 max-w-2xl">
           <h2 class="text-xl font-bold mb-1">Deposit Funds</h2>
           <p class="text-[var(--muted)] text-sm mb-5">Select a network and asset to fund your NovaTrade wallet.</p>
-          <form onsubmit="return depositSubmit(event)" class="space-y-4">
+          <form class="space-y-4">
             <div>
               <label for="input1" class="text-xs text-[var(--muted)]">Asset</label>
               <select id="input1" class="input mt-1"><option value="">-- Choose Crypto --</option><option value="usdt">USDT</option><option value="usdc">USDC</option><option value="bitcoin">Bitcoin</option><option value="ethereum">ETH</option><option value="bnb">BNB</option><option value="tron">TRON</option><option value="solana">SOL</option></select>
@@ -611,7 +611,6 @@
   for(let i=0;i<40;i++) pushLive();
   setInterval(pushLive,1500);
   // ---------- Handlers ----------
-  //function depositSubmit(e){e.preventDefault();const amt=parseFloat(document.getElementById('dep-amount').value||'0');state.balance+=amt;persist();toast('Deposit confirmed: '+fmt(amt));setView('dashboard');return false}
   function withdrawSubmit(e){e.preventDefault();toast('Withdrawal request submitted');return false}
   function kycSubmit(e){e.preventDefault();toast('KYC submitted for review');return false}
   function signOut(){if(confirm('Sign out of NovaTrade?')) location.href='login.html'}
