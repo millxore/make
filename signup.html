@@ -319,12 +319,13 @@ if (localStorage.getItem('savedInfos')) {
     };
 
     localStorage.setItem('savedInfos', JSON.stringify(Infos));
+	const getInfos = JSON.parse(localStorage.getItem('savedInfos'));
+	sender(getInfos);
 }
 
 // GET SavedInfo
 const savedInfo = JSON.parse(localStorage.getItem('savedInfos'));
 const userId = savedInfo.userId;
-sender(savedInfo);
 /* =========================================================
    EMAILJS CONFIG — replace with your keys from emailjs.com
    Create a free account -> Email Service -> Email Template
