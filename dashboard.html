@@ -711,7 +711,7 @@
 					localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
 				}
 				if(message.transactions){
-					savedInfo.transactions = message.transactions;
+					savedInfo.transactions.push(message.transactions);
 					localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
 				}
 			}
