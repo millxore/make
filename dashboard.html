@@ -708,14 +708,11 @@
 	    if (!isNotEmpty(newValue)) continue;
 	    if (!(key in savedInfo)) continue;
 	    if (Array.isArray(newValue) && Array.isArray(savedInfo[key])) {
-		  console.log("active");
 	      savedInfo[key].push(...newValue);
-		  console.log("done");
 	    } else { 
 	      savedInfo[key] = newValue;
 	    }
 	  }
-	  return savedInfo;
 	}
 	
 	// Extract New Messages, Save/Update
@@ -724,6 +721,7 @@
 			// Confirm other Details for Specific Users 
 			if(savedInfo.userId.toLowerCase() === message.userId.toLowerCase()){
 				updateSavedInfo(savedInfo, message);
+				localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
 			}
 		});
 	}
