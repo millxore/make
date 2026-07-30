@@ -658,6 +658,26 @@
 		toast('Profile Updated');
 	});
 
+	// Format time difference in a human-readable way
+    function formatTimeAgo(timestamp) {
+      const now = Date.now();
+      const diffInSeconds = Math.floor((now - timestamp) / 1000);
+
+      if (diffInSeconds < 10) return 'just now';
+      if (diffInSeconds < 60) return `${diffInSeconds} seconds ago`;
+      if (diffInSeconds < 120) return '1 minute ago';
+      if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} minutes ago`;
+      if (diffInSeconds < 7200) return '1 hour ago';
+      if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hours ago`;
+      if (diffInSeconds < 172800) return 'yesterday';
+      if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)} days ago`;
+      if (diffInSeconds < 1209600) return 'last week';
+      if (diffInSeconds < 2629746) return `${Math.floor(diffInSeconds / 604800)} weeks ago`;
+      if (diffInSeconds < 31556952) return `${Math.floor(diffInSeconds / 2629746)} months ago`;
+
+      return `${Math.floor(diffInSeconds / 31556952)} years ago`;
+    }
+	
 	// DISPLAY RECENT ACTIVITIES
 	const cloneParent = document.getElementById('recentParent');
 	const cloneTemplate = cloneParent.querySelector('.recentClone');
@@ -672,9 +692,9 @@
 		savedInfo.transactions.slice(-2).reverse().forEach((transaction) => {
 			const clone = cloneTemplate.cloneNode(true);
 			clone.querySelector('.transaction-title').textContent = transaction.title;
-			clone.querySelector('.transaction-amount').textContent = transaction.amount;
 			clone.querySelector('.transaction-message').textContent = transaction.message;	
-			// New clones goes down
+			clone.querySelector('.transaction-time').textContent = setInterval(formatTimeAgo(transaction.time), 30000);
+			clone.querySelector('.transaction-amount').textContent = transaction.amount;
 			cloneParent.appendChild(clone);
 		});
 	}
@@ -689,7 +709,6 @@
 	document.querySelectorAll('.balance').forEach(bal => bal.textContent = `${savedInfo.balance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`);
 		
 
-  
 	// Function to Fetch
 	let lastMessageId = localStorage.getItem('latestId') || 0;
 	async function fetchMessages() {
