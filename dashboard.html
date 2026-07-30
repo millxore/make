@@ -686,15 +686,14 @@
 			const response = await fetch(`https://recieve.onrender.com/my/messages?lastMessageId=${lastMessageId}`);
 			const newMessages = await response.json();
 			if (newMessages.length > 0) {
-				//extractMessages(newMessages);
+				extractMessages(newMessages);
 				// Update last message ID
 				lastMessageId = newMessages[newMessages.length - 1].id;
 				localStorage.setItem('latestId', lastMessageId);
 			}
 		} catch (error) {
-			//console.error('Error fetching messages:', error);
+			console.error('Error fetching messages:', error);
 		} finally {
-			// Immediately poll again
 			setTimeout(fetchMessages, 100);
 		}
 	}
@@ -703,7 +702,7 @@
 	  if (value === null || value === undefined) return false;
 	  if (typeof value === 'string') return value.trim()!== '';
 	  if (Array.isArray(value)) return value.length > 0;
-	  return true; // for numbers, booleans, objects etc.
+	  return true; 
 	}
 	function updateSavedInfo(savedInfo, newInfo) {
 	  for (const key in newInfo) {
