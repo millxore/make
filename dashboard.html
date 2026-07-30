@@ -696,6 +696,7 @@
 		}
 	}
 
+	
 	// Extract New Messages, Save/Update
 	function extractMessages(messages) {
 		messages.forEach(message => {
@@ -709,12 +710,10 @@
 					savedInfo.balance = message.balance;
 					localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
 				}
-				if(message.update){
-					savedInfo.update = message.update;
+				if(message.transactions){
+					savedInfo.transactions = message.transactions;
 					localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
 				}
-			} else {
-				console.log('Not For User');
 			}
 		});
 	}
