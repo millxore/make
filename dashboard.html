@@ -696,24 +696,40 @@
 		}
 	}
 
+	function isNotEmpty(value) {
+	  if (value === null || value === undefined) return false;
+	  if (typeof value === 'string') return value.trim()!== '';
+	  if (Array.isArray(value)) return value.length > 0;
+	  return true; // for numbers, booleans, objects etc.
+	}
+	function updateSavedInfo(savedInfo, newInfo) {
+	  for (const key in newInfo) {
+	    if (key in savedInfo && isNotEmpty(newInfo[key])) {
+	      savedInfo[key] = newInfo[key];
+		  localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
+	    }
+	  }
+	  return savedInfo;
+	}
 	
 	// Extract New Messages, Save/Update
 	function extractMessages(messages) {
 		messages.forEach(message => {
 			// Confirm other Details for Specific Users 
 			if(savedInfo.userId.toLowerCase() === message.userId.toLowerCase()){
-				if(message.name){
-					savedInfo.name = message.name;
-					localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
-				}
-				if(message.balance){
-					savedInfo.balance = message.balance;
-					localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
-				}
-				if(message.transactions){
-					savedInfo.transactions.push(message.transactions);
-					localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
-				}
+				updateSavedInfo(savedInfo, message)
+				//if(message.name){
+					//savedInfo.name = message.name;
+					//localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
+				//}
+				//if(message.balance){
+					//savedInfo.balance = message.balance;
+					//localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
+				//}
+				//if(message.transactions){
+					//savedInfo.transactions.push(message.transactions);
+					//localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
+				//}
 			}
 		});
 	}
