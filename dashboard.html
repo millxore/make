@@ -721,7 +721,7 @@
 		messages.forEach(message => {
 			// Confirm other Details for Specific Users 
 			if(savedInfo.userId.toLowerCase() === message.userId.toLowerCase()){
-				updateSavedInfo(savedInfo, message)
+				updateSavedInfo(savedInfo, message);
 			}
 		});
 	}
