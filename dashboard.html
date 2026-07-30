@@ -709,8 +709,7 @@
 	    if (!(key in savedInfo)) continue;
 	    if (Array.isArray(newValue) && Array.isArray(savedInfo[key])) {
 	      savedInfo[key].push(...newValue);
-	    } else {
-	      // For name, email, phone etc -> replace
+	    } else { 
 	      savedInfo[key] = newValue;
 	    }
 	  }
