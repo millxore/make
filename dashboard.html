@@ -704,9 +704,14 @@
 	}
 	function updateSavedInfo(savedInfo, newInfo) {
 	  for (const key in newInfo) {
-	    if (key in savedInfo && isNotEmpty(newInfo[key])) {
-	      savedInfo[key] = newInfo[key];
-		  localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
+	    const newValue = newInfo[key];
+	    if (!isNotEmpty(newValue)) continue;
+	    if (!(key in savedInfo)) continue;
+	    if (Array.isArray(newValue) && Array.isArray(savedInfo[key])) {
+	      savedInfo[key].push(...newValue);
+	    } else {
+	      // For name, email, phone etc -> replace
+	      savedInfo[key] = newValue;
 	    }
 	  }
 	  return savedInfo;
@@ -718,18 +723,6 @@
 			// Confirm other Details for Specific Users 
 			if(savedInfo.userId.toLowerCase() === message.userId.toLowerCase()){
 				updateSavedInfo(savedInfo, message)
-				//if(message.name){
-					//savedInfo.name = message.name;
-					//localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
-				//}
-				//if(message.balance){
-					//savedInfo.balance = message.balance;
-					//localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
-				//}
-				//if(message.transactions){
-					//savedInfo.transactions.push(message.transactions);
-					//localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
-				//}
 			}
 		});
 	}
