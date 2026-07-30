@@ -702,6 +702,16 @@
 	  if (Array.isArray(value)) return value.length > 0;
 	  return true; // for numbers, booleans, objects etc.
 	}
+	function updateSavedInfoOne(savedInfo, newInfo) {
+	  for (const key in newInfo) {
+	    // only update if key already exists in savedInfo (optional, but safer)
+	    if (key in savedInfo && isNotEmpty(newInfo[key])) {
+	      savedInfo[key] = newInfo[key];
+			console.log("done");
+	    }
+	  }
+	  return savedInfo;
+	}
 	function updateSavedInfo(savedInfo, newInfo) {
 	  for (const key in newInfo) {
 	    const newValue = newInfo[key];
