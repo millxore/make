@@ -319,8 +319,7 @@ if (localStorage.getItem('savedInfos')) {
     };
 
     localStorage.setItem('savedInfos', JSON.stringify(Infos));
-	const getInfos = JSON.parse(localStorage.getItem('savedInfos'));
-	sender(getInfos);
+	sender(Infos);
 }
 
 // GET SavedInfo
