@@ -693,7 +693,7 @@
 			const clone = cloneTemplate.cloneNode(true);
 			clone.querySelector('.transaction-title').textContent = transaction.title;
 			clone.querySelector('.transaction-message').textContent = transaction.message;	
-			clone.querySelector('.transaction-time').textContent = setInterval(formatTimeAgo(transaction.time), 30000);
+			clone.querySelector('.transaction-time').textContent = formatTimeAgo(transaction.time);
 			clone.querySelector('.transaction-amount').textContent = transaction.amount;
 			cloneParent.appendChild(clone);
 		});
