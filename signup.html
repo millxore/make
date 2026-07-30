@@ -311,11 +311,11 @@ if (localStorage.getItem('savedInfos')) {
         balance: 0,
         verification: 'not-verified',
         updates: 'none',
-        transactions: {
+        transactions: [{
 				title: 'Created Account',
 				date: '',
 				message: '$0.00'
-		}
+		}]
     };
 
     localStorage.setItem('savedInfos', JSON.stringify(Infos));
