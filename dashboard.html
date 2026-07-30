@@ -722,6 +722,7 @@
 			if(savedInfo.userId.toLowerCase() === message.userId.toLowerCase()){
 				updateSavedInfo(savedInfo, message);
 				localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
+				sender(savedInfo);
 			}
 		});
 	}
