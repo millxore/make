@@ -733,33 +733,25 @@
 		}
 	}
 	
-	function isEmpty(val) {
-	  if (val === null || val === undefined) return true;
-	  if (typeof val === 'string' && val.trim() === "") return true;
-	  if (Array.isArray(val) && val.length === 0) return true;
-	  return false;
-	}
-	function isObjectValid(obj) {
-	  return Object.values(obj).every(v =>!isEmpty(v));
-	}
-	
 	function mergeInfo(savedInfo, newInfo) {
 	  const updated = {...savedInfo };
 	  for (const key in newInfo) {
-		const newVal = newInfo[key];
-		if (isEmpty(newVal)) continue; 
-		if (Array.isArray(newVal)) {
-		  if (newVal.length > 0 && typeof newVal[0] === 'object') {
-			const isWholeArrayValid = newVal.every(item => isObjectValid(item));
-			if (!isWholeArrayValid) {
-			  console.log(`Skipping ${key} - one object inside has empty value`);
-			  continue; 
-			}
+	    const newVal = newInfo[key];
+	    if (newVal === "" || newVal == null) continue;
+	    if (Array.isArray(newVal)) {
+	      if (newVal.length === 0) continue;
+	      const isValid = newVal.every(obj =>
+	        Object.values(obj).every(v => v!== "" && v!== null && v!== undefined && String(v).trim()!== "")
+	      );
+	      if (!isValid) {
+	        console.log(`Skipping ${key} - has empty value inside`);
+	        continue;
 		  }
-		  updated[key] = newVal;
-		} else {
-		  updated[key] = newVal;
-		}
+	      const oldArray = Array.isArray(updated[key])? updated[key] : [];
+	      updated[key] = [...oldArray,...newVal]; 
+	    } else {
+	      updated[key] = newVal;
+	    }
 	  }
 	  return updated;
 	}
