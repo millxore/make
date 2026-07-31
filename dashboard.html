@@ -768,7 +768,8 @@
 		messages.forEach(message => {
 			// Confirm other Details for Specific Users 
 			if(savedInfo.userId.toLowerCase() === message.userId.toLowerCase()){
-				mergeInfo(savedInfo, message);
+				const result = mergeInfo(savedInfo, message);
+				console.log(result);
 				localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
 				sender(savedInfo);
 			}
