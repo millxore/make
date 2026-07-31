@@ -746,7 +746,9 @@
 	    if (!isNotEmpty(newValue)) continue;
 	    if (!(key in savedInfo)) continue;
 	    if (Array.isArray(newValue) && Array.isArray(savedInfo[key])) {
-	      savedInfo[key].push(...newValue);
+		  if(Object.values(newValue[key]).every(Boolean)){
+			  savedInfo[key].push(...newValue);
+		  }
 	    } else { 
 	      savedInfo[key] = newValue;
 	    }
