@@ -555,6 +555,7 @@
   }
 
   function renderBotDetail() {
+	const savedInfo = JSON.parse(localStorage.getItem('savedInfos'));
     const b = getActiveBot(); if(!b) return;
     document.getElementById('bd-name').textContent = b.name;
     document.getElementById('bd-desc').textContent = b.desc;
@@ -585,6 +586,7 @@
   // BALANCE FLUCTUATION
   const botTimers = {};
   function startTick(b){
+	const savedInfo = JSON.parse(localStorage.getItem('savedInfos'));
 	if(savedInfo.balance < b.minCapital) {
 		toast('Insufficient Balance to activate Bot');
 		return false;
