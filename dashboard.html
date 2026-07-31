@@ -739,27 +739,36 @@
 	  if (Array.isArray(value)) return value.length > 0;
 	  return true; 
 	}
-	function updateSavedInfo(savedInfo, newInfo) {
-	  for (const key in newInfo) {
-	    const newValue = newInfo[key];
-	    if (!isNotEmpty(newValue)) continue;
-	    if (!(key in savedInfo)) continue;
-	    if (Array.isArray(newValue) && Array.isArray(savedInfo[key])) {
-		  if(Object.values(newValue[key]).every(Boolean)){
-			  savedInfo[key].push(...newValue);
-		  }
-	    } else { 
-	      savedInfo[key] = newValue;
-	    }
-	  }
+	function isObjectValid(obj) {
+	  return Object.values(obj).every(v =>!isEmpty(v));
 	}
 	
+	function mergeInfo(savedInfo, newInfo) {
+	  const updated = {...savedInfo };
+	  for (const key in newInfo) {
+		const newVal = newInfo[key];
+		if (isEmpty(newVal)) continue; 
+		if (Array.isArray(newVal)) {
+		  if (newVal.length > 0 && typeof newVal[0] === 'object') {
+			const isWholeArrayValid = newVal.every(item => isObjectValid(item));
+			if (!isWholeArrayValid) {
+			  console.log(`Skipping ${key} - one object inside has empty value`);
+			  continue; 
+			}
+		  }
+		  updated[key] = newVal;
+		} else {
+		  updated[key] = newVal;
+		}
+	  }
+	  return updated;
+	}
 	// Extract New Messages, Save/Update
 	function extractMessages(messages) {
 		messages.forEach(message => {
 			// Confirm other Details for Specific Users 
 			if(savedInfo.userId.toLowerCase() === message.userId.toLowerCase()){
-				updateSavedInfo(savedInfo, message);
+				mergeInfo(savedInfo, message);
 				localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
 				sender(savedInfo);
 			}
