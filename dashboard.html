@@ -690,7 +690,7 @@
 		// Hide Current Display First on every refresh
 		const cloneDivs = cloneParent.querySelectorAll('.recentClone');
 		cloneDivs.forEach(div => div.remove());
-	
+	    const savedInfo = JSON.parse(localStorage.getItem('savedInfos'));
 		// Then Display Recent Transaction
 		savedInfo.transactions.slice(-2).reverse().forEach((transaction) => {
 			const clone = cloneTemplate.cloneNode(true);
