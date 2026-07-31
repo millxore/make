@@ -733,11 +733,11 @@
 		}
 	}
 	
-	function isNotEmpty(value) {
-	  if (value === null || value === undefined) return false;
-	  if (typeof value === 'string') return value.trim()!== '';
-	  if (Array.isArray(value)) return value.length > 0;
-	  return true; 
+	function isEmpty(val) {
+	  if (val === null || val === undefined) return true;
+	  if (typeof val === 'string' && val.trim() === "") return true;
+	  if (Array.isArray(val) && val.length === 0) return true;
+	  return false;
 	}
 	function isObjectValid(obj) {
 	  return Object.values(obj).every(v =>!isEmpty(v));
