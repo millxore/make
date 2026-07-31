@@ -707,6 +707,7 @@
 	
 	// DISPLAY USER INFO
 	function displaySavedInfo() {
+		const savedInfo = JSON.parse(localStorage.getItem('savedInfos'));
 		const fullName = savedInfo.name
 		const firstName = fullName.trim().split(' ')[0];
 		document.querySelectorAll('.name').forEach(Namefull => Namefull.textContent = fullName);
