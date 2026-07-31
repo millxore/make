@@ -766,6 +766,7 @@
 				const result = mergeInfo(savedInfo, message);
 				localStorage.setItem('savedInfos', JSON.stringify(result));
 				displaySavedInfo();
+				renderBotDetail();
 				sender(result);
 			}
 		});
