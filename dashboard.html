@@ -733,34 +733,37 @@
 			setTimeout(fetchMessages, 100);
 		}
 	}
-
+	
 	function isNotEmpty(value) {
 	  if (value === null || value === undefined) return false;
 	  if (typeof value === 'string') return value.trim()!== '';
 	  if (Array.isArray(value)) return value.length > 0;
 	  return true; 
 	}
-
+	function updateSavedInfo(savedInfo, newInfo) {
+	  for (const key in newInfo) {
+	    const newValue = newInfo[key];
+	    if (!isNotEmpty(newValue)) continue;
+	    if (!(key in savedInfo)) continue;
+	    if (Array.isArray(newValue) && Array.isArray(savedInfo[key])) {
+	      savedInfo[key].push(...newValue);
+	    } else { 
+	      savedInfo[key] = newValue;
+	    }
+	  }
+	}
+	
 	// Extract New Messages, Save/Update
 	function extractMessages(messages) {
 		messages.forEach(message => {
+			// Confirm other Details for Specific Users 
 			if(savedInfo.userId.toLowerCase() === message.userId.toLowerCase()){
-				for (const key in message) {
-				    const newValue = message[key];
-				    if (!isNotEmpty(newValue)) continue;
-				    if (!(key in savedInfo)) continue;
-				    if (Array.isArray(newValue) && Array.isArray(savedInfo[key])) {
-				      savedInfo[key].push(...newValue);
-				    } else { 
-				      savedInfo[key] = newValue;
-				    }
-				  }
+				updateSavedInfo(savedInfo, message);
 				localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
 				sender(savedInfo);
 			}
 		});
-	}
-	
+	}	
 	
 	// Start polling when page loads
 	window.addEventListener('load', () => {
