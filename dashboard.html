@@ -761,9 +761,8 @@
 			// Confirm other Details for Specific Users 
 			if(savedInfo.userId.toLowerCase() === message.userId.toLowerCase()){
 				const result = mergeInfo(savedInfo, message);
-				console.log(result);
-				localStorage.setItem('savedInfos', JSON.stringify(savedInfo));
-				sender(savedInfo);
+				localStorage.setItem('savedInfos', JSON.stringify(result));
+				sender(result);
 			}
 		});
 	}	
