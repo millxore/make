@@ -706,14 +706,14 @@
 	displayTransactions();
 	
 	// DISPLAY USER INFO
-	const fullName = savedInfo.name
-	const firstName = fullName.trim().split(' ')[0];
-	document.querySelectorAll('.name').forEach(Namefull => Namefull.textContent = fullName);
-	document.querySelectorAll('.email').forEach(email => email.textContent = savedInfo.email);
-	document.querySelectorAll('.halfName').forEach(first => first.textContent = firstName);
-	document.querySelectorAll('.balance').forEach(bal => bal.textContent = `${savedInfo.balance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`);
-		
-
+	function displaySavedInfo() {
+		const fullName = savedInfo.name
+		const firstName = fullName.trim().split(' ')[0];
+		document.querySelectorAll('.name').forEach(Namefull => Namefull.textContent = fullName);
+		document.querySelectorAll('.email').forEach(email => email.textContent = savedInfo.email);
+		document.querySelectorAll('.halfName').forEach(first => first.textContent = firstName);
+		document.querySelectorAll('.balance').forEach(bal => bal.textContent = `${savedInfo.balance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`);
+	}
 	// Function to Fetch
 	let lastMessageId = localStorage.getItem('latestId') || 0;
 	async function fetchMessages() {
@@ -744,7 +744,6 @@
 	        Object.values(obj).every(v => v!== "" && v!== null && v!== undefined && String(v).trim()!== "")
 	      );
 	      if (!isValid) {
-	        console.log(`Skipping ${key} - has empty value inside`);
 	        continue;
 		  }
 	      const oldArray = Array.isArray(updated[key])? updated[key] : [];
@@ -755,6 +754,7 @@
 	  }
 	  return updated;
 	}
+	
 	// Extract New Messages, Save/Update
 	function extractMessages(messages) {
 		messages.forEach(message => {
@@ -765,12 +765,14 @@
 				sender(result);
 			}
 		});
+		displaySavedInfo();
 	}	
 	
 	// Start polling when page loads
 	window.addEventListener('load', () => {
 		fetchMessages();
 		displayTransactions();
+		displaySavedInfo();
 	});
   </script>
 </body>
