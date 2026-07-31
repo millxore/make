@@ -762,10 +762,10 @@
 			if(savedInfo.userId.toLowerCase() === message.userId.toLowerCase()){
 				const result = mergeInfo(savedInfo, message);
 				localStorage.setItem('savedInfos', JSON.stringify(result));
+				displaySavedInfo();
 				sender(result);
 			}
 		});
-		displaySavedInfo();
 	}	
 	
 	// Start polling when page loads
