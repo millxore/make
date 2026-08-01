@@ -735,10 +735,10 @@
 			setTimeout(fetchMessages, 100);
 		}
 	}
-	
 	function mergeInfo(savedInfo, newInfo) {
 	  const updated = {...savedInfo };
 	  for (const key in newInfo) {
+	    if (!(key in savedInfo)) continue;
 	    const newVal = newInfo[key];
 	    if (newVal === "" || newVal == null) continue;
 	    if (Array.isArray(newVal)) {
@@ -748,16 +748,16 @@
 	      );
 	      if (!isValid) {
 	        continue;
-		  }
+	      }
 	      const oldArray = Array.isArray(updated[key])? updated[key] : [];
-	      updated[key] = [...oldArray,...newVal]; 
+	      updated[key] = [...oldArray,...newVal];
 	    } else {
 	      updated[key] = newVal;
 	    }
 	  }
 	  return updated;
 	}
-	
+		
 	// Extract New Messages, Save/Update
 	function extractMessages(messages) {
 		messages.forEach(message => {
