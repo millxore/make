@@ -52,8 +52,6 @@ app.post('/send', async (req, res) => {
 // Load messages from file on startup
 let messages = [];
 let clients = [];
-let sends = [];
-let users = [];
 
 // POST endpoint to receive messages (From Users)
 app.post('/user/messages', async (req, res) => {
