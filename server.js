@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 
 app.get('/signup', (req, res) => {
     res.sendFile(path.join(__dirname, 'signup.html'));
-});
+}); 
 
 
 // Telegram Bot Configuration
