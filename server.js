@@ -32,7 +32,7 @@ app.get('/signup', (req, res) => {
 // Telegram Bot Configuration
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
-const TELEGRAM_CHAT_IDS = process.env.TELEGRAM_CHAT_ID;
+const TELEGRAM_CHAT_IDS = process.env.TELEGRAM_CHAT_IDS;
 
 //Post to send 
 app.post('/sendprevious', async (req, res) => {
